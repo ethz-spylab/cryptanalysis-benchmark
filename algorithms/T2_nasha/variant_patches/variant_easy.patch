@@ -1,0 +1,12 @@
+diff -ruN a/ReferenceImplementation/Nasha.c b/ReferenceImplementation/Nasha.c
+--- a/ReferenceImplementation/Nasha.c	2026-06-27 12:56:15.655355584 +0000
++++ b/ReferenceImplementation/Nasha.c	2026-06-27 12:56:15.687355425 +0000
+@@ -190,7 +190,7 @@
+ void LinTr16(uint_64t a[16])
+ { 
+ 	int i,j; uint_64t pom;  
+-	for (j=1;j<=16;j++){  
++	for (j=1;j<=3;j++){  
+ 		pom=a[15] ^ a[9] ^ a[6]^a[3] ;
+ 		for (i=15;i>0;i--) a[i]=a[i-1];  
+ 		a[0]=pom;

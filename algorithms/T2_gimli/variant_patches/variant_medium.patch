@@ -1,0 +1,11 @@
+--- a/Implementations/crypto_aead/gimli24v1/ref/gimli.inc	2019-10-07 16:05:00.000000000 +0000
++++ b/Implementations/crypto_aead/gimli24v1/ref/gimli.inc	2026-06-27 16:08:50.143949459 +0000
+@@ -26,7 +26,7 @@
+   int round, column;
+   uint32_t x, y, z;
+ 
+-  for (round = 24; round > 0; --round) {
++  for (round = 15; round > 0; --round) {
+     for (column = 0; column < 4; ++column) {
+       x = rotate(load(state,    column), 24);
+       y = rotate(load(state,4 + column),  9);

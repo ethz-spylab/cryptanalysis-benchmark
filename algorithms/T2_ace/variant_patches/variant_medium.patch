@@ -1,0 +1,12 @@
+diff -ruN a/ace/Implementations/crypto_aead/aceae128v1/ref/ace.h b/ace/Implementations/crypto_aead/aceae128v1/ref/ace.h
+--- a/ace/Implementations/crypto_aead/aceae128v1/ref/ace.h	2019-10-07 16:00:00.000000000 +0000
++++ b/ace/Implementations/crypto_aead/aceae128v1/ref/ace.h	2026-06-27 13:45:45.493342010 +0000
+@@ -15,7 +15,7 @@
+ #define STATEBYTES		40 //Number OF BYTES = 320/8 = 40
+ #define SIMECKBYTES		8 //Number of Simeck BYTES = 64/8 = 8
+ #define SIMECKROUND    		8 //Number of rounds
+-#define NUMSTEPS		16 //Number of steps
++#define NUMSTEPS 4
+ 
+ 
+ typedef unsigned long long u64;

@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/skinnyaeadtk396128v1/ref/skinny_reference.c b/Implementations/crypto_aead/skinnyaeadtk396128v1/ref/skinny_reference.c
+--- a/Implementations/crypto_aead/skinnyaeadtk396128v1/ref/skinny_reference.c	2026-06-27 16:36:10.857580870 +0000
++++ b/Implementations/crypto_aead/skinnyaeadtk396128v1/ref/skinny_reference.c	2026-06-27 16:36:10.865580825 +0000
+@@ -37,7 +37,7 @@
+     { 64,192, 40}, /* [2] -> SKINNY-64-192:  40 rounds */
+     {128,128, 40}, /* [3] -> SKINNY-128-128: 40 rounds */
+     {128,256, 48}, /* [4] -> SKINNY-128-256: 48 rounds */
+-    {128,384, 56}  /* [5] -> SKINNY-128-384: 56 rounds */
++    {128,384, 14}  /* [5] -> SKINNY-128-384: 56 rounds */
+ };
+ 
+ // 4-bit Sbox

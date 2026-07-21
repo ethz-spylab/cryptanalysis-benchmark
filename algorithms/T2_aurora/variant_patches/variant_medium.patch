@@ -1,0 +1,12 @@
+diff -ruN a/Reference_Implementation/aurora_ref.h b/Reference_Implementation/aurora_ref.h
+--- a/Reference_Implementation/aurora_ref.h	2026-06-27 13:45:53.395303645 +0000
++++ b/Reference_Implementation/aurora_ref.h	2026-06-27 13:45:53.423303509 +0000
+@@ -24,7 +24,7 @@
+ typedef enum { SUCCESS = 0, FAIL = 1, BAD_HASHBITLEN = 2 } HashReturn;
+ 
+ /* AURORA-224/256/384/512/224M/256M parameters */
+-#define AURORA_ROUNDS 17
++#define AURORA_ROUNDS 8
+ #define AURORA_BLK_SIZE 64
+ 
+ /* AURORA-224/256/224M/256M parameters */

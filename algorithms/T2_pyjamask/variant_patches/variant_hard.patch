@@ -1,0 +1,11 @@
+--- a/pyjamask/Implementations/crypto_aead/pyjamask128aeadv1/ref/pyjamask.c	2019-04-15 10:28:06.000000000 +0000
++++ b/pyjamask/Implementations/crypto_aead/pyjamask128aeadv1/ref/pyjamask.c	2026-06-27 16:10:33.137150616 +0000
+@@ -32,7 +32,7 @@
+ #define STATE_SIZE_128       4
+ 
+ #define NB_ROUNDS_96        14
+-#define NB_ROUNDS_128       14
++#define NB_ROUNDS_128       9
+ #define NB_ROUNDS_KS        14
+ 
+ //==============================================================================

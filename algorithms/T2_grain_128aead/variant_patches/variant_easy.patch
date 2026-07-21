@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/grain128aeadv2/ref/grain128aead-v2.c b/Implementations/crypto_aead/grain128aeadv2/ref/grain128aead-v2.c
+--- a/Implementations/crypto_aead/grain128aeadv2/ref/grain128aead-v2.c	2026-06-27 16:09:06.902816379 +0000
++++ b/Implementations/crypto_aead/grain128aeadv2/ref/grain128aead-v2.c	2026-06-27 16:09:06.960815920 +0000
+@@ -63,7 +63,7 @@
+ 
+ 	/* initialize grain and skip output */
+ 	grain_round = INIT;
+-	for (int i = 0; i < 320; i++) {
++	for (int i = 0; i < 130; i++) {
+ 		next_z(grain, 0, 0);
+ 	}
+ 

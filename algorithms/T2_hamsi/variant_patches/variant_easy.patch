@@ -1,0 +1,14 @@
+diff -ruN a/Reference_Implementation/nist-wrapper.c b/Reference_Implementation/nist-wrapper.c
+--- a/Reference_Implementation/nist-wrapper.c	2026-06-27 12:55:53.803464332 +0000
++++ b/Reference_Implementation/nist-wrapper.c	2026-06-27 12:55:53.865464024 +0000
+@@ -10,8 +10,8 @@
+     state->leftbits    = 0;
+     state->counter     = 0;
+     state->hashbitlen  = hashbitlen;
+-    state->ROUNDS      = 3*size;
+-    state->PFROUNDS    = 6*size;
++    state->ROUNDS      = 1*size;
++    state->PFROUNDS    = 1*size;
+     state->cvsize      = 256*size;
+ 
+     if (hashbitlen==224)      { memcpy(state->state,iv224,32); }

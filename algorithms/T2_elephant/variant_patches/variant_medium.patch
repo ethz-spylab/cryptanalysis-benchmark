@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/elephant160v2/ref/spongent.c b/Implementations/crypto_aead/elephant160v2/ref/spongent.c
+--- a/Implementations/crypto_aead/elephant160v2/ref/spongent.c	2021-05-18 14:12:00.000000000 +0000
++++ b/Implementations/crypto_aead/elephant160v2/ref/spongent.c	2026-06-27 13:47:16.357900544 +0000
+@@ -11,7 +11,7 @@
+ #if		defined(SPONGENT160)
+ #define nBits		160
+ #define nSBox		20 // 8 bit
+-#define nRounds		80
++#define nRounds 24
+ #define lfsrIV	    0x75
+ #elif   defined(SPONGENT176)
+ #define nBits		176

@@ -1,0 +1,21 @@
+diff -ruN a/Mars/mars-ref.c b/Mars/mars-ref.c
+--- a/Mars/mars-ref.c	1999-09-30 18:34:47.000000000 +0000
++++ b/Mars/mars-ref.c	2026-06-27 16:10:19.617253008 +0000
+@@ -479,7 +479,7 @@
+     }
+ 
+     /* then sixteen mars encrypting rounds  */
+-    for (i = 0; i < 16; i++) {
++    for (i = 0; i < 2; i++) {
+         WORD L, M, R;
+ 	int src = i % 4;
+ 	int dst1 = (i+1) % 4; 
+@@ -553,7 +553,7 @@
+     }
+     
+     /* then sixteen mars decrypting rounds         */
+-    for (i = 15; i >= 0; i--) {
++    for (i = 1; i >= 0; i--) {
+         WORD L, M, R;
+ 	int src = i % 4;
+ 	int dst1 = (i+3) % 4; 

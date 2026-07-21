@@ -1,0 +1,12 @@
+diff -ruN a/NISTLizardFinal/Reference_Implementation/Lizard.KEM/params.h b/NISTLizardFinal/Reference_Implementation/Lizard.KEM/params.h
+--- a/NISTLizardFinal/Reference_Implementation/Lizard.KEM/params.h	2017-11-01 20:41:24.000000000 +0000
++++ b/NISTLizardFinal/Reference_Implementation/Lizard.KEM/params.h	2026-06-27 13:06:51.204164783 +0000
+@@ -10,7 +10,7 @@
+ 
+ #ifdef KEM_CATEGORY1_N536
+ #define PARAMNAME "Lizard.KEM_CATEGORY1_N536"
+-#define LWE_N 536		// LWE dim
++#define LWE_N 144		// LWE dim
+ #define LWE_M 1024		// LWR dim (Number of LWE samples in pk)
+ #define LWE_L 256		// LWE_L1 * LWE_L2 = LWE_L
+ #define LWE_L1 16

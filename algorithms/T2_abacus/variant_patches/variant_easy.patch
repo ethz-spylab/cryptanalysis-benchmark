@@ -1,0 +1,12 @@
+diff -ruN "a/Reference Implementation/Abacus_Reference.h" "b/Reference Implementation/Abacus_Reference.h"
+--- "a/Reference Implementation/Abacus_Reference.h"	2026-06-27 13:45:58.930276768 +0000
++++ "b/Reference Implementation/Abacus_Reference.h"	2026-06-27 13:45:58.982276515 +0000
+@@ -32,7 +32,7 @@
+ 	/* Tunable Constants */
+ 	#define NUM_ABSORB_CLOCKS  1				/* Number of times to clock for a single byte, during Absorb phase */
+ 	#define NUM_SQUEEZE_CLOCKS 1				/* Number of times to clock for a single byte, during Squeeze phase */
+-	#define NUM_BLANK_ROUNDS 135				/* Number of Blank Rounds */
++#define NUM_BLANK_ROUNDS 6				/* Number of Blank Rounds */
+ 
+ } hashState;
+ 

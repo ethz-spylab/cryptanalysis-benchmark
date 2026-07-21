@@ -1,0 +1,13 @@
+--- a/Implementations/crypto_aead/tinyjambu128v2/ref/encrypt.c	2026-06-27 16:37:06.975260896 +0000
++++ b/Implementations/crypto_aead/tinyjambu128v2/ref/encrypt.c	2026-06-27 16:37:06.996260776 +0000
+@@ -14,8 +14,8 @@
+ #define FrameBitsPC  0x50  //Framebits for plaintext/ciphertext      
+ #define FrameBitsFinalization 0x70       
+ 
+-#define NROUND1 128*5 
+-#define NROUND2 128*8 
++#define NROUND1 224 
++#define NROUND2 512 
+ 
+ /*no-optimized date update function*/    
+ void state_update(unsigned int *state, const unsigned char *key, unsigned int number_of_steps) 

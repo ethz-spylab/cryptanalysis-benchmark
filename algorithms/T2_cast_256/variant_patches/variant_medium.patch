@@ -1,0 +1,29 @@
+diff -ruN a/cast.c b_medium/cast.c
+--- a/cast.c	1999-07-09 15:52:00.000000000 +0000
++++ b_medium/cast.c	2026-06-27 13:47:10.009931407 +0000
+@@ -354,11 +354,7 @@
+     blk[2] = io_swap(in_blk[2]); blk[3] = io_swap(in_blk[3]);
+ 
+     f_rnd(blk,  0); f_rnd(blk,  8);
+-    f_rnd(blk, 16); f_rnd(blk, 24);
+-    f_rnd(blk, 32); f_rnd(blk, 40);
+-    i_rnd(blk, 48); i_rnd(blk, 56);
+-    i_rnd(blk, 64); i_rnd(blk, 72);
+-    i_rnd(blk, 80); i_rnd(blk, 88);
++    f_rnd(blk, 16); f1(blk[2],blk[3],l_key[24],l_key[28]); f2(blk[1],blk[2],l_key[25],l_key[29]);
+ 
+     out_blk[0] = io_swap(blk[0]); out_blk[1] = io_swap(blk[1]);
+     out_blk[2] = io_swap(blk[2]); out_blk[3] = io_swap(blk[3]);
+@@ -372,11 +368,7 @@
+     blk[0] = io_swap(in_blk[0]); blk[1] = io_swap(in_blk[1]);
+     blk[2] = io_swap(in_blk[2]); blk[3] = io_swap(in_blk[3]);
+ 
+-    f_rnd(blk, 88); f_rnd(blk, 80);
+-    f_rnd(blk, 72); f_rnd(blk, 64);
+-    f_rnd(blk, 56); f_rnd(blk, 48);
+-    i_rnd(blk, 40); i_rnd(blk, 32);
+-    i_rnd(blk, 24); i_rnd(blk, 16);
++    f2(blk[1],blk[2],l_key[25],l_key[29]); f1(blk[2],blk[3],l_key[24],l_key[28]); i_rnd(blk, 16);
+     i_rnd(blk,  8); i_rnd(blk,  0);
+ 
+     out_blk[0] = io_swap(blk[0]); out_blk[1] = io_swap(blk[1]);

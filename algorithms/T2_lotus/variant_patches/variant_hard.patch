@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/twegift64lotusaeadv1/ref/lotus.h b/Implementations/crypto_aead/twegift64lotusaeadv1/ref/lotus.h
+--- a/Implementations/crypto_aead/twegift64lotusaeadv1/ref/lotus.h	2026-06-27 16:09:42.984534069 +0000
++++ b/Implementations/crypto_aead/twegift64lotusaeadv1/ref/lotus.h	2026-06-27 16:09:42.991534015 +0000
+@@ -7,7 +7,7 @@
+ /* 
+  * No. of block cipher rounds to be used
+  */ 
+-#define CRYPTO_BC_NUM_ROUNDS (28)
++#define CRYPTO_BC_NUM_ROUNDS (14)
+ 
+ /* 
+  * Block cipher's block size

@@ -1,0 +1,58 @@
+--- a/stream.c
++++ b/stream.c
+@@ -1,7 +1,8 @@
+ #include "stdio.h"
+ #include "stdlib.h"
+
+-#define u32 unsigned
++#include <stdint.h>
++#define u32 uint16_t
+
+
+ int crypto_stream_speck64128ctr_ref(
+@@ -88,17 +89,17 @@
+ }
+
+
+-#define ROR32(x,r) (((x)>>(r))|((x)<<(32-(r))))
+-#define ROL32(x,r) (((x)<<(r))|((x)>>(32-(r))))
+-#define R(x,y,k) (x=ROR32(x,8), x+=y, x^=k, y=ROL32(y,3), y^=x)
+-#define RI(x,y,k) (y^=x, y=ROR32(y,3), x^=k, x-=y, x=ROL32(x,8))
++#define ROR32(x,r) (((x)>>(r))|((x)<<(16-(r))))
++#define ROL32(x,r) (((x)<<(r))|((x)>>(16-(r))))
++#define R(x,y,k) (x=ROR32(x,7), x+=y, x^=k, y=ROL32(y,2), y^=x)
++#define RI(x,y,k) (y^=x, y=ROR32(y,2), x^=k, x-=y, x=ROL32(x,7))
+
+
+ int Encrypt(u32 *u,u32 *v,u32 key[])
+ {
+   u32 i,x=*u,y=*v;
+
+-  for(i=0;i<27;i++) R(x,y,key[i]);
++  for(i=0;i<22;i++) R(x,y,key[i]);
+
+   *u=x; *v=y;
+
+@@ -112,7 +113,7 @@
+   int i;
+   u32 x=*u,y=*v;
+
+-  for(i=26;i>=0;i--) RI(x,y,key[i]);
++  for(i=21;i>=0;i--) RI(x,y,key[i]);
+
+   *u=x; *v=y;
+
+@@ -125,10 +126,10 @@
+ {
+   u32 i,D=K[3],C=K[2],B=K[1],A=K[0];
+
+-  for(i=0;i<27;i+=3){
++  for(i=0;i<22;i+=3){
+     key[i]=A; R(B,A,i);
+-    key[i+1]=A; R(C,A,i+1);
+-    key[i+2]=A; R(D,A,i+2);
++    if(i+1<22){key[i+1]=A; R(C,A,i+1);}
++    if(i+2<22){key[i+2]=A; R(D,A,i+2);}
+   }
+
+   return 1;

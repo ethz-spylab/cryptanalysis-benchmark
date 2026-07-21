@@ -1,0 +1,10 @@
+--- a/LAC-v3a/ref/lac_param.h
++++ b/LAC-v3a/ref/lac_param.h
+@@ -1,6 +1,6 @@
+ //#define TEST_ROW_ERROR_RATE
+ //security level
+-#define LAC256
++#define LAC128
+ #define BCH_CONSTANT_TIME
+ //modulus
+ #define Q 251

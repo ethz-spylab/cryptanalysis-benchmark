@@ -1,0 +1,11 @@
+--- a/Reference_Implementation/crypto_sign/mqdss-48/params.h	2026-06-27 16:10:13.557299132 +0000
++++ b/Reference_Implementation/crypto_sign/mqdss-48/params.h	2026-06-27 16:10:13.570299033 +0000
+@@ -1,7 +1,7 @@
+ #ifndef MQDSS_PARAMS_H
+ #define MQDSS_PARAMS_H
+ 
+-#define N 48
++#define N 8
+ #define M N
+ #define F_LEN (M * (((N * (N + 1)) >> 1) + N)) /* Number of elements in F */
+ 

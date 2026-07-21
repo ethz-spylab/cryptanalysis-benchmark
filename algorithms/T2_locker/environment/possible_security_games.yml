@@ -1,0 +1,4 @@
+security_games:
+  - KEMPrivateKeyRecoveryGame
+  - KEMSharedSecretRecoveryGame
+  - KEMChosenCiphertextAttack2Game

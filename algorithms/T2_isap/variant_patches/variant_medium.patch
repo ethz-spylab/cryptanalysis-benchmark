@@ -1,0 +1,12 @@
+diff -ruN a/isap/Implementations/crypto_aead/isapa128av20/ref/isap.h b/isap/Implementations/crypto_aead/isapa128av20/ref/isap.h
+--- a/isap/Implementations/crypto_aead/isapa128av20/ref/isap.h	2021-05-18 14:12:00.000000000 +0000
++++ b/isap/Implementations/crypto_aead/isapa128av20/ref/isap.h	2026-06-27 16:09:26.513662242 +0000
+@@ -8,7 +8,7 @@
+ // Number of rounds
+ #define ISAP_sH 12
+ #define ISAP_sB 1
+-#define ISAP_sE 6
++#define ISAP_sE 4
+ #define ISAP_sK 12
+ 
+ // State size in bytes

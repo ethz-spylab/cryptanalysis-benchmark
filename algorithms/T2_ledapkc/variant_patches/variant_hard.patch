@@ -1,0 +1,47 @@
+diff -ruN a/Reference_Implementation/LEDApkc/include/bf_decoding.h b/Reference_Implementation/LEDApkc/include/bf_decoding.h
+--- a/Reference_Implementation/LEDApkc/include/bf_decoding.h	2026-06-27 13:23:24.094623966 +0000
++++ b/Reference_Implementation/LEDApkc/include/bf_decoding.h	2026-06-27 13:23:24.194623537 +0000
+@@ -46,14 +46,15 @@
+ /******************** START of definitions for N0 = 2 *************************/
+ #if (CATEGORY == 1) && (N0 == 2)
+ #define SYNDROME_TRESH_LOOKUP_TABLE {    0,62},\
+-                                    { 4588,63},\
+-                                    { 7609,64},\
+-                                    { 9152,65},\
+-                                    {10129,66},\
+-                                    {10800,67},\
+-                                    {11261,68},\
+-                                    {11614,69},\
+-                                    {11885,70}
++                                    { 2815,63},\
++                                    { 4276,64},\
++                                    { 5162,65},\
++                                    { 5703,66},\
++                                    { 6084,67},\
++                                    { 6353,68},\
++                                    { 6562,69},\
++                                    { 6705,70},\
++                                    { 6834,71}
+ #endif
+ 
+ #if ((CATEGORY == 2) || (CATEGORY == 3)) && (N0 == 2)
+diff -ruN a/Reference_Implementation/LEDApkc/include/qc_ldpc_parameters.h b/Reference_Implementation/LEDApkc/include/qc_ldpc_parameters.h
+--- a/Reference_Implementation/LEDApkc/include/qc_ldpc_parameters.h	2026-06-27 13:23:24.089623987 +0000
++++ b/Reference_Implementation/LEDApkc/include/qc_ldpc_parameters.h	2026-06-27 13:23:24.113623885 +0000
+@@ -41,13 +41,13 @@
+ #define HASH_BYTE_LENGTH (32)
+ // N0 defined in the makefile
+ #if N0 == 2
+-#define    P  (27779)  // modulus(x) = x^P-1
++#define    P  (15859)  // modulus(x) = x^P-1
+ #define    DV (17)  // odd number
+ #define    M  (7)
+ #define    M0 (4)
+ #define    M1 (3)
+-#define    NUM_ERRORS_T   (224)
+-#define MAX_ENCODABLE_BIT_SIZE_CW_ENCODING (2080)
++#define    NUM_ERRORS_T   (128)
++#define MAX_ENCODABLE_BIT_SIZE_CW_ENCODING (1150)
+ #elif N0 == 3
+ #define    P  (18701)  // modulus(x) = x^P-1
+ #define    DV (19)  // odd number

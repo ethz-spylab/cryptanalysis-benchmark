@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/comet64speckv1/ref/speck_64-128_and_128-128.c b/Implementations/crypto_aead/comet64speckv1/ref/speck_64-128_and_128-128.c
+--- a/Implementations/crypto_aead/comet64speckv1/ref/speck_64-128_and_128-128.c	2026-06-27 12:56:33.155268430 +0000
++++ b/Implementations/crypto_aead/comet64speckv1/ref/speck_64-128_and_128-128.c	2026-06-27 12:56:33.247267971 +0000
+@@ -1,7 +1,7 @@
+ #include "options.h" //options.h to define BLOCKSIZE
+ 
+ #if BLOCKSIZE == 64
+-#	define ROUNDS 27
++#	define ROUNDS 16
+ 
+ 	//size of a word in bytes
+ 	//(pt and ct size = 2 words = 1 block)

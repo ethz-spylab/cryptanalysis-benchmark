@@ -1,0 +1,12 @@
+diff -ruN a/gage-ingage/Implementations/crypto_aead/ingage1k128n096c224r008/ref/parameters.h b/gage-ingage/Implementations/crypto_aead/ingage1k128n096c224r008/ref/parameters.h
+--- a/gage-ingage/Implementations/crypto_aead/ingage1k128n096c224r008/ref/parameters.h	2019-04-15 10:15:22.000000000 +0000
++++ b/gage-ingage/Implementations/crypto_aead/ingage1k128n096c224r008/ref/parameters.h	2026-06-27 13:47:53.628719282 +0000
+@@ -11,7 +11,7 @@
+ 
+ /* Uncomment the following line for an ultraconservative choice of number of rounds in the sponge permutation */
+ // #define ROUNDS                           MAX_ROUNDS                  /* This is ultra conservative choice or rounds */
+-#define ROUNDS                          32
++#define ROUNDS 18
+ 
+ #endif /* PARAMETERS_H_ */
+ 

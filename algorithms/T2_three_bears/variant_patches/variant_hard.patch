@@ -1,0 +1,14 @@
+diff -ruN a/Reference_Implementation/crypto_kem/BabyBear/params.h b/Reference_Implementation/crypto_kem/BabyBear/params.h
+--- a/Reference_Implementation/crypto_kem/BabyBear/params.h
++++ b/Reference_Implementation/crypto_kem/BabyBear/params.h
+@@ -7,8 +7,8 @@
+ #define ENC_SEED_BYTES       32
+ #define IV_BYTES             0
+ #define LGX                  10
+-#define DIGITS               312
+-#define DIM                  2
++#define DIGITS               624
++#define DIM                  1
+ #define VAR_TIMES_128        72
+ #define LPR_BITS             4
+ #define FEC_BITS             18

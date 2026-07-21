@@ -1,0 +1,12 @@
+diff -ruN a/Reference_Implementation/echo_ref.c b/Reference_Implementation/echo_ref.c
+--- a/Reference_Implementation/echo_ref.c	2026-06-27 13:47:25.735854945 +0000
++++ b/Reference_Implementation/echo_ref.c	2026-06-27 13:47:25.742854911 +0000
+@@ -296,7 +296,7 @@
+ 	{
+ 		state->cv_size = 512;
+ 		state->message_size = 1536;
+-		state->rounds = 8;
++		state->rounds = 3;
+ 	}	
+ 	for (j=0; j<state->cv_size/512; j++) //big col
+ 	{

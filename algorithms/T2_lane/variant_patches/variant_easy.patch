@@ -1,0 +1,12 @@
+diff -ruN "orig/Reference Implementation/laneref256.c" "new_easy/Reference Implementation/laneref256.c"
+--- "orig/Reference Implementation/laneref256.c"	2026-06-27 16:09:59.668405392 +0000
++++ "new_easy/Reference Implementation/laneref256.c"	2026-06-27 16:09:59.671405369 +0000
+@@ -130,7 +130,7 @@
+   printf("Calculating LANE permutation P%i\n",j);
+   #endif /* SHOW_INTERMEDIATE */
+   /* rounds-1 ordinary rounds */
+-  for(i=0; i!=5; i++) {
++  for(i=0; i!=2; i++) {
+     r = 5*j+i;
+     #ifdef SHOW_INTERMEDIATE
+     printf("LANE P%i, Round: %i, before SubBytes():\n",j,i);

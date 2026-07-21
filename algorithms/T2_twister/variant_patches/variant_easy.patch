@@ -1,0 +1,51 @@
+diff -ruN a/Reference_Implementation/ref_twister.cpp b_easy/Reference_Implementation/ref_twister.cpp
+--- a/Reference_Implementation/ref_twister.cpp	2026-06-27 12:57:33.432967811 +0000
++++ b_easy/Reference_Implementation/ref_twister.cpp	2026-06-27 12:58:25.963705333 +0000
+@@ -430,47 +430,9 @@
+ 		/* save state for feedforward*/
+ 		memcpy( ff_save, state->hs_State, sizeof(state->hs_State) );
+ 
+-		/* inject 1. 64-bit part of the message  */
+ 		INJECT_MSG_AND_TWIST( msg[0] )
+-
+-		/* inject 2. 64-bit part of the message  */
+ 		INJECT_MSG_AND_TWIST( msg[1] )
+ 
+-		/* inject 3. 64-bit part of the message  */
+-		INJECT_MSG_AND_TWIST( msg[2] )
+-
+-		/* feed forward */
+-		for( y=0; y<8; y++ ){for( x=0; x<8; x++ ){
+-			state->hs_State[y][x] ^= ff_save[y][x];}}
+-		
+-		/* save state for feedforward*/
+-		memcpy( ff_save, state->hs_State, sizeof(state->hs_State) );
+-
+-		/* inject 3. 64-bit part of the message  */
+-		INJECT_MSG_AND_TWIST( msg[3] )
+-
+-		/* inject 4. 64-bit part of the message  */
+-		INJECT_MSG_AND_TWIST( msg[4] )
+-
+-		/* inject 5. 64-bit part of the message  */
+-		INJECT_MSG_AND_TWIST( msg[5] )
+-
+-		/* feed forward */
+-		for( y=0; y<8; y++ ){for( x=0; x<8; x++ ){
+-			state->hs_State[y][x] ^= ff_save[y][x];}}
+-
+-		/* save state for feedforward*/
+-		memcpy( ff_save, state->hs_State, sizeof(state->hs_State) );
+-
+-		/* inject 6. 64-bit part of the message  */
+-		INJECT_MSG_AND_TWIST( msg[6] )
+-
+-		/* inject 7. 64-bit part of the message  */
+-		INJECT_MSG_AND_TWIST( msg[7] )
+-
+-		/* blank round */
+-		twist_mini_round( state );
+-
+ 		/* feed forward */
+ 		for( y=0; y<8; y++ ){for( x=0; x<8; x++ ){
+ 			state->hs_State[y][x] ^= ff_save[y][x];}}

@@ -1,0 +1,14 @@
+diff -ruN a/Reference_Implementation/SHA3api_ref.h b/Reference_Implementation/SHA3api_ref.h
+--- a/Reference_Implementation/SHA3api_ref.h	2026-06-27 13:46:07.742233974 +0000
++++ b/Reference_Implementation/SHA3api_ref.h	2026-06-27 13:46:07.778233799 +0000
+@@ -46,8 +46,8 @@
+ // expand_1. The produced variables still have complex nonlinear relations with 
+ // previous 16 variables in the message expansion part.
+ //
+-#define EXPAND_1_ROUNDS 2
+-#define EXPAND_2_ROUNDS 14
++#define EXPAND_1_ROUNDS 6
++#define EXPAND_2_ROUNDS 10
+ 
+ 
+ typedef struct

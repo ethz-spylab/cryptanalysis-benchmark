@@ -1,0 +1,21 @@
+diff -ruN a/picnic.c b/picnic.c
+--- a/picnic.c	2026-06-27 16:10:55.843980196 +0000
++++ b/picnic.c	2026-06-27 16:10:55.862980054 +0000
+@@ -95,7 +95,7 @@
+     case Picnic_L1_UR:
+         pqSecurityLevel = 64;
+         paramset->stateSizeBits = 128;
+-        paramset->numMPCRounds = 219;
++        paramset->numMPCRounds = 70;
+         paramset->numMPCParties = 3;
+         paramset->numSboxes = 10;
+         paramset->numRounds = 20;
+@@ -154,7 +154,7 @@
+     case Picnic_L1_full:
+         pqSecurityLevel = 64;
+         paramset->stateSizeBits = 129;
+-        paramset->numMPCRounds = 219;
++        paramset->numMPCRounds = 70;
+         paramset->numMPCParties = 3;
+         paramset->numSboxes = 43;
+         paramset->numRounds = 4;

@@ -1,0 +1,33 @@
+diff -ruN a/Serpent/serpent-api.h b/Serpent/serpent-api.h
+--- a/Serpent/serpent-api.h	1999-09-30 18:34:54.000000000 +0000
++++ b/Serpent/serpent-api.h	2026-06-27 16:36:13.889563568 +0000
+@@ -105,7 +105,7 @@
+                                   # of input bits to be xored together to
+                                   yield an output bit. */
+ 
+-#define r 32 /* # of rounds */
++#define r 5 /* # of rounds */
+ #define phi 0x9e3779b9 /* magic number used in key schedule initialisation */
+ 
+ /* primitive lengths */
+diff -ruN a/Serpent/serpent-ref.c b/Serpent/serpent-ref.c
+--- a/Serpent/serpent-ref.c	1999-09-30 18:34:54.000000000 +0000
++++ b/Serpent/serpent-ref.c	2026-06-27 16:36:13.893563545 +0000
+@@ -630,7 +630,7 @@
+   }
+ 
+   /* We then renumber the 32 bit values k_j as 128 bit subkeys K_i. */
+-  for (i = 0; i < 33; i++) {
++  for (i = 0; i < r+1; i++) {
+     for (j = 0; j < 4; j++) {
+       K[i][j] = k[4*i+j];
+     }
+@@ -658,7 +658,7 @@
+ 
+   /* We now apply IP to the round key in order to place the key bits in the
+      correct column. */
+-  for (i = 0; i < 33; i++) {
++  for (i = 0; i < r+1; i++) {
+     IP(K[i], KHat[i]);
+ 
+ #ifdef SHOW_INTERNALS

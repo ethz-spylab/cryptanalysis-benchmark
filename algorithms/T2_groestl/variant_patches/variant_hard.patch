@@ -1,0 +1,12 @@
+diff -ruN a/Groestl_FinalRnd/Reference_Implementation/Groestl-ref.h b/Groestl_FinalRnd/Reference_Implementation/Groestl-ref.h
+--- a/Groestl_FinalRnd/Reference_Implementation/Groestl-ref.h	2011-01-15 21:28:04.000000000 +0000
++++ b/Groestl_FinalRnd/Reference_Implementation/Groestl-ref.h	2026-06-27 16:09:02.704849594 +0000
+@@ -13,7 +13,7 @@
+ #define COLS1024 16
+ #define SIZE512 (ROWS*COLS512)
+ #define SIZE1024 (ROWS*COLS1024)
+-#define ROUNDS512 10
++#define ROUNDS512 5
+ #define ROUNDS1024 14
+ 
+ typedef enum { P512 = 0, Q512 = 1, P1024 = 2, Q1024 = 3 } Variant;

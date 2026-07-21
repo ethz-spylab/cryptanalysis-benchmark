@@ -1,0 +1,25 @@
+NIST mailing list 2008-11-28
+------------------------------
+We have found a collision attack on Boole. The attack is based mainly on the fact that the Boolean functions
+f_1 and f_2 are not invertible. The collision is constructed during the input phase of Boole and works
+for for all output sizes of Boole.
+
+We have constructed a practical collision attack on Boole32 (256 bit hash). 
+The attack has an estimated time complexity of 2^{34}. Note that the same attack applies also for 
+Boole64 with an estimated time complexity of 2^{66}. 
+We are currently working on a paper which describes the attack in detail.
+
+
+----
+Example collision pair for Boole32
+2008-11-28, Tomislav Nad, IAIK, Graz University of Technology
+
+m1 = a0bc0dbea1e5e09ebcb018243403415f0b177f217b31b82df5db2a23a866bb7c004ebc0fe11adc4555b36c86f59ed7
+bad7eb4405c3265558556eaf94980d9839596fd2d9d55ecff15df3155c10dc14fa22672d7587fbd016af0c15b84719bfdd
+Boole32(m1) = 3f71dd7bd86ac4731bc1567791d6fc8479c411530e3c8230d97cbca36c19e01f
+
+m2 = a0bc0dbea1e5e09ebcb01824cbfcbea00b177f217b31b82d0a24d5dca866bb7c004ebc0fe11adc4555b36c86f59ed7
+bad7eb4405c3265558556eaf94980d9839596fd2d9d55ecff15df3155cef23eb0522672d7587fbd01650f3ea474719bfdd
+Boole32(m2) = 3f71dd7bd86ac4731bc1567791d6fc8479c411530e3c8230d97cbca36c19e01f
+
+m1 and m2 collide! 

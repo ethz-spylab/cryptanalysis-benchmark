@@ -1,0 +1,12 @@
+diff -ruN a/cref/loki97.h b/cref/loki97.h
+--- a/cref/loki97.h	1998-05-22 01:35:02.000000000 +0000
++++ b/cref/loki97.h	2026-06-27 16:09:46.234508913 +0000
+@@ -47,7 +47,7 @@
+ #define	    BLOCK_SIZE		16
+ 
+ /* Number of rounds for the algorithm. */
+-#define     ROUNDS		16
++#define     ROUNDS		12
+ 
+ /* Number of subkeys used by the algorithm. */
+ #define     NUM_SUBKEYS		3*ROUNDS

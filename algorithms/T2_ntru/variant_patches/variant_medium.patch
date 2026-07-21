@@ -1,0 +1,35 @@
+diff -ruN a/Reference_Implementation/crypto_kem/ntruhps2048509/api.h b/Reference_Implementation/crypto_kem/ntruhps2048509/api.h
+--- a/Reference_Implementation/crypto_kem/ntruhps2048509/api.h	2026-07-07 23:11:44.674610374 +0900
++++ b/Reference_Implementation/crypto_kem/ntruhps2048509/api.h	2026-07-07 23:11:44.747092196 +0900
+@@ -1,10 +1,15 @@
+ #ifndef API_H
+ #define API_H
+ 
+-#define CRYPTO_SECRETKEYBYTES 935
+-#define CRYPTO_PUBLICKEYBYTES 699
+-#define CRYPTO_CIPHERTEXTBYTES 699
+-#define CRYPTO_BYTES 32
++#include "params.h"
++
++/* Sizes MUST track params.h (NTRU_N), not be hardcoded for N=509 -- otherwise a
++ * reduced-N variant leaves trailing ciphertext/key bytes that decapsulation
++ * ignores, giving a trivial IND-CCA2 malleability distinguisher. */
++#define CRYPTO_SECRETKEYBYTES NTRU_SECRETKEYBYTES
++#define CRYPTO_PUBLICKEYBYTES NTRU_PUBLICKEYBYTES
++#define CRYPTO_CIPHERTEXTBYTES NTRU_CIPHERTEXTBYTES
++#define CRYPTO_BYTES NTRU_SHAREDKEYBYTES
+ 
+ #define CRYPTO_ALGNAME "ntruhps2048509"
+ 
+diff -ruN a/Reference_Implementation/crypto_kem/ntruhps2048509/params.h b/Reference_Implementation/crypto_kem/ntruhps2048509/params.h
+--- a/Reference_Implementation/crypto_kem/ntruhps2048509/params.h	2026-07-07 23:11:44.674701504 +0900
++++ b/Reference_Implementation/crypto_kem/ntruhps2048509/params.h	2026-07-07 23:11:44.687977230 +0900
+@@ -2,7 +2,7 @@
+ #define PARAMS_H
+ 
+ #define NTRU_HPS
+-#define NTRU_N 509
++#define NTRU_N 389
+ #define NTRU_LOGQ 11
+ 
+ #ifndef CRYPTO_NAMESPACE

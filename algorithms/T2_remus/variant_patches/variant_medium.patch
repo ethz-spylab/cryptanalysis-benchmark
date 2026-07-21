@@ -1,0 +1,12 @@
+diff -ruN a/remus/Implementations/crypto_aead/remusn1v1/ref/skinny_reference.c b/remus/Implementations/crypto_aead/remusn1v1/ref/skinny_reference.c
+--- a/remus/Implementations/crypto_aead/remusn1v1/ref/skinny_reference.c	2019-04-15 10:36:04.000000000 +0000
++++ b/remus/Implementations/crypto_aead/remusn1v1/ref/skinny_reference.c	2026-06-27 12:57:01.973124785 +0000
+@@ -19,7 +19,7 @@
+ //Skinny-128-128: 40 rounds
+ //Skinny-128-256: 48 rounds
+ //Skinny-128-384: 56 rounds
+-int versions[6][3]={{64,64,32},{64,128,36},{64,192,40},{128,128,40},{128,256,48},{128,384,56}};
++int versions[6][3]={{64,64,32},{64,128,36},{64,192,40},{128,128,13},{128,256,48},{128,384,56}};
+ 
+ // Packing of data is done as follows (state[i][j] stands for row i and column j):
+ // 0  1  2  3

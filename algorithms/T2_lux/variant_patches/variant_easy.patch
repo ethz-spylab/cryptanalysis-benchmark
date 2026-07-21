@@ -1,0 +1,12 @@
+diff -ruN a/Reference_Implementation/LUX.c b/Reference_Implementation/LUX.c
+--- a/Reference_Implementation/LUX.c	2026-06-27 12:56:05.478406242 +0000
++++ b/Reference_Implementation/LUX.c	2026-06-27 12:56:05.489406187 +0000
+@@ -280,7 +280,7 @@
+ 		The input for the blank rounds are blocks with 0s.
+ 	 */
+ 	memset(empty, 0, 128);
+-	for(i=0;i<16;i++){
++	for(i=0;i<2;i++){
+ 		compressLUX(state,empty);			
+ 	}
+ 

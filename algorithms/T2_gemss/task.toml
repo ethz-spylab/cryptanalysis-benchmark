@@ -1,0 +1,28 @@
+schema_version = "1.0"
+
+[metadata]
+algorithm_source = "https://csrc.nist.gov/CSRC/media/Projects/post-quantum-cryptography/documents/round-3/submissions/GeMSS-Round3.zip"
+
+# GeMSS keygen and signing are slow; give the verifier and agent generous
+# wall-clock budgets.
+[verifier]
+timeout_sec = 3600.0
+
+[agent]
+timeout_sec = 3600.0
+
+# Resource limits applied to the `main` container.
+# build_timeout_sec is bumped to 900s: the build compiles the vendored XKCP
+# (libkeccak.a) plus all GeMSS128 sources.
+[environment]
+build_timeout_sec = 900.0
+cpus = 8
+memory_mb = 20480
+storage_mb = 10240
+allow_internet = true
+
+# Privilege-drop marker. DO NOT REMOVE. (See template for full rationale: the
+# verifier inherits RUN_AS_ROOT=1 and stays root; the agent's exec calls drop
+# to UID 5000, protecting /logs/verifier/reward.txt etc. from attack.sh.)
+[verifier.env]
+RUN_AS_ROOT = "1"

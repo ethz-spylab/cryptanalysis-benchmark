@@ -1,0 +1,43 @@
+diff -ruN a/Reference_Implementation/sarmal_ref.c b/Reference_Implementation/sarmal_ref.c
+--- a/Reference_Implementation/sarmal_ref.c	2026-06-27 16:35:51.429691781 +0000
++++ b/Reference_Implementation/sarmal_ref.c	2026-06-27 16:35:51.453691644 +0000
+@@ -247,20 +247,8 @@
+ 	G(leftTemp1, m[SIGMA0[8]], m[SIGMA0[9]], m[SIGMA0[10]], m[SIGMA0[11]], leftTemp2);
+ 	G(leftTemp2, m[SIGMA0[12]], m[SIGMA0[13]], m[SIGMA0[14]], m[SIGMA0[15]], leftTemp1);
+ 	
+-	G(leftTemp1, m[SIGMA1[0]], m[SIGMA1[1]], m[SIGMA1[2]], m[SIGMA1[3]], leftTemp2);
+-	G(leftTemp2, m[SIGMA1[4]], m[SIGMA1[5]], m[SIGMA1[6]], m[SIGMA1[7]], leftTemp1);
+-	G(leftTemp1, m[SIGMA1[8]], m[SIGMA1[9]], m[SIGMA1[10]], m[SIGMA1[11]], leftTemp2);
+-	G(leftTemp2, m[SIGMA1[12]], m[SIGMA1[13]], m[SIGMA1[14]], m[SIGMA1[15]], leftTemp1);
+-	
+-	G(leftTemp1, m[SIGMA2[0]], m[SIGMA2[1]], m[SIGMA2[2]], m[SIGMA2[3]], leftTemp2);
+-	G(leftTemp2, m[SIGMA2[4]], m[SIGMA2[5]], m[SIGMA2[6]], m[SIGMA2[7]], leftTemp1);
+-	G(leftTemp1, m[SIGMA2[8]], m[SIGMA2[9]], m[SIGMA2[10]], m[SIGMA2[11]], leftTemp2);
+-	G(leftTemp2, m[SIGMA2[12]], m[SIGMA2[13]], m[SIGMA2[14]], m[SIGMA2[15]], leftTemp1);
+-	
+-	G(leftTemp1, m[SIGMA3[0]], m[SIGMA3[1]], m[SIGMA3[2]], m[SIGMA3[3]], leftTemp2);
+-	G(leftTemp2, m[SIGMA3[4]], m[SIGMA3[5]], m[SIGMA3[6]], m[SIGMA3[7]], leftTemp1);
+-	G(leftTemp1, m[SIGMA3[8]], m[SIGMA3[9]], m[SIGMA3[10]], m[SIGMA3[11]], leftTemp2);
+-	G(leftTemp2, m[SIGMA3[12]], m[SIGMA3[13]], m[SIGMA3[14]], m[SIGMA3[15]], leftTemp1);
++	
++	
+ 
+ 	/* left branch operations applied only for Sarmal-384 and Sarmal-512 */
+ 	if(state->hashbitlen == 384 || state->hashbitlen == 512)
+@@ -282,15 +270,7 @@
+ 	G(rightTemp1, m[SIGMA5[8]], m[SIGMA5[9]], m[SIGMA5[10]], m[SIGMA5[11]], rightTemp2);
+ 	G(rightTemp2, m[SIGMA5[12]], m[SIGMA5[13]], m[SIGMA5[14]], m[SIGMA5[15]], rightTemp1);
+ 	
+-	G(rightTemp1, m[SIGMA6[0]], m[SIGMA6[1]], m[SIGMA6[2]], m[SIGMA6[3]], rightTemp2);
+-	G(rightTemp2, m[SIGMA6[4]], m[SIGMA6[5]], m[SIGMA6[6]], m[SIGMA6[7]], rightTemp1);
+-	G(rightTemp1, m[SIGMA6[8]], m[SIGMA6[9]], m[SIGMA6[10]], m[SIGMA6[11]], rightTemp2);
+-	G(rightTemp2, m[SIGMA6[12]], m[SIGMA6[13]], m[SIGMA6[14]], m[SIGMA6[15]], rightTemp1);
+-	
+-	G(rightTemp1, m[SIGMA7[0]], m[SIGMA7[1]], m[SIGMA7[2]], m[SIGMA7[3]], rightTemp2);
+-	G(rightTemp2, m[SIGMA7[4]], m[SIGMA7[5]], m[SIGMA7[6]], m[SIGMA7[7]], rightTemp1);
+-	G(rightTemp1, m[SIGMA7[8]], m[SIGMA7[9]], m[SIGMA7[10]], m[SIGMA7[11]], rightTemp2);
+-	G(rightTemp2, m[SIGMA7[12]], m[SIGMA7[13]], m[SIGMA7[14]], m[SIGMA7[15]], rightTemp1);
++	
+ 	
+ 	/* right branch operations applied only for Sarmal-384 and Sarmal-512 */
+ 	if(state->hashbitlen == 384 || state->hashbitlen == 512)

@@ -1,0 +1,11 @@
+--- a/yarara-coral/Implementations/crypto_aead/yarara128v1/ref/encrypt.c	2019-04-15 11:59:26.000000000 +0000
++++ b/yarara-coral/Implementations/crypto_aead/yarara128v1/ref/encrypt.c	2026-06-27 12:57:38.765941185 +0000
+@@ -11,7 +11,7 @@
+ #define RATE 8
+ #define PADDING_BYTE 0x80
+ #define INITIAL_ROUNDS 10
+-#define ROUNDS 6
++#define ROUNDS 3
+ #define FINAL_ROUNDS ROUNDS
+ #define ROTR(x, n) (((x) >> (n)) | ((x) << (64 - (n))))
+ #define MIX(x, a, b) x ^= ROTR(x, a) ^ ROTR(x, b)

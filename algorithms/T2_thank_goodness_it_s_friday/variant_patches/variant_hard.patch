@@ -1,0 +1,11 @@
+--- a/Implementations/crypto_aead/tgifn1128v1/ref/TGIF_BC.c	2019-04-15 11:52:58.000000000 +0000
++++ b/Implementations/crypto_aead/tgifn1128v1/ref/TGIF_BC.c	2026-06-27 12:57:14.678061413 +0000
+@@ -419,7 +419,7 @@
+ return;}
+ 
+ void TGIF_BC(uint8_t P[16], const uint8_t K[16], uint8_t C[16], int encryption){
+-    int total_step=18;
++    int total_step=9;
+     int left_rotation = 55;
+ 
+     uint16_t RK[18*8] = {};

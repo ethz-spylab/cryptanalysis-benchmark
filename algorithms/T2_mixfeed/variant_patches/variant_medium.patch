@@ -1,0 +1,12 @@
+diff -ruN a/mixfeed/Implementations/crypto_aead/mixfeed/ref/aes.h b/mixfeed/Implementations/crypto_aead/mixfeed/ref/aes.h
+--- a/mixfeed/Implementations/crypto_aead/mixfeed/ref/aes.h	2019-10-07 16:05:00.000000000 +0000
++++ b/mixfeed/Implementations/crypto_aead/mixfeed/ref/aes.h	2026-06-27 16:10:03.938372641 +0000
+@@ -157,7 +157,7 @@
+     }
+     
+    aes_add_round_key(last_round_key,0,plain);
+-    for(int j = 1; j <11; j++)
++    for(int j = 1; j <6; j++)
+     {
+         aes_subbytes(plain);
+         aes_shiftrow(plain);

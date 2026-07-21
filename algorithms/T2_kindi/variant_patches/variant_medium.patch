@@ -1,0 +1,12 @@
+diff -ruN a/KINDI/Reference_Implementation/kem/KINDI-256-3-4-2/params.h b/KINDI/Reference_Implementation/kem/KINDI-256-3-4-2/params.h
+--- a/KINDI/Reference_Implementation/kem/KINDI-256-3-4-2/params.h	2018-01-16 14:10:14.000000000 +0000
++++ b/KINDI/Reference_Implementation/kem/KINDI-256-3-4-2/params.h	2026-06-27 13:10:29.541061390 +0000
+@@ -9,7 +9,7 @@
+ #define KINDI_KEM_SHAKEMODE 128
+ 
+ #define KINDI_KEM_LOGQ 14
+-#define KINDI_KEM_L 3
++#define KINDI_KEM_L 1
+ #define KINDI_KEM_T 2
+ #define KINDI_KEM_LOG2RSEC 2
+ #define KINDI_KEM_S1SIZE (256/8)

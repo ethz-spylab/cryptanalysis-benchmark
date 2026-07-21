@@ -1,0 +1,21 @@
+diff -ruN a/Reference_Implementation_KEM/kem.c b/Reference_Implementation_KEM/kem.c
+--- a/Reference_Implementation_KEM/kem.c	2026-06-27 16:11:30.213725770 +0000
++++ b/Reference_Implementation_KEM/kem.c	2026-06-27 16:11:30.221725711 +0000
+@@ -43,7 +43,7 @@
+ 
+   sha3_256(kr + 32, c, SABER_BYTES_CCA_DEC);
+ 
+-  sha3_256(k, kr, 64); // hash concatenation of pre-k and h(c) to k
++  sha3_256(k, kr, 64); memset(k + 10, 0, SABER_KEYBYTES - 10); // variant: shrink shared-key entropy
+ 
+   return (0);
+ }
+@@ -72,7 +72,7 @@
+ 
+   cmov(kr, sk + SABER_SECRETKEYBYTES - SABER_KEYBYTES, SABER_KEYBYTES, fail);
+ 
+-  sha3_256(k, kr, 64); // hash concatenation of pre-k and h(c) to k
++  sha3_256(k, kr, 64); memset(k + 10, 0, SABER_KEYBYTES - 10); // variant: shrink shared-key entropy
+ 
+   return (0);
+ }

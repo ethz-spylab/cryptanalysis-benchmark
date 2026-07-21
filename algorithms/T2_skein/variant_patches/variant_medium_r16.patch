@@ -1,0 +1,14 @@
+diff -ruN a/Reference_Implementation/skein.h b/Reference_Implementation/skein.h
+--- a/Reference_Implementation/skein.h	2026-06-27 23:34:57.709974464 +0000
++++ b/Reference_Implementation/skein.h	2026-06-27 23:34:57.713974443 +0000
+@@ -311,8 +311,8 @@
+     };
+ 
+ #ifndef SKEIN_ROUNDS
+-#define SKEIN_256_ROUNDS_TOTAL (72)          /* number of rounds for the different block sizes */
+-#define SKEIN_512_ROUNDS_TOTAL (72)
++#define SKEIN_256_ROUNDS_TOTAL (16)          /* number of rounds for the different block sizes */
++#define SKEIN_512_ROUNDS_TOTAL (16)
+ #define SKEIN1024_ROUNDS_TOTAL (80)
+ #else                                        /* allow command-line define in range 8*(5..14)   */
+ #define SKEIN_256_ROUNDS_TOTAL (8*((((SKEIN_ROUNDS/100) + 5) % 10) + 5))

@@ -1,0 +1,27 @@
+diff -ruN a/Reference_Implementation/crypto_kem/BabyBear/api.h b/Reference_Implementation/crypto_kem/BabyBear/api.h
+--- a/Reference_Implementation/crypto_kem/BabyBear/api.h
++++ b/Reference_Implementation/crypto_kem/BabyBear/api.h
+@@ -2,9 +2,9 @@
+ #define api_h
+ 
+ #define CRYPTO_SECRETKEYBYTES 40
+-#define CRYPTO_PUBLICKEYBYTES 804
++#define CRYPTO_PUBLICKEYBYTES 414
+ #define CRYPTO_BYTES 32
+-#define CRYPTO_CIPHERTEXTBYTES 917
++#define CRYPTO_CIPHERTEXTBYTES 527
+ #define CRYPTO_ALGNAME "BabyBear"
+ 
+ int crypto_kem_keypair(
+diff -ruN a/Reference_Implementation/crypto_kem/BabyBear/params.h b/Reference_Implementation/crypto_kem/BabyBear/params.h
+--- a/Reference_Implementation/crypto_kem/BabyBear/params.h
++++ b/Reference_Implementation/crypto_kem/BabyBear/params.h
+@@ -8,7 +8,7 @@
+ #define IV_BYTES             0
+ #define LGX                  10
+ #define DIGITS               312
+-#define DIM                  2
++#define DIM                  1
+ #define VAR_TIMES_128        72
+ #define LPR_BITS             4
+ #define FEC_BITS             18

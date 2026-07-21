@@ -1,0 +1,36 @@
+services:
+  main:
+    build:
+      dockerfile: client/Dockerfile
+    # Runs as root so the verifier's `docker exec` stays root (gated by the
+    # RUN_AS_ROOT wedge in /etc/bash.bashrc); the agent is demoted to UID 5000.
+    # chmod 1777 lets the demoted agent write to the bind-mounted /logs/agent;
+    # the loop re-applies it to subdirs the agent creates (harbor#178/#236).
+    command: ["sh", "-c", "chmod 1777 /logs/agent && (while true; do sleep 10; chmod -R a+rwX /logs/agent/sessions 2>/dev/null || true; done & sleep infinity)"]
+    depends_on:
+      - game_controller
+    networks:
+      - game-controller-network
+
+  game_controller:
+    build:
+      dockerfile: game-controller/Dockerfile
+    command: ["sh", "-c", "uv run fastapi dev /game-controller/game_controller_server.py --host 0.0.0.0"]
+    expose:
+      - "8000"
+    # The oracle log holds un-redacted ground truth, so it is written to a host
+    # directory mounted ONLY here — never into `main` — so the agent cannot
+    # reach it. Defaults to <project>/logs/oracle_logs (override with
+    # CRYPTOBENCH_ORACLE_LOG_DIR); the controller groups files under a per-run
+    # subdir matching jobs/<run-id>/, derived from HARBOR_VERIFIER_HOST_PATH.
+    volumes:
+      - ${CRYPTOBENCH_ORACLE_LOG_DIR:-${PWD}/logs/oracle_logs}:/oracle_logs
+    environment:
+      - ORACLE_LOG_DIR=/oracle_logs
+      - HARBOR_VERIFIER_HOST_PATH=${HOST_VERIFIER_LOGS_PATH:-}
+    networks:
+      - game-controller-network
+
+networks:
+  game-controller-network:
+    driver: bridge

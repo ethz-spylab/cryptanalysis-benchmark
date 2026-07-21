@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/software/ref/Romulus-N/skinny_reference.c b/Implementations/software/ref/Romulus-N/skinny_reference.c
+--- a/Implementations/software/ref/Romulus-N/skinny_reference.c	2026-05-05 14:57:14.000000000 +0000
++++ b/Implementations/software/ref/Romulus-N/skinny_reference.c	2026-06-27 16:11:16.730825087 +0000
+@@ -25,7 +25,7 @@
+ // Skinny-128-384+ parameters: 128-bit block, 384-bit tweakey and 40 rounds
+ int BLOCK_SIZE = 128;
+ int TWEAKEY_SIZE = 384;
+-int N_RNDS = 40;
++int N_RNDS = 14;
+ 
+ // Packing of data is done as follows (state[i][j] stands for row i and column j):
+ // 0  1  2  3

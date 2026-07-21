@@ -1,0 +1,12 @@
+diff -ruN a/CHI/Reference_Implementation/chi.h b/CHI/Reference_Implementation/chi.h
+--- a/CHI/Reference_Implementation/chi.h	2026-06-27 13:46:05.303245819 +0000
++++ b/CHI/Reference_Implementation/chi.h	2026-06-27 13:46:05.311245781 +0000
+@@ -49,7 +49,7 @@
+ /*
+  * Fundamental algorithm constants.
+  */
+-#define _256_STEPS      20      /* Steps in 256 bit hash.                     */
++#define _256_STEPS      8      /* Steps in 256 bit hash.                     */
+ #define _512_STEPS      40      /* Steps in 512 bit hash.                     */
+ #define _256_STATE_N    6       /* The number of words in the internal state
+                                  * for the 256 bit hash.

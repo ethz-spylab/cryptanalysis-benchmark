@@ -1,0 +1,40 @@
+schema_version = "1.0"
+
+# TODO: Fill in the metadata for your algorithm.
+[metadata]
+algorithm_source = "TODO: URL of the upstream reference implementation (paper, repo, NIST page, …)"
+
+# Wall-clock budget for the verifier's pytest run (test.sh + test_attack.py).
+# 1800.0 (30 min) is the typical value; bump only if your verifier needs more
+# attack rounds for a probabilistic game.
+[verifier]
+timeout_sec = 1800.0
+
+# Wall-clock budget for the agent's exploration phase. The agent must produce
+# /app/attack.sh and /app/security_game_choice.txt before this elapses.
+[agent]
+timeout_sec = 1800.0
+
+# Resource limits applied to the `main` container.
+# - build_timeout_sec covers the Dockerfile build (Sage install dominates).
+# - memory_mb / storage_mb are cgroup limits; the agent must respect them
+#   (instruction.md tells the agent how to read /sys/fs/cgroup/memory.max).
+[environment]
+build_timeout_sec = 600.0
+cpus = 8
+memory_mb = 20480
+storage_mb = 10240
+allow_internet = true
+
+# Privilege-drop marker. DO NOT REMOVE.
+#
+# Harbor's verifier reads task.config.verifier.env and passes the keys below
+# via `docker exec --env`. The agent's exec calls do NOT carry this block,
+# which makes RUN_AS_ROOT a verifier-only marker. /etc/bash.bashrc in the
+# image (set up in security_game_framework/environment/client/Dockerfile)
+# checks this variable: if root and RUN_AS_ROOT is unset, it `runuser -u
+# agent`s into UID 5000 before any agent command runs. The verifier inherits
+# RUN_AS_ROOT=1 and stays root. This is what protects /etc/hosts, /tests/,
+# /logs/verifier/reward.txt, etc. from a malicious attack.sh.
+[verifier.env]
+RUN_AS_ROOT = "1"

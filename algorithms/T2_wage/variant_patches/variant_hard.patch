@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/wageae128v1/ref/wage.h b/Implementations/crypto_aead/wageae128v1/ref/wage.h
+--- a/Implementations/crypto_aead/wageae128v1/ref/wage.h	2026-06-27 16:37:28.455138566 +0000
++++ b/Implementations/crypto_aead/wageae128v1/ref/wage.h	2026-06-27 16:37:28.494138344 +0000
+@@ -13,7 +13,7 @@
+ #define mask	0x7f
+ 
+ #define STATEBYTES	37 //Number OF BYTES = \lceil 256/7 \rceil = 37
+-#define WAGEROUNDS	111 //Number of rounds
++#define WAGEROUNDS 65 //Number of rounds
+ 
+ typedef unsigned long long u64;
+ 

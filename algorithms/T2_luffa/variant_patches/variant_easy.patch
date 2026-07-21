@@ -1,0 +1,12 @@
+diff -ruN "a/Luffa/Reference Implementation/luffa.c" "b/Luffa/Reference Implementation/luffa.c"
+--- "a/Luffa/Reference Implementation/luffa.c"	2008-10-27 12:36:38.000000000 +0000
++++ "b/Luffa/Reference Implementation/luffa.c"	2026-06-27 12:56:15.143358133 +0000
+@@ -242,7 +242,7 @@
+ 
+     tweak(state);
+ 
+-    for(i=0;i<8;i++) {
++    for(i=0;i<2;i++) {
+         step(state, c);
+     }
+   

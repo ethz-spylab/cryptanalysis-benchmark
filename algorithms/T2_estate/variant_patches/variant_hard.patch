@@ -1,0 +1,33 @@
+diff -ruN a/Implementations/crypto_aead/estatetweaes128v1/ref/estate.h b/Implementations/crypto_aead/estatetweaes128v1/ref/estate.h
+--- a/Implementations/crypto_aead/estatetweaes128v1/ref/estate.h	2026-06-27 13:47:16.416900257 +0000
++++ b/Implementations/crypto_aead/estatetweaes128v1/ref/estate.h	2026-06-27 13:47:16.431900184 +0000
+@@ -7,7 +7,7 @@
+ /* 
+  * No. of block cipher rounds to be used
+  */ 
+-#define CRYPTO_BC_NUM_ROUNDS (10)
++#define CRYPTO_BC_NUM_ROUNDS (6)
+ 
+ /* 
+  * Block cipher's block size
+diff -ruN a/Implementations/crypto_aead/estatetweaes128v1/ref/tweaes-128.c b/Implementations/crypto_aead/estatetweaes128v1/ref/tweaes-128.c
+--- a/Implementations/crypto_aead/estatetweaes128v1/ref/tweaes-128.c	2026-06-27 13:47:16.416900257 +0000
++++ b/Implementations/crypto_aead/estatetweaes128v1/ref/tweaes-128.c	2026-06-27 13:47:16.435900164 +0000
+@@ -410,7 +410,7 @@
+     // last round
+     sub_bytes(&ct[0]);
+     shift_rows(&ct[0]);
+-    add_round_key(&ct[0], round_keys[10]);
++    add_round_key(&ct[0], round_keys[6]);
+ }
+ 
+ /**********************************************************************
+@@ -432,7 +432,7 @@
+    
+ 	// first round
+     memcpy(&pt[0], &ct[0], 16);
+-    add_round_key(&pt[0], round_keys[10]);
++    add_round_key(&pt[0], round_keys[6]);
+     shift_rows_inv(&pt[0]);
+     sub_bytes_inv(&pt[0]);
+ 	

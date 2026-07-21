@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/photonbeetleaead128rate32v1/ref/photon.h b/Implementations/crypto_aead/photonbeetleaead128rate32v1/ref/photon.h
+--- a/Implementations/crypto_aead/photonbeetleaead128rate32v1/ref/photon.h	2026-06-27 16:10:34.485140445 +0000
++++ b/Implementations/crypto_aead/photonbeetleaead128rate32v1/ref/photon.h	2026-06-27 16:10:34.511140249 +0000
+@@ -3,7 +3,7 @@
+ 
+ #include <stdint.h>
+ 
+-#define ROUND			12
++#define ROUND 6
+ #define min(x,y) ((x)<(y)?(x):(y))
+ #define max(x,y) ((x)>(y)?(x):(y))
+ 

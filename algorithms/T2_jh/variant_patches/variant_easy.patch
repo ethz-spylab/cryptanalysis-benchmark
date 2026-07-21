@@ -1,0 +1,12 @@
+diff -ruN "a/Reference Implementation/jh_ref.h" "b/Reference Implementation/jh_ref.h"
+--- "a/Reference Implementation/jh_ref.h"	2026-06-27 16:09:43.422530677 +0000
++++ "b/Reference Implementation/jh_ref.h"	2026-06-27 16:09:43.432530599 +0000
+@@ -205,7 +205,7 @@
+       E8_initialgroup(state);
+ 
+       /* 42 rounds */
+-      for (i = 0; i < 42; i++) {
++      for (i = 0; i < 8; i++) {
+             R8(state);
+             update_roundconstant(state);
+       }

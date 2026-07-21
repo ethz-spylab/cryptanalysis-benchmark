@@ -1,0 +1,12 @@
+diff -ruN a/shamash-shamashash/Implementations/crypto_aead/shamashv1/ref/encrypt.c b/shamash-shamashash/Implementations/crypto_aead/shamashv1/ref/encrypt.c
+--- a/shamash-shamashash/Implementations/crypto_aead/shamashv1/ref/encrypt.c	2019-04-15 10:58:12.000000000 +0000
++++ b/shamash-shamashash/Implementations/crypto_aead/shamashv1/ref/encrypt.c	2026-06-27 16:35:51.807689622 +0000
+@@ -12,7 +12,7 @@
+ typedef unsigned int u32;
+ 
+ //number of rounds of initialization, times 11 (12x11)
+-#define NRINIT 132
++#define NRINIT 88
+ 
+ //number of rounds of processing ad and message, times 11
+ #define NRMID 99

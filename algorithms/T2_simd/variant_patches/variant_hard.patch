@@ -1,0 +1,11 @@
+diff -ruN a/Reference_Implementation/reference.c b/Reference_Implementation/reference.c
+--- a/Reference_Implementation/reference.c	2026-06-27 12:56:24.130313384 +0000
++++ b/Reference_Implementation/reference.c	2026-06-27 12:56:24.141313329 +0000
+@@ -344,7 +344,6 @@
+   Round(state, W, 0, 3,  23, 17, 27);
+   Round(state, W, 1, 28, 19, 22,  7);
+   Round(state, W, 2, 29,  9, 15,  5);
+-  Round(state, W, 3,  4, 13, 10, 25);
+ 
+   /*
+    * Modified Davies-Meyer Feed-Forward.

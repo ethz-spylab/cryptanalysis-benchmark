@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/lilliputaeii128v1/ref/parameters.h b/Implementations/crypto_aead/lilliputaeii128v1/ref/parameters.h
+--- a/Implementations/crypto_aead/lilliputaeii128v1/ref/parameters.h	2026-06-28 11:57:06.822580205 +0000
++++ b/Implementations/crypto_aead/lilliputaeii128v1/ref/parameters.h	2026-06-28 11:57:06.848580075 +0000
+@@ -21,7 +21,7 @@
+ #define PARAMETERS_H
+ 
+ #define KEY_LENGTH_BITS 128
+-#define ROUNDS          32
++#define ROUNDS          14
+ 
+ #define TWEAK_LENGTH_BITS 128
+ 

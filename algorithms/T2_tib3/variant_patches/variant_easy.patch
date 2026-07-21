@@ -1,0 +1,15 @@
+diff -ruN a/Reference_Implementation/encrypt256.c b/Reference_Implementation/encrypt256.c
+--- a/Reference_Implementation/encrypt256.c	2026-06-27 12:56:32.621271090 +0000
++++ b/Reference_Implementation/encrypt256.c	2026-06-27 12:56:52.105173988 +0000
+@@ -85,10 +85,7 @@
+  *	h0,h2,h4,h6: state, modified by the 4 round functions.
+  */
+ #define FOURROUNDSBOX(k0,k2,k4,k6,k8,k10,k12,k14,k16,k18,k20,k22,h0,h2,h4,h6)\
+-	ROUND(h0,h2,h4,h6,k0, k2, k4);\
+-	ROUND(h2,h4,h6,h0,k6, k8, k10);\
+-	ROUND(h4,h6,h0,h2,k12,k14,k16);\
+-	ROUND(h6,h0,h2,h4,k18,k20,k22);
++	ROUND(h0,h2,h4,h6,k0, k2, k4);
+ 
+ /* First four-round group, using the expanded D and the block k */
+ #define INPUTONE\

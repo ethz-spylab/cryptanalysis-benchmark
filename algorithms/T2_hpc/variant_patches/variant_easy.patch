@@ -1,0 +1,29 @@
+diff -ruN a/HPC/hpc.c b/HPC/hpc.c
+--- a/HPC/hpc.c
++++ b/HPC/hpc.c
+@@ -209,6 +209,7 @@
+         l_key[256 + i][0] = l_key[i][0]; l_key[256 + i][1] = l_key[i][1];
+     }
+ 
++    for(i = 0; i < 8; ++i) { spice[i][0] = l_key[270 + i][0]; spice[i][1] = l_key[270 + i][1]; }
+     return (u4byte*)l_key;
+ };
+ 
+@@ -224,7 +225,7 @@
+ 
+     add_eq(s0, l_key[128]); add_eq(s1, l_key[129]);
+ 
+-    for(i = 0; i < 8; ++i)
++    for(i = 0; i < 3; ++i)
+     {
+         tt = s0[0] & 255; k[0] = l_key[tt][0]; k[1] = l_key[tt][1];
+         add_eq(s1, k);  lsh_eq(k, 8); xor_eq(s0, k); xor_eq(s1, s0);
+@@ -275,7 +276,7 @@
+ 
+     sub_eq(s0, l_key[136]); sub_eq(s1, l_key[137]);
+ 
+-    for(i = 7; i >= 0; --i)
++    for(i = 3 - 1; i >= 0; --i)
+     {
+         t[0] = s0[0]; t[1] = s0[1]; rsh_eq(t, 33 + i); xor_eq(s0, t);
+         sub_eq(s0, spice[i ^ 1]);

@@ -1,0 +1,11 @@
+--- a/AES.H	2026-06-27 16:38:33.933766107 +0000
++++ b/AES.H	2026-06-27 16:38:33.970765897 +0000
+@@ -57,7 +57,7 @@
+ 
+ #define		BLOCK_SIZE			128	/* number of bits per block */
+ #define		MAX_ROUNDS			 16	/* max # rounds (for allocating subkey array) */
+-#define		ROUNDS_128			 16	/* default number of rounds for 128-bit keys*/
++#define		ROUNDS_128			 4	/* default number of rounds for 128-bit keys*/
+ #define		ROUNDS_192			 16	/* default number of rounds for 192-bit keys*/
+ #define		ROUNDS_256			 16	/* default number of rounds for 256-bit keys*/
+ #define		MAX_KEY_BITS		256	/* max number of bits of key */

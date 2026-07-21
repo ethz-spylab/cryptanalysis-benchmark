@@ -1,0 +1,14 @@
+diff -ruN a/Reference_Implementation/SHAvite3-256.h b/Reference_Implementation/SHAvite3-256.h
+--- a/Reference_Implementation/SHAvite3-256.h	2009-11-17 18:43:59.000000000 +0000
++++ b/Reference_Implementation/SHAvite3-256.h	2026-06-27 16:36:16.653547796 +0000
+@@ -3,8 +3,8 @@
+ #include "SHA3api_ref.h"
+ 
+ #define InternalRounds256 3
+-#define ExternalRounds256 12
+-#define ExpandedMessageSize256 (ExternalRounds256*4*(InternalRounds256))
++#define ExternalRounds256 6
++#define ExpandedMessageSize256 144
+ 
+ /* The message expansion takes a 16 words (stored in rk[0,.,15]) and */
+ /* the salt/counter values to produce the full expanded message      */

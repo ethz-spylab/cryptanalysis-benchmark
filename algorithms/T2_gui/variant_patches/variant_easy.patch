@@ -1,0 +1,221 @@
+diff -ruN a/Reference_Implementation/Gui-184/gfext.h b_easy/Reference_Implementation/Gui-184/gfext.h
+--- a/Reference_Implementation/Gui-184/gfext.h	2017-12-18 08:00:54.000000000 +0000
++++ b_easy/Reference_Implementation/Gui-184/gfext.h	2026-06-27 13:13:28.534155501 +0000
+@@ -67,6 +67,45 @@
+ #define BGFPOW16 gf256ext_56_pow_16
+ #define BGFPOW32 gf256ext_56_pow_32
+ 
++#elif 13 == _GF_EXT_
++
++#define ISO identity
++#define IVSISO identity
++#define BGFADD gf256ext_13_xor
++#define BGFMUL gf256ext_13_mul
++#define BGFMUL_256  BGFMUL
++#define BGFSQU gf256ext_13_squ
++#define BGFINV gf256ext_13_inv
++#define BGFPOW8 gf256ext_13_pow_8
++#define BGFPOW16 gf256ext_13_pow_16
++#define BGFPOW32 gf256ext_13_pow_32
++
++#elif 9 == _GF_EXT_
++
++#define ISO identity
++#define IVSISO identity
++#define BGFADD gf256ext_9_xor
++#define BGFMUL gf256ext_9_mul
++#define BGFMUL_256  BGFMUL
++#define BGFSQU gf256ext_9_squ
++#define BGFINV gf256ext_9_inv
++#define BGFPOW8 gf256ext_9_pow_8
++#define BGFPOW16 gf256ext_9_pow_16
++#define BGFPOW32 gf256ext_9_pow_32
++
++#elif 6 == _GF_EXT_
++
++#define ISO identity
++#define IVSISO identity
++#define BGFADD gf256ext_6_xor
++#define BGFMUL gf256ext_6_mul
++#define BGFMUL_256  BGFMUL
++#define BGFSQU gf256ext_6_squ
++#define BGFINV gf256ext_6_inv
++#define BGFPOW8 gf256ext_6_pow_8
++#define BGFPOW16 gf256ext_6_pow_16
++#define BGFPOW32 gf256ext_6_pow_32
++
+ #else
+ !!! error here
+ 
+@@ -536,6 +575,159 @@
+ 
+ 
+ 
++
++
++//////////////////////  GF(256^104)  (added for scaling-down variant; W=13)  /////////////////////////
++///    irreducible over GF(256):  x^13 + 0x09 x + 0x01
++
++static inline
++void gf256ext_13_xor( uint8_t * b , const uint8_t * a ) { gf256v_add( b , a , 13 ); }
++
++static inline
++void gf256ext_13_mul( uint8_t * c , const uint8_t * a , const uint8_t * b )
++{
++	static const unsigned W = 13;
++	uint8_t tmp_mul[26] = {0};
++	for(unsigned i=0;i<W;i++) gf256v_madd( tmp_mul+i , a , b[i] , W );
++	for(unsigned i=(W-1)*2;i>=W;i--) {
++		uint8_t hi = tmp_mul[i];
++		tmp_mul[i] = 0;
++		tmp_mul[i-W+1] ^= gf256_mul(0x09, hi);
++		tmp_mul[i-W+0] ^= hi;
++	}
++	for(unsigned i=0;i<W;i++) c[i] = tmp_mul[i];
++}
++
++static inline
++void gf256ext_13_squ( uint8_t * c , const uint8_t * a ) { gf256ext_13_mul( c , a , a ); }
++
++static inline
++void gf256ext_13_pow_2_i(uint8_t *b, unsigned i, const uint8_t * a ) {
++	gf256ext_13_squ(b,a);
++	for(unsigned j=1;j<i;j++) gf256ext_13_squ(b,b);
++}
++static inline
++void gf256ext_13_pow_8 ( uint8_t * b , const uint8_t * a ) { gf256ext_13_pow_2_i(b,3,a); }
++static inline
++void gf256ext_13_pow_16( uint8_t * b , const uint8_t * a ) { gf256ext_13_pow_2_i(b,4,a); }
++static inline
++void gf256ext_13_pow_32( uint8_t * b , const uint8_t * a ) { gf256ext_13_pow_2_i(b,5,a); }
++
++static inline
++void gf256ext_13_inv( uint8_t * b , const uint8_t * a )
++{
++	static const unsigned W = 13;
++	uint8_t r[13]; for(unsigned i=0;i<W;i++) r[i]=0; r[0]=1;
++	/* a^(2^(8W)-2): exponent bits 1..8W-1 set, bit 0 clear */
++	for(int i=(int)(8*W)-1;i>=0;i--) {
++		gf256ext_13_squ(r,r);
++		if(i>=1) gf256ext_13_mul(r,r,a);
++	}
++	for(unsigned i=0;i<W;i++) b[i]=r[i];
++}
++
++
++//////////////////////  GF(256^72)  (added for scaling-down variant; W=9)  /////////////////////////
++///    irreducible over GF(256):  x^9 + 0x01 x + 0x01
++
++static inline
++void gf256ext_9_xor( uint8_t * b , const uint8_t * a ) { gf256v_add( b , a , 9 ); }
++
++static inline
++void gf256ext_9_mul( uint8_t * c , const uint8_t * a , const uint8_t * b )
++{
++	static const unsigned W = 9;
++	uint8_t tmp_mul[18] = {0};
++	for(unsigned i=0;i<W;i++) gf256v_madd( tmp_mul+i , a , b[i] , W );
++	for(unsigned i=(W-1)*2;i>=W;i--) {
++		uint8_t hi = tmp_mul[i];
++		tmp_mul[i] = 0;
++		tmp_mul[i-W+1] ^= hi;
++		tmp_mul[i-W+0] ^= hi;
++	}
++	for(unsigned i=0;i<W;i++) c[i] = tmp_mul[i];
++}
++
++static inline
++void gf256ext_9_squ( uint8_t * c , const uint8_t * a ) { gf256ext_9_mul( c , a , a ); }
++
++static inline
++void gf256ext_9_pow_2_i(uint8_t *b, unsigned i, const uint8_t * a ) {
++	gf256ext_9_squ(b,a);
++	for(unsigned j=1;j<i;j++) gf256ext_9_squ(b,b);
++}
++static inline
++void gf256ext_9_pow_8 ( uint8_t * b , const uint8_t * a ) { gf256ext_9_pow_2_i(b,3,a); }
++static inline
++void gf256ext_9_pow_16( uint8_t * b , const uint8_t * a ) { gf256ext_9_pow_2_i(b,4,a); }
++static inline
++void gf256ext_9_pow_32( uint8_t * b , const uint8_t * a ) { gf256ext_9_pow_2_i(b,5,a); }
++
++static inline
++void gf256ext_9_inv( uint8_t * b , const uint8_t * a )
++{
++	static const unsigned W = 9;
++	uint8_t r[9]; for(unsigned i=0;i<W;i++) r[i]=0; r[0]=1;
++	/* a^(2^(8W)-2): exponent bits 1..8W-1 set, bit 0 clear */
++	for(int i=(int)(8*W)-1;i>=0;i--) {
++		gf256ext_9_squ(r,r);
++		if(i>=1) gf256ext_9_mul(r,r,a);
++	}
++	for(unsigned i=0;i<W;i++) b[i]=r[i];
++}
++
++
++//////////////////////  GF(256^48)  (added for scaling-down variant; W=6)  /////////////////////////
++///    irreducible over GF(256):  x^6 + 0x01 x^2 + 0x01 x + 0x84
++
++static inline
++void gf256ext_6_xor( uint8_t * b , const uint8_t * a ) { gf256v_add( b , a , 6 ); }
++
++static inline
++void gf256ext_6_mul( uint8_t * c , const uint8_t * a , const uint8_t * b )
++{
++	static const unsigned W = 6;
++	uint8_t tmp_mul[12] = {0};
++	for(unsigned i=0;i<W;i++) gf256v_madd( tmp_mul+i , a , b[i] , W );
++	for(unsigned i=(W-1)*2;i>=W;i--) {
++		uint8_t hi = tmp_mul[i];
++		tmp_mul[i] = 0;
++		tmp_mul[i-W+2] ^= hi;
++		tmp_mul[i-W+1] ^= hi;
++		tmp_mul[i-W+0] ^= gf256_mul(0x84, hi);
++	}
++	for(unsigned i=0;i<W;i++) c[i] = tmp_mul[i];
++}
++
++static inline
++void gf256ext_6_squ( uint8_t * c , const uint8_t * a ) { gf256ext_6_mul( c , a , a ); }
++
++static inline
++void gf256ext_6_pow_2_i(uint8_t *b, unsigned i, const uint8_t * a ) {
++	gf256ext_6_squ(b,a);
++	for(unsigned j=1;j<i;j++) gf256ext_6_squ(b,b);
++}
++static inline
++void gf256ext_6_pow_8 ( uint8_t * b , const uint8_t * a ) { gf256ext_6_pow_2_i(b,3,a); }
++static inline
++void gf256ext_6_pow_16( uint8_t * b , const uint8_t * a ) { gf256ext_6_pow_2_i(b,4,a); }
++static inline
++void gf256ext_6_pow_32( uint8_t * b , const uint8_t * a ) { gf256ext_6_pow_2_i(b,5,a); }
++
++static inline
++void gf256ext_6_inv( uint8_t * b , const uint8_t * a )
++{
++	static const unsigned W = 6;
++	uint8_t r[6]; for(unsigned i=0;i<W;i++) r[i]=0; r[0]=1;
++	/* a^(2^(8W)-2): exponent bits 1..8W-1 set, bit 0 clear */
++	for(int i=(int)(8*W)-1;i>=0;i--) {
++		gf256ext_6_squ(r,r);
++		if(i>=1) gf256ext_6_mul(r,r,a);
++	}
++	for(unsigned i=0;i<W;i++) b[i]=r[i];
++}
++
++
+ #ifdef  __cplusplus
+ }
+ #endif
+diff -ruN a/Reference_Implementation/Gui-184/gui_config.h b_easy/Reference_Implementation/Gui-184/gui_config.h
+--- a/Reference_Implementation/Gui-184/gui_config.h	2017-12-18 08:00:54.000000000 +0000
++++ b_easy/Reference_Implementation/Gui-184/gui_config.h	2026-06-27 13:13:28.545155445 +0000
+@@ -22,7 +22,7 @@
+ #elif defined _GUI_2_184_D33_V16_A16_K2
+ 
+ #define _GF 2
+-#define _EXT 184
++#define _EXT 48
+ #define _A 16
+ #define _V 16
+ #define _K 2

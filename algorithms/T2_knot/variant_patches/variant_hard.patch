@@ -1,0 +1,21 @@
+diff -ruN a/Implementations/crypto_aead/knot128v2/ref/encrypt.c b/Implementations/crypto_aead/knot128v2/ref/encrypt.c
+--- a/Implementations/crypto_aead/knot128v2/ref/encrypt.c	2026-06-27 16:09:30.650629940 +0000
++++ b/Implementations/crypto_aead/knot128v2/ref/encrypt.c	2026-06-27 16:09:30.658629878 +0000
+@@ -106,7 +106,7 @@
+ 	const unsigned char *nsec, const unsigned char *npub,
+ 	const unsigned char *k) {
+ 
+-	int nr0 = 76;
++	int nr0 = 14;
+ 	int nr = 28;
+ 	int nrf = 32;
+ 
+@@ -194,7 +194,7 @@
+ 	if (clen < CRYPTO_KEYBYTES)
+ 		return -1;
+ 
+-	int nr0 = 76;
++	int nr0 = 14;
+ 	int nr = 28;
+ 	int nrf = 32;
+ 

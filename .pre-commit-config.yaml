@@ -1,0 +1,32 @@
+repos:
+  # ---- Ruff: formatting + import sorting + lint ----
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.2
+    hooks:
+      - id: ruff
+        # fixes import order and autofixable lints
+        args: [--fix]
+      - id: ruff-format
+
+  # ---- Housekeeping: whitespace, EOF newline, line endings, conflicts ----
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Removes stray spaces/tabs at EOL (keeps Markdown "two-space linebreaks")
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      # Ensures exactly one newline at EOF
+      - id: end-of-file-fixer
+      # Normalizes mixed CRLF/LF; pick what your repo uses (LF below)
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      # Nice safety net
+      - id: check-merge-conflict
+
+  # ---- Secrets scanning (Option A: Gitleaks — recommended) ----
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.28.0
+    hooks:
+      - id: gitleaks
+        # Optional: point to a config file you add at repo root
+        # args: [--config=.gitleaks.toml]

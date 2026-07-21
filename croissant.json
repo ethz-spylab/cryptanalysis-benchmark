@@ -1,0 +1,292 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "prov": "http://www.w3.org/ns/prov#",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "CryptanalysisBench",
+  "description": "CryptanalysisBench is a benchmark of formal cryptanalytic security games for evaluating the ability of LLM-based agents to find and exploit weaknesses in real-world cryptographic algorithms. Each task wraps a reference C implementation of a cryptographic algorithm in a uniform CLI shim and exposes one or more security games (e.g., key recovery, indistinguishability, AEAD tag forgery, KEM private-key recovery, hash collision/preimage, signature forgery) via a FastAPI game controller. An agent must produce a self-contained attack script that wins the chosen game; a verifier grades the attack against an automated test harness. The benchmark covers 113 algorithms spanning efficiently-broken legacy schemes (T1), schemes with only slow or no known attacks (T2), and frontier modern primitives exposed at full strength (Cbase) or in round-reduced challenge variants (C), across symmetric ciphers, AEAD, hash functions, KEMs, public-key encryption, and digital signatures.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "url": "https://anonymous.4open.science/r/cryptanalysis_benchmark-53FF/",
+  "version": "1.0.0",
+  "datePublished": "2026-05-06",
+  "license": "https://spdx.org/licenses/MIT.html",
+  "citeAs": "@inproceedings{cryptobench2026, title={CryptanalysisBench: Evaluating LLM Agents on Cryptanalytic Security Games}, author={Anonymous}, booktitle={NeurIPS 2026 Evaluations and Datasets Track}, year={2026} }",
+  "creator": [
+    {
+      "@type": "sc:Organization",
+      "name": "Anonymous (double-blind submission to NeurIPS 2026 E&D Track)"
+    }
+  ],
+  "keywords": [
+    "cryptanalysis",
+    "benchmark",
+    "LLM agent",
+    "cryptography",
+    "AI evaluation"
+  ],
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "release-tarball",
+      "name": "release-tarball",
+      "description": "Tagged source release of CryptanalysisBench, containing algorithms/, security_game_framework/, generate_harbor_tasks.sh, and tasks_manifest.csv.",
+      "contentUrl": "https://osf.io/download/69fa88b20848b983dbb651f9",
+      "encodingFormat": "application/zip",
+      "sha256": "55ca31475e8fcac678c9079541de16f479f6761f3c8195f30cf7041ab212c82e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "tasks-manifest",
+      "name": "tasks_manifest.csv",
+      "description": "One row per cryptanalysis task in the benchmark, with the security class, scheme type, upstream algorithm source URL, allowed security games, presence of a reference solution, and per-task agent/verifier timeouts.",
+      "containedIn": {
+        "@id": "release-tarball"
+      },
+      "contentUrl": "tasks_manifest.csv",
+      "encodingFormat": "text/csv",
+      "sha256": "6d964c034bffe45d107eab6aa161250ddac44b045a551bea3759c82e243a582c"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "algorithm-tasks",
+      "name": "algorithm-tasks",
+      "description": "Per-algorithm task folders. Each folder contains task.toml (Harbor task metadata), environment/algorithm_src/ (upstream C reference implementation plus build_cli.sh, cli.c, cli_stdin.h), environment/possible_security_games.yml (allowlist of compatible security games), and optionally solution/solve.sh (reference attack used by the oracle agent).",
+      "containedIn": {
+        "@id": "release-tarball"
+      },
+      "encodingFormat": "text/x-c",
+      "includes": "algorithms/*/**"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "security-game-framework",
+      "name": "security-game-framework",
+      "description": "Shared framework merged into every task: FastAPI game controller, the security-game implementations under environment/game-controller/security_games/, the agent-facing CLI client, the agent instruction template, and the verifier test harness.",
+      "containedIn": {
+        "@id": "release-tarball"
+      },
+      "encodingFormat": "text/x-python",
+      "includes": "security_game_framework/**"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "build-script",
+      "name": "generate_harbor_tasks.sh",
+      "description": "Build script that combines algorithms/<algo>/ with security_game_framework/ into a runnable Harbor task folder tasks_<DATE>/<algo>/.",
+      "containedIn": {
+        "@id": "release-tarball"
+      },
+      "contentUrl": "generate_harbor_tasks.sh",
+      "encodingFormat": "application/x-sh"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tasks",
+      "name": "tasks",
+      "description": "One record per cryptanalysis task in the benchmark, sourced from tasks_manifest.csv.",
+      "key": {
+        "@id": "tasks/task_name"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/task_name",
+          "name": "task_name",
+          "description": "Folder name under algorithms/, e.g. T1_rvb or Cbase_aes.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "task_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/security_class",
+          "name": "security_class",
+          "description": "Difficulty/brokenness tier inferred from the folder prefix: T1 (efficiently breakable), T2 (only slow attacks or no attacks known), Cbase (frontier modern primitives at full strength), C (frontier round-reduced challenge variants).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "security_class"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/scheme_type",
+          "name": "scheme_type",
+          "description": "Cryptographic scheme family inferred from the allowed security games: symmetric, aead, hash, kem, asymmetric_pke, signature.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "scheme_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/algorithm_source_url",
+          "name": "algorithm_source_url",
+          "description": "URL of the upstream reference implementation, copied verbatim from algorithms/<task>/task.toml [metadata].algorithm_source.",
+          "dataType": "sc:URL",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "algorithm_source_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/allowed_security_games",
+          "name": "allowed_security_games",
+          "description": "Semicolon-separated list of security-game class names this task is compatible with (subset of the framework's possible_security_games.yml).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "allowed_security_games"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/has_solution",
+          "name": "has_solution",
+          "description": "Whether algorithms/<task>/solution/solve.sh exists. The oracle agent uses these reference solutions to sanity-check that the task is solvable.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "has_solution"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/agent_timeout_sec",
+          "name": "agent_timeout_sec",
+          "description": "Wall-clock budget (seconds) the agent has to produce an attack script.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "agent_timeout_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/verifier_timeout_sec",
+          "name": "verifier_timeout_sec",
+          "description": "Wall-clock budget (seconds) the verifier has to grade the attack across all attack rounds.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "tasks-manifest"
+            },
+            "extract": {
+              "column": "verifier_timeout_sec"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "rai:dataLimitations": [
+    "Coverage is curated, not exhaustive: the benchmark contains 113 algorithms, biased towards NIST submission packages (PQC, Lightweight Cryptography, SHA-3) plus a handful of classical and modern ciphers. It is not representative of all deployed cryptography.",
+    "Each task targets a specific formal security game; a 'broken' result on one game does not transfer to other adversarial models or to the algorithm's overall security.",
+    "Tasks in the Cbase / C (frontier) tiers are expected to remain unbroken by current LLM agents and produce saturated 0-reward signals; they serve as upper-bound stressors rather than discriminative items.",
+    "The verifier grades attack-script success against an automated test harness with finite attack rounds, not a formal cryptographic proof of insecurity."
+  ],
+  "rai:dataBiases": [
+    "Algorithm selection is biased towards NIST-submission candidates (PQC, lightweight cryptography, SHA-3). Algorithms with publicly available reference implementations and accompanying cryptanalysis literature are over-represented relative to proprietary or unpublished schemes.",
+    "Within the T1 (efficiently breakable) tier, algorithms are over-represented relative to their real-world deployment, by design: the goal is to test agent capability against weaknesses that are recoverable in principle, so the tier intentionally collects schemes that have well-documented attacks.",
+    "Difficulty tiers (T1/T2/Cbase/C) are assigned by the authors based on published cryptanalysis at the time of curation; this judgement may drift as new attacks are discovered.",
+    "The benchmark surfaces only English-language documentation and attack literature; cryptanalysis published only in other languages is under-represented."
+  ],
+  "rai:personalSensitiveInformation": "The benchmark contains no personal data, no human subjects, no demographic information, no medical data, and no proxy information about individuals. All artifacts are cryptographic algorithm source code (typically C reference implementations) plus task configuration files (TOML, YAML), a Python framework for the game controller, and shell build scripts.",
+  "rai:dataUseCases": [
+    "Evaluation of LLM-based agents (claude-code, terminus-2, oracle, and other harnesses) on a precisely-specified suite of cryptanalytic security games.",
+    "Comparative scoring of agent capabilities across cryptographic scheme families (symmetric ciphers, AEAD, hash, KEM, public-key encryption, signatures) and across difficulty tiers.",
+    "Authoring and validating new security games or new task algorithms by extending the framework under security_game_framework/.",
+    "Stress-testing the security of cryptographic algorithms against LLM-based agents.",
+    "Out-of-scope use cases: training data for general-purpose code LLMs and production cryptographic guidance."
+  ],
+  "rai:dataSocialImpact": "Positive impact: improves the rigour with which AI agents are measured on a scientifically grounded class of security tasks, and lowers the bar to running such evaluations by packaging 113 reference implementations in a uniform CLI contract. Risk: the benchmark publishes attack scripts (under solution/solve.sh) for already-broken cryptographic algorithms. Mitigations: (1) T1 inclusion is restricted to algorithms publicly known to be insecure (NIST-rejected candidates and historical schemes with published cryptanalysis), so no novel attacks on currently-deployed cryptography are released; (2) the security games are formal academic models, not exfiltration tooling.",
+  "rai:hasSyntheticData": true,
+  "prov:wasDerivedFrom": [
+    "Reference implementations of each cryptographic algorithm. Per-task upstream URLs are recorded in algorithms/<task>/task.toml under [metadata].algorithm_source and surfaced in tasks_manifest.csv (column algorithm_source_url). Sources include NIST PQC submissions (csrc.nist.gov), NIST SHA-3 candidate archive (csrc.nist.rip), NIST Lightweight Cryptography submissions, the BIKE suite (bikesuite.org), Classic McEliece (classic.mceliece.org), NTRU Prime (ntruprime.cr.yp.to), and a small number of original-author repositories on GitHub. Each source is used unmodified except for a thin uniform CLI shim (cli.c + cli_stdin.h) added by the authors."
+  ],
+  "prov:wasGeneratedBy": [
+    "Per-task CLI shim (cli.c + cli_stdin.h) authored by the benchmark authors to provide a uniform 'key: value' line-oriented interface on top of each upstream reference implementation's native API (e.g., crypto_aead_encrypt for AEAD, crypto_kem_keypair for KEMs).",
+    "Security-game framework (security_game_framework/) authored from scratch: FastAPI game controller, per-game stage logic under environment/game-controller/security_games/, the agent-facing client CLI, the agent instruction template, and the pytest-based verifier in tests/.",
+    "Build pipeline: generate_harbor_tasks.sh copy-merges algorithms/<algo>/ with security_game_framework/ (cp -rn semantics, so algorithm-specific files override framework defaults), runs prepare_prompt.py to substitute timeout placeholders, and emits a self-contained tasks_<DATE>/ folder runnable by Harbor.",
+    "Synthetic plaintexts, keys, nonces, and other random values are produced at runtime by each algorithm's CLI from a CSPRNG (/dev/urandom). No human annotation, no crowdsourcing, no scraping of user-generated content."
+  ]
+}

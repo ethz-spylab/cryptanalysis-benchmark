@@ -1,0 +1,12 @@
+diff -ruN a/Reference_Implementation/sign/GeMSS128/include/parameters_HFE.h b/Reference_Implementation/sign/GeMSS128/include/parameters_HFE.h
+--- a/Reference_Implementation/sign/GeMSS128/include/parameters_HFE.h	2026-06-27 13:07:14.454047393 +0000
++++ b/Reference_Implementation/sign/GeMSS128/include/parameters_HFE.h	2026-06-27 13:07:14.474047292 +0000
+@@ -52,7 +52,7 @@
+ /* GeMSS128 */
+ #if (K==128)
+ 
+-    #define HFEn 174U
++    #define HFEn 40U
+     #define HFEv 12U
+     #define HFEDELTA 12U
+ 

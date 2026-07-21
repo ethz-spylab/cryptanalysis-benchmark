@@ -1,0 +1,12 @@
+diff -ruN a/RC6/aes.h b/RC6/aes.h
+--- a/RC6/aes.h	2026-06-27 16:11:10.803868945 +0000
++++ b/RC6/aes.h	2026-06-27 16:11:10.815868856 +0000
+@@ -55,7 +55,7 @@
+ #define     FALSE           0
+ 
+ /* This #define is specific to RC6: the number of rounds of encipherment */
+-#define     ROUNDS          20
++#define     ROUNDS          6
+ 
+ /*  Error Codes - CHANGE POSSIBLE: inclusion of additional error codes  */
+ #define     BAD_KEY_DIR        -1  /*  Key direction is invalid, e.g.,

@@ -1,0 +1,14 @@
+diff -ruN "a/Nist_submission_Lesamnta_October2008/Reference Implementation/lesamnta_refer.c" "b/Nist_submission_Lesamnta_October2008/Reference Implementation/lesamnta_refer.c"
+--- "a/Nist_submission_Lesamnta_October2008/Reference Implementation/lesamnta_refer.c"	2026-06-27 12:55:49.370486382 +0000
++++ "b/Nist_submission_Lesamnta_October2008/Reference Implementation/lesamnta_refer.c"	2026-06-27 12:55:49.384486313 +0000
+@@ -8,8 +8,8 @@
+ #include <string.h>  /* for memset(), memcopy() */
+ #include "lesamnta_refer.h"
+ 
+-#define Nr_comp256 32    /* Number of rounds for Lesamnta-256 Compression function */
+-#define Nr_out256  32    /* Number of rounds for Lesamnta-256 Output function */
++#define Nr_comp256 6    /* Number of rounds for Lesamnta-256 Compression function */
++#define Nr_out256  6    /* Number of rounds for Lesamnta-256 Output function */
+ #define Nr_comp512 32    /* Number of rounds for Lesamnta-512 Compression function */
+ #define Nr_out512  32    /* Number of rounds for Lesamnta-512 Output function */
+ 

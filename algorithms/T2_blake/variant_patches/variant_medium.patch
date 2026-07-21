@@ -1,0 +1,9 @@
+--- a/Blake_FinalRnd/Reference_Implementation/blake_ref.h	2010-12-13 09:29:34.000000000 +0000
++++ b/Blake_FinalRnd/Reference_Implementation/blake_ref.h	2026-06-27 13:47:41.431778614 +0000
+@@ -1,5 +1,5 @@
+ 
+-#define NB_ROUNDS32 14
++#define NB_ROUNDS32 5
+ #define NB_ROUNDS64 16
+ 
+ /*

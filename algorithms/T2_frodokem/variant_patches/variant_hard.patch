@@ -1,0 +1,29 @@
+diff -ruN a/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/api.h b/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/api.h
+--- a/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/api.h	2020-10-20 14:09:00.000000000 +0000
++++ b/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/api.h	2026-06-27 13:47:26.342851993 +0000
+@@ -8,10 +8,10 @@
+ #define _API_Frodo640_H_
+ 
+ 
+-#define CRYPTO_SECRETKEYBYTES  19888     // sizeof(s) + CRYPTO_PUBLICKEYBYTES + 2*PARAMS_N*PARAMS_NBAR + BYTES_PKHASH
+-#define CRYPTO_PUBLICKEYBYTES   9616     // sizeof(seed_A) + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8
++#define CRYPTO_SECRETKEYBYTES  8728
++#define CRYPTO_PUBLICKEYBYTES   4216
+ #define CRYPTO_BYTES              16
+-#define CRYPTO_CIPHERTEXTBYTES  9720     // (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + (PARAMS_LOGQ*PARAMS_NBAR*PARAMS_NBAR)/8
++#define CRYPTO_CIPHERTEXTBYTES  4320
+ 
+ // Algorithm name
+ #define CRYPTO_ALGNAME "FrodoKEM-640"       
+diff -ruN a/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/frodo640.c b/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/frodo640.c
+--- a/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/frodo640.c	2020-10-20 14:09:00.000000000 +0000
++++ b/FrodoKEM/FrodoKEM-20200930/Reference_Implementation/reference/FrodoKEM-640/frodo640.c	2026-06-27 13:47:26.329852057 +0000
+@@ -10,7 +10,7 @@
+ 
+ 
+ // Parameters for "FrodoKEM-640"
+-#define PARAMS_N 640
++#define PARAMS_N 280
+ #define PARAMS_NBAR 8
+ #define PARAMS_LOGQ 15
+ #define PARAMS_Q (1 << PARAMS_LOGQ)

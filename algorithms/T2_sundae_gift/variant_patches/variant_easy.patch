@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/sundaegift96v1/ref/gift128.c b/Implementations/crypto_aead/sundaegift96v1/ref/gift128.c
+--- a/Implementations/crypto_aead/sundaegift96v1/ref/gift128.c	2026-06-27 16:36:52.551343085 +0000
++++ b/Implementations/crypto_aead/sundaegift96v1/ref/gift128.c	2026-06-27 16:36:52.563343017 +0000
+@@ -46,7 +46,7 @@
+     W[6] = ((uint16_t)K[12]<<8) | (uint16_t)K[13];
+     W[7] = ((uint16_t)K[14]<<8) | (uint16_t)K[15];
+ 
+-    for(round=0; round<40; round++){
++    for(round=0; round<9; round++){
+         /*===SubCells===*/
+         S[1] ^= S[0] & S[2];
+         S[0] ^= S[1] & S[3];

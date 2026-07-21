@@ -1,0 +1,91 @@
+diff -ruN a/RQC/Reference_Implementation/rqc128/src/api.h b/RQC/Reference_Implementation/rqc128/src/api.h
+--- a/RQC/Reference_Implementation/rqc128/src/api.h	2019-03-30 22:27:28.000000000 +0000
++++ b/RQC/Reference_Implementation/rqc128/src/api.h	2026-06-27 13:15:07.784652819 +0000
+@@ -9,10 +9,10 @@
+ 
+ #define CRYPTO_ALGNAME "RQC-128"
+ 
+-#define CRYPTO_SECRETKEYBYTES 893
+-#define CRYPTO_PUBLICKEYBYTES 853
++#define CRYPTO_SECRETKEYBYTES 187
++#define CRYPTO_PUBLICKEYBYTES 147
+ #define CRYPTO_BYTES 64
+-#define CRYPTO_CIPHERTEXTBYTES 1690
++#define CRYPTO_CIPHERTEXTBYTES 278
+ 
+ // As a technicality, the public key is appended to the secret key in order to respect the NIST API. 
+ // Without this constraint, CRYPTO_SECRETKEYBYTES would be defined as 40
+diff -ruN a/RQC/Reference_Implementation/rqc128/src/ffi/ffi.h b/RQC/Reference_Implementation/rqc128/src/ffi/ffi.h
+--- a/RQC/Reference_Implementation/rqc128/src/ffi/ffi.h	2019-03-30 22:27:28.000000000 +0000
++++ b/RQC/Reference_Implementation/rqc128/src/ffi/ffi.h	2026-06-27 13:15:07.784652819 +0000
+@@ -20,12 +20,12 @@
+ typedef GF2EX ffi_vec;
+ 
+ #define FIELD_Q 2 
+-#define FIELD_M 97
+-#define FIELD_ELT_BYTES 13
++#define FIELD_M 37
++#define FIELD_ELT_BYTES 5
+ 
+ extern ffi_vec ideal_modulo;
+-#define MODULO_NUMBER 5
+-#define MODULO_VALUES {0, 1, 2, 5, 67}
++#define MODULO_NUMBER 3
++#define MODULO_VALUES {0, 5, 23}
+ 
+ #endif
+ 
+diff -ruN a/RQC/Reference_Implementation/rqc128/src/kem.cpp b/RQC/Reference_Implementation/rqc128/src/kem.cpp
+--- a/RQC/Reference_Implementation/rqc128/src/kem.cpp	2019-03-30 22:27:28.000000000 +0000
++++ b/RQC/Reference_Implementation/rqc128/src/kem.cpp	2026-06-27 13:15:07.785652814 +0000
+@@ -59,7 +59,7 @@
+   ffi_vec_set_random2(m, PARAM_K);
+ 
+   // Generating G function
+-  unsigned char seed_G[VEC_K_BYTES];
++  unsigned char seed_G[VEC_K_BYTES < 40 ? 40 : VEC_K_BYTES] = {0};
+   ffi_vec_to_string_compact(seed_G, m, PARAM_K);
+   AES_XOF_struct* G_seedexpander = (AES_XOF_struct*) malloc(sizeof(AES_XOF_struct));
+   seedexpander_init(G_seedexpander, seed_G, seed_G + 32, SEEDEXPANDER_MAX_LENGTH);
+@@ -149,7 +149,7 @@
+   rqc_pke_decrypt(m, u, v, sk);
+ 
+   // Generating G function
+-  unsigned char seed_G[VEC_K_BYTES];
++  unsigned char seed_G[VEC_K_BYTES < 40 ? 40 : VEC_K_BYTES] = {0};
+   ffi_vec_to_string_compact(seed_G, m, PARAM_K);
+   AES_XOF_struct* G_seedexpander = (AES_XOF_struct*) malloc(sizeof(AES_XOF_struct));
+   seedexpander_init(G_seedexpander, seed_G, seed_G + 32, SEEDEXPANDER_MAX_LENGTH);
+diff -ruN a/RQC/Reference_Implementation/rqc128/src/parameters.h b/RQC/Reference_Implementation/rqc128/src/parameters.h
+--- a/RQC/Reference_Implementation/rqc128/src/parameters.h	2019-03-30 22:27:28.000000000 +0000
++++ b/RQC/Reference_Implementation/rqc128/src/parameters.h	2026-06-27 13:15:07.784652819 +0000
+@@ -10,11 +10,11 @@
+ 
+ 
+ #define PARAM_Q 2 /**< Parameter q of the scheme (finite field GF(q^m)) */
+-#define PARAM_M 97 /**< Parameter m of the scheme (finite field GF(q^m)) */
+-#define PARAM_K 4 /**< Parameter k of the scheme (code dimension) */
+-#define PARAM_N 67 /**< Parameter n of the scheme (code length) */
+-#define PARAM_W 5 /**< Parameter omega of the scheme (weight of vectors) */
+-#define PARAM_W_R 6 /**< Parameter omega_r of the scheme (weight of vectors) */
++#define PARAM_M 37 /**< Parameter m of the scheme (finite field GF(q^m)) */
++#define PARAM_K 3 /**< Parameter k of the scheme (code dimension) */
++#define PARAM_N 23 /**< Parameter n of the scheme (code length) */
++#define PARAM_W 3 /**< Parameter omega of the scheme (weight of vectors) */
++#define PARAM_W_R 3 /**< Parameter omega_r of the scheme (weight of vectors) */
+ #define PARAM_SECURITY 128 /**< Expected security level */
+ 
+ #define SECRET_KEY_BYTES CRYPTO_SECRETKEYBYTES /**< Secret key size */
+@@ -22,9 +22,9 @@
+ #define SHARED_SECRET_BYTES CRYPTO_BYTES /**< Shared secret size */
+ #define CIPHERTEXT_BYTES CRYPTO_CIPHERTEXTBYTES /**< Ciphertext size */
+ 
+-#define VEC_K_BYTES 49 /**< Number of bytes required to store a vector of size k */
+-#define VEC_N_BYTES 813 /**< Number of bytes required to store a vector of size n */
+-#define FFI_ELT_BYTES 13 /**< Number of bytes required to store an element of GF(q^m) */
++#define VEC_K_BYTES 14 /**< Number of bytes required to store a vector of size k */
++#define VEC_N_BYTES 107 /**< Number of bytes required to store a vector of size n */
++#define FFI_ELT_BYTES 5 /**< Number of bytes required to store an element of GF(q^m) */
+ #define FFI_VEC_K_BYTES PARAM_K * FFI_ELT_BYTES /**< Number of bytes required to store a vector of size k using the NTL-based ffi_vec implementation */
+ #define FFI_VEC_N_BYTES PARAM_N * FFI_ELT_BYTES /**< Number of bytes required to store a vector of size n using the NTL-based ffi_vec implementation */
+ 

@@ -1,0 +1,12 @@
+diff -ruN a/Implementations/crypto_aead/spix128v1/ref/sliscp_light256.h b/Implementations/crypto_aead/spix128v1/ref/sliscp_light256.h
+--- a/Implementations/crypto_aead/spix128v1/ref/sliscp_light256.h	2026-06-27 16:36:32.043460005 +0000
++++ b/Implementations/crypto_aead/spix128v1/ref/sliscp_light256.h	2026-06-27 16:36:32.071459846 +0000
+@@ -16,7 +16,7 @@
+ #define SIMECKBYTES		8 // number of words = 64/8 = 8
+ #define SIMECKROUND    		8
+ #define NUMSTEPSR9		9
+-#define NUMSTEPSR18             18
++#define NUMSTEPSR18 6
+ 
+ typedef unsigned long long u64;
+ 

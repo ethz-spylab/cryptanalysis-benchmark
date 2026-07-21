@@ -1,0 +1,167 @@
+   #RSS 2.0 RSS .92 Atom 0.3
+
+Allicient
+
+   Peter Maxwell's Information Security Site
+     * Home
+     * Articles & Papers
+     * Contact
+     * Tutorials
+
+Aww, p*sh!
+
+   Published by admin on November 5, 2008 06:45 pm under Cryptography
+
+   Sgàil, my submission to NIST's SHA-3 competition, unfortunately has an error in it which
+   makes finding a collision or second pre-image trivial.  The error crept in when I'd decided
+   to change the key schedule late on from being a tree structure to a simple double block
+   processing.
+
+   The measure which had originally protected the tree structure from block interchanges - the
+   preliminary key - was unique for each 2048-bit block.  Unfortunately when redesigning the
+   algorithm, I'd neglected to process a preliminary key for each 2048-bit block and instead
+   processed a single preliminary key for each 4096-bit block.  The process where the 4096-bit
+   block is reduced to the 2048-bit principle key uses the same preliminary key for both
+   2048-bit halves of the 4096-bit block, where they should have been different.  Hence the
+   2048-bit input pair is interchangable.
+
+   The resolution is to process a preliminary key for each 2048-bit input block and update the
+   block counter at each 2048-bit input block rather than at each 4096-bit block.  The
+   performance wouldn't be significantly altered.  However since the submission deadline has
+   now lapsed, I doubt any modifications will be accepted.
+
+   The following code generates a collision:
+
+   -----
+
+   int main() {
+
+   u8 data__a[ SGAIL__INPUT_BLOCK__SIZE * 2 ];
+   u8 data__b[ SGAIL__INPUT_BLOCK__SIZE * 2 ];
+   u8 result__a[ 64 ];
+   u8 result__b[ 64 ];
+
+   memset( data__a, 0, SGAIL__INPUT_BLOCK__SIZE * 2 );
+   memset( data__b, 0, SGAIL__INPUT_BLOCK__SIZE * 2 );
+
+   data__a[ 0 ] = 1;
+   data__a[ 256 ] = 2;
+
+   data__b[ 0 ] = 2;
+   data__b[ 256 ] = 1;
+
+   Hash( 512, data__a, ( SGAIL__INPUT_BLOCK__SIZE * 2 ) * 8, result__a );
+   Hash( 512, data__b, ( SGAIL__INPUT_BLOCK__SIZE * 2 ) * 8, result__b );
+
+   do__display_512_bit_hash__byte_wise( result__a );
+   do__display_512_bit_hash__byte_wise( result__b );
+
+   }
+   -----
+
+   I will post a revision of Sgàil in the next few days with the error fixed, although I don't
+   know of its applicability as concerns the SHA-3 competition.
+
+4 Comments so far
+
+    1. Jason Worth Martin on November 6th, 2008
+       Hi Peter,
+       I certainly hope your corrections are accepted! It is a very minor error. I think that
+       Sgail is a promising algorithm, and I hope it continues in the competition!!
+       Best of luck,
+       jason
+       [Reply]
+       admin reply on November 7th, 2008 6:08 am:
+       Thanks Jason,
+       I'd looked at your submission, ESSENCE, quite early on. I like the way you've
+       constructed the "F" function to create non-linearity - its very light-weight but still
+       retains a high algebraic degree.
+       [Reply]
+    2. Greg Rose on November 6th, 2008
+       Ah, I know the feeling. You have my sympathy.
+       Greg.
+       [Reply]
+       admin reply on November 7th, 2008 6:10 am:
+       Thanks - I think the next time I'm doing something that involved, I'll ask someone else
+       to look over it first. Never mind, lesson learnt :-(
+       [Reply]
+
+   Posting your comment.
+
+   Trackback URI | Subscribe to the comments through RSS Feed
+
+Leave a reply
+
+   ______________________ name (required)
+
+   ______________________ email ( will not be shown ) (required)
+
+   ______________________ website
+
+
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+   __________________________________________________
+
+   Submit Comment
+
+   IFRAME:
+   https://web.archive.org/web/20081109065226if_/http://api.recaptcha.net/noscript?k=6LfX8QEAA
+   AAAAHETUyTuwexnt_zNk3xyMhxj_TNn
+
+
+   ________________________________________
+   ________________________________________
+   ________________________________________
+   Submit Comment
+
+   Click to cancel reply
+
+     * Recent Posts
+          + SHA-3 Discussion?
+          + Spam spam spam spam. Lovely spam!
+          + Aww, p*sh!
+          + Its good to talk.
+          + First Blood in SHA-3 Competition
+          + NIST SHA-3 Submission - Sgàil
+          + It is I, LeClerc!
+          + Opera, GMail and Javascript
+          + Google first again.
+          + Do I know you?
+          + HTTPS Stupidity.
+          + Simple is best.
+     * Search for: _______________ Search
+     * Archives
+          + November 2008 (5)
+          + October 2008 (1)
+          + September 2008 (6)
+     * Categories
+          + Cryptography
+          + General
+          + Miscellaneous
+          + Online Security
+          + Uncategorized
+          + Web Security
+     * Tagscookies cryptographic hash digg facebook friends friends reunited gmail Google hash
+       hotmail http https https-only identity theft intrusion detection last last login login
+       login times myspace NIST Online Security password pgp phil zimmerman pretty good
+       privacy secure sockets layer security session handling session id session security
+       Sgàil SHA-3 side jacking social networking ssl tls transport layer security unix
+       webmail web mail web of trust Web Security wtmp yahoo mail
+     *
+       Add to Technorati Favorites
+     * Meta
+          + Log in
+          + Entries RSS
+          + Comments RSS
+          + WordPress.org
+
+   Copyright © 2008 Allicient
+   WordPress Theme based on Light Theme

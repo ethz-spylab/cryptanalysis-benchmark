@@ -1,0 +1,10 @@
+diff -ruN orig/Implementations/crypto_aead/xoodyakround3/ref/Xoodoo-reference.c new/Implementations/crypto_aead/xoodyakround3/ref/Xoodoo-reference.c
+--- orig/Implementations/crypto_aead/xoodyakround3/ref/Xoodoo-reference.c	2026-06-27 12:56:55.093159091 +0000
++++ new/Implementations/crypto_aead/xoodyakround3/ref/Xoodoo-reference.c	2026-06-27 12:56:55.114158987 +0000
+@@ -230,5 +230,5 @@
+ 
+ void Xoodoo_Permute_12rounds( uint32_t * state)
+ {
+-    Xoodoo_Permute_Nrounds( state, 12 );
++    Xoodoo_Permute_Nrounds( state, 8 );
+ }

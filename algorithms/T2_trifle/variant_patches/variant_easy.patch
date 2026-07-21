@@ -1,0 +1,12 @@
+diff -ruN a/trifle/Implementations/crypto_aead/triflev1/ref/casb.h b/trifle/Implementations/crypto_aead/triflev1/ref/casb.h
+--- a/trifle/Implementations/crypto_aead/triflev1/ref/casb.h	2019-04-15 11:55:26.000000000 +0000
++++ b/trifle/Implementations/crypto_aead/triflev1/ref/casb.h	2026-06-27 16:36:52.363344157 +0000
+@@ -2,7 +2,7 @@
+ #define casb
+ 
+ #define _casb_ENC_ROUND_KEY_GEN(round_keys, key)		(generate_round_keys(round_keys, key))
+-#define CRYPTO_BC_NUM_ROUNDS (50)
++#define CRYPTO_BC_NUM_ROUNDS (26)
+ typedef unsigned char u8;
+ 
+ void generate_round_keys(u8 (*round_key_nibbles)[32], const u8 *key_bytes);

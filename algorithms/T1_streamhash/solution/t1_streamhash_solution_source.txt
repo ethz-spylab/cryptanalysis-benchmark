@@ -1,0 +1,41 @@
+Tor E. Bjørstad, NIST mailing list 2008-12-11
+---------------------------------------------
+
+Quoting Dmitry Khovratovich <khovratovich@gmail.com>:
+> A paper with a more detailed explanation is available
+> http://lj.streamclub.ru/papers/hash/streamhash.pdf
+
+I think StreamHash appears to be broken. This is what I get:
+
+Let input be an array of 62 zero bytes.
+
+The following test vector matches the written spec:
+Hash (256, input, 1, test);
+test =
+f1 be c9 cd 78 07 2b ae d9 db f5 0f 3a bd 0f 5a
+fb 3b 3d dc 19 68 7a f9 2e 5a 01 c9 a4 ef f9 4f
+
+The following strings collide:
+Hash (256, input, 22*8, output1);
+output1 =
+73 e9 a6 40 d5 72 12 0b 23 c2 cf 86 1c 3f 45 a9
+d6 98 ec 67 4d 02 f3 cc de 56 bc 8d b2 69 82 77
+
+Hash (256, input, 62*8, output2);
+output2 =
+73 e9 a6 40 d5 72 12 0b 23 c2 cf 86 1c 3f 45 a9
+d6 98 ec 67 4d 02 f3 cc de 56 bc 8d b2 69 82 77
+
+output1 xor output2 =
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+It seems we get into an internal state cycle that repeats every 40 bytes. Do you agree?
+
+Cheers,
+
+Tor E. Bjørstad
+
+-- 
+Tor E. Bjørstad - PhD student, Dept. of Informatics, UiB, Norway
+Mail: tor.bjorstad@ii.uib.no - Web: http://www.ii.uib.no/~tor/

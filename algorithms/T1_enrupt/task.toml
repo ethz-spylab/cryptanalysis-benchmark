@@ -1,0 +1,20 @@
+schema_version = "1.0"
+
+[metadata]
+algorithm_source = "https://csrc.nist.rip/groups/ST/hash/sha-3/Round1/documents/EnRUPT.zip"
+
+[verifier]
+timeout_sec = 1800.0
+
+[agent]
+timeout_sec = 1800.0
+
+[environment]
+build_timeout_sec = 600.0
+cpus = 8
+memory_mb = 20480
+storage_mb = 10240
+allow_internet = true
+
+[verifier.env]
+RUN_AS_ROOT = "1"

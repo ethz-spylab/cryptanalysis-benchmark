@@ -1,0 +1,16 @@
+diff -ruN a/defs.h b/defs.h
+--- a/defs.h	2026-06-27 13:46:08.547230064 +0000
++++ b/defs.h	2026-06-27 13:46:08.561229996 +0000
+@@ -81,9 +81,9 @@
+ #define NbIter 7
+ // LEVEL-1 security parameters:
+ #elif defined(PARAM64)
+-#define R_BITS 12323ULL
+-#define DV     71ULL
+-#define T1     134ULL
++#define R_BITS 3499ULL
++#define DV     21ULL
++#define T1     49ULL
+ #define VAR_TH_FCT(x) (11.101432337243956 + 0.006254868353074983 * (x))
+ // Parameters for BGF Decoder:
+ #define delta 3

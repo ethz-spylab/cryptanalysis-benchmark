@@ -1,0 +1,15 @@
+--- a/Reference_Implementation_KEM/SABER_params.h
++++ b/Reference_Implementation_KEM/SABER_params.h
+@@ -2,9 +2,9 @@
+ #define PARAMS_H
+
+ /* Change this for different security strengths */
+-// #define SABER_L 2 /* LightSaber */
+-#define SABER_L 3 /* Saber */
+-// #define SABER_L 4 /* FireSaber */
++#define SABER_L 2 /* LightSaber */
++// #define SABER_L 3 /* Saber */
++// #define SABER_L 4 /* FireSaber */
+
+ /* Don't change anything below this line */
+ #if SABER_L == 2

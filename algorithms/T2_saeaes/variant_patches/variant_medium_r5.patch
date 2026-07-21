@@ -1,0 +1,57 @@
+diff -ruN a/saeaes/Implementations/crypto_aead/saeaes128a120t128v1/ref/aes.c b/saeaes/Implementations/crypto_aead/saeaes128a120t128v1/ref/aes.c
+--- a/saeaes/Implementations/crypto_aead/saeaes128a120t128v1/ref/aes.c	2019-04-15 10:58:12.000000000 +0000
++++ b/saeaes/Implementations/crypto_aead/saeaes128a120t128v1/ref/aes.c	2026-06-27 16:36:04.870615040 +0000
+@@ -250,43 +250,33 @@
+     RK( T, ekey+12 );
+     SM( T, S );
+     RK( S, ekey+16 );
+-    SM( S, T );
+-    RK( T, ekey+20 );
+-    SM( T, S );
+-    RK( S, ekey+24 );
+-    SM( S, T );
+-    RK( T, ekey+28 );
+-    SM( T, S );
+-    RK( S, ekey+32 );
+-    SM( S, T );
+-    RK( T, ekey+36 );
+ 
+ #if CRYPTO_KEYBYTES==16
+-    SS( T, S );
+-    RK( S, ekey+40 );
++    SS( S, T );
++    RK( T, ekey+20 );
+ #elif CRYPTO_KEYBYTES==24
+     SM( T, S );
+-    RK( S, ekey+40 );
++    RK( T, ekey+20 );
+     SM( S, T );
+     RK( T, ekey+44 );
+-    SS( T, S );
++    SS( S, T );
+     RK( S, ekey+48 );
+ #elif CRYPTO_KEYBYTES==32
+     SM( T, S );
+-    RK( S, ekey+40 );
++    RK( T, ekey+20 );
+     SM( S, T );
+     RK( T, ekey+44 );
+     SM( T, S );
+     RK( S, ekey+48 );
+     SM( S, T );
+     RK( T, ekey+52 );
+-    SS( T, S );
++    SS( S, T );
+     RK( S, ekey+56 );
+ #endif
+ 
+-    PutU32( S[0], state );
+-    PutU32( S[1], state+4 );
+-    PutU32( S[2], state+8 );
+-    PutU32( S[3], state+12 );
++    PutU32( T[0], state );
++    PutU32( T[1], state+4 );
++    PutU32( T[2], state+8 );
++    PutU32( T[3], state+12 );
+ }
+ 

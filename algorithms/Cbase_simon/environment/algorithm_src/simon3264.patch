@@ -1,0 +1,57 @@
+--- a/stream.c
++++ b/stream.c
+@@ -1,7 +1,8 @@
+ #include "stdio.h"
+ #include "stdlib.h"
+
+-#define u32 unsigned
++#include <stdint.h>
++#define u32 uint16_t
+ #define u64 unsigned long long
+
+
+@@ -89,8 +90,8 @@
+ }
+
+
+-#define ROR32(x,r) (((x)>>(r))|((x)<<(32-(r))))
+-#define ROL32(x,r) (((x)<<(r))|((x)>>(32-(r))))
++#define ROR32(x,r) (((x)>>(r))|((x)<<(16-(r))))
++#define ROL32(x,r) (((x)<<(r))|((x)>>(16-(r))))
+ #define f(x) ((ROL32(x,1) & ROL32(x,8)) ^ ROL32(x,2))
+ #define R2(x,y,k,l) (y^=f(x), y^=k, x^=f(y), x^=l)
+
+@@ -98,7 +99,7 @@
+ {
+   u32 i,x=*u,y=*v;
+
+-  for(i=0;i<44;i+=2) R2(x,y,key[i],key[i+1]);
++  for(i=0;i<32;i+=2) R2(x,y,key[i],key[i+1]);
+
+   *u=x; *v=y;
+
+@@ -112,7 +113,7 @@
+   int i;
+   u32 x=*u,y=*v;
+
+-  for(i=43;i>=0;i-=2) R2(y,x,key[i],key[i-1]);
++  for(i=31;i>=0;i-=2) R2(y,x,key[i],key[i-1]);
+
+   *u=x; *v=y;
+
+@@ -123,12 +124,12 @@
+
+ int ExpandKey(u32 K[],u32 key[])
+ {
+-  u32 i,c=0xfffffffc;
+-  u64 z=0xfc2ce51207a635dbLL;
++  u32 i,c=0xfffc;
++  u64 z=0xd9c3522fb386a45fLL;
+
+   key[0]=K[0]; key[1]=K[1]; key[2]=K[2]; key[3]=K[3];
+
+-  for(i=4;i<44;i++){
++  for(i=4;i<32;i++){
+     key[i]=c^(z&1)^key[i-4]^ROR32(key[i-1],3)^key[i-3]^ROR32(key[i-1],4)^ROR32(key[i-3],1);
+     z>>=1;
+   }

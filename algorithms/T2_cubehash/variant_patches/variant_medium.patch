@@ -1,0 +1,9 @@
+diff -ruN a/CubeHash/Reference_Implementation/cubehash.c b/CubeHash/Reference_Implementation/cubehash.c
+--- a/CubeHash/Reference_Implementation/cubehash.c	2009-09-15 07:09:28.000000000 +0000
++++ b/CubeHash/Reference_Implementation/cubehash.c	2026-06-27 13:46:31.305119515 +0000
+@@ -1,4 +1,4 @@
+-#define CUBEHASH_ROUNDS 16 /* this is r for CubeHashr/b */
++#define CUBEHASH_ROUNDS 4 /* this is r for CubeHashr/b */
+ #define CUBEHASH_BLOCKBYTES 32 /* this is b for CubeHashr/b */
+ /* For "formal" instead of "normal" change BLOCKBYTES to 1. */
+ 

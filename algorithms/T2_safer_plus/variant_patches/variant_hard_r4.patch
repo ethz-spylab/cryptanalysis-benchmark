@@ -1,0 +1,38 @@
+--- a/safer+.c	2026-06-27 16:37:17.353201783 +0000
++++ b/safer+.c	2026-06-27 16:37:17.379201635 +0000
+@@ -316,8 +316,6 @@
+ 
+     do_fr(blk, l_key);       do_fr(blk, l_key +  32); 
+     do_fr(blk, l_key +  64); do_fr(blk, l_key +  96);
+-    do_fr(blk, l_key + 128); do_fr(blk, l_key + 160);
+-    do_fr(blk, l_key + 192); do_fr(blk, l_key + 224);
+     
+     if(k_bytes > 16)
+     {
+@@ -331,7 +329,7 @@
+         do_fr(blk, l_key + 448); do_fr(blk, l_key + 480);
+     }
+ 
+-    kp = l_key + 16 * k_bytes;
++    kp = l_key + 128;
+ 
+     blk[ 0] ^= kp[ 0]; blk[ 1] += kp[ 1];
+     blk[ 2] += kp[ 2]; blk[ 3] ^= kp[ 3]; 
+@@ -350,7 +348,7 @@
+ 
+     get_block(blk);
+ 
+-    kp = l_key + 16 * k_bytes;
++    kp = l_key + 128;
+ 
+     blk[ 0] ^= kp[ 0]; blk[ 1] -= kp[ 1];
+     blk[ 2] -= kp[ 2]; blk[ 3] ^= kp[ 3];
+@@ -373,8 +371,6 @@
+         do_ir(blk, l_key + 288); do_ir(blk, l_key + 256);
+     }
+ 
+-    do_ir(blk, l_key + 224); do_ir(blk, l_key + 192); 
+-    do_ir(blk, l_key + 160); do_ir(blk, l_key + 128);
+     do_ir(blk, l_key +  96); do_ir(blk, l_key +  64); 
+     do_ir(blk, l_key +  32); do_ir(blk, l_key);
+ 

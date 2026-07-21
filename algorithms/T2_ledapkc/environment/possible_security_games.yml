@@ -1,0 +1,3 @@
+security_games:
+  - AsymmetricDecryptionWithoutPrivateKeyGame
+  - AsymmetricEavesdroppingIndistinguishabilityGame
