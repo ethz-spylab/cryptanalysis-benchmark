@@ -353,14 +353,114 @@
   "rai:dataSocialImpact": "Positive impact: improves the rigour with which AI agents are measured on a scientifically grounded class of security tasks, lowers the bar to running such evaluations by packaging 191 reference implementations in a uniform CLI contract, and supports stress-testing of candidate schemes before standardization or deployment. Risk: the benchmark is dual-use and publishes reference attack scripts (solution/solve.sh) for 51 tasks: all 49 T1 algorithms and two T2 algorithms (RankSign and SpoC). Mitigations: (1) T1 is restricted to algorithms with publicly known practical attacks, and the RankSign script follows a published attack; (2) the SpoC script implements a key-recovery attack found by LLM agents during this work that was, to the authors' knowledge, previously unpublished; SpoC is a NIST Lightweight Cryptography candidate that was not selected for standardization; (3) no previously unpublished attacks on standardized or widely deployed cryptography are released; (4) the security games are formal academic models, not exfiltration tooling.",
   "rai:hasSyntheticData": true,
   "prov:wasDerivedFrom": [
-    "Reference implementations of each cryptographic algorithm. Per-task upstream URLs are recorded in algorithms/<task>/task.toml under [metadata].algorithm_source and surfaced in tasks_manifest.csv (column algorithm_source_url). Sources include NIST PQC, SHA-3 and Lightweight Cryptography submission packages (csrc.nist.gov, csrc.nist.rip), archived AES-candidate and other historical sources (web.archive.org, schneier.com), the BIKE suite (bikesuite.org), Classic McEliece (classic.mceliece.org), NTRU Prime (ntruprime.cr.yp.to), and a small number of original-author repositories on GitHub. Full-strength tasks use each source unmodified except for a thin uniform CLI shim (cli.c + cli_stdin.h) added by the authors; scaled-down variants additionally apply the parameter patches under variant_patches/."
+    {
+      "@id": "https://csrc.nist.gov/projects/post-quantum-cryptography",
+      "prov:label": "NIST Post-Quantum Cryptography standardization process: candidate submission packages",
+      "prov:wasAttributedTo": {
+        "@id": "https://www.nist.gov/",
+        "prov:label": "National Institute of Standards and Technology (NIST)"
+      }
+    },
+    {
+      "@id": "https://csrc.nist.gov/projects/lightweight-cryptography",
+      "prov:label": "NIST Lightweight Cryptography standardization process: candidate submission packages",
+      "prov:wasAttributedTo": {
+        "@id": "https://www.nist.gov/",
+        "prov:label": "National Institute of Standards and Technology (NIST)"
+      }
+    },
+    {
+      "@id": "https://csrc.nist.gov/projects/hash-functions/sha-3-project",
+      "prov:label": "NIST SHA-3 competition: candidate submission packages",
+      "prov:wasAttributedTo": {
+        "@id": "https://www.nist.gov/",
+        "prov:label": "National Institute of Standards and Technology (NIST)"
+      }
+    },
+    {
+      "@id": "https://csrc.nist.gov/projects/cryptographic-standards-and-guidelines/archived-crypto-projects/aes-development",
+      "prov:label": "NIST AES competition: candidate algorithms (reference implementations obtained from archived mirrors)",
+      "prov:wasAttributedTo": {
+        "@id": "https://www.nist.gov/",
+        "prov:label": "National Institute of Standards and Technology (NIST)"
+      }
+    },
+    {
+      "@id": "https://github.com/ethz-spylab/cryptanalysis-benchmark/blob/main/tasks_manifest.csv",
+      "prov:label": "Per-task upstream source URLs for all 191 algorithms (column algorithm_source_url), including the non-NIST sources"
+    }
   ],
   "prov:wasGeneratedBy": [
-    "Per-task CLI shim (cli.c + cli_stdin.h) authored by the benchmark authors to provide a uniform 'key: value' line-oriented interface on top of each upstream reference implementation's native API (e.g., crypto_aead_encrypt for AEAD, crypto_kem_keypair for KEMs).",
-    "Security-game framework (security_game_framework/) authored from scratch: FastAPI game controller, per-game stage logic under environment/game-controller/security_games/, the agent-facing client CLI, the agent instruction template, and the pytest-based verifier in tests/.",
-    "Build pipeline: generate_harbor_tasks.sh copy-merges algorithms/<algo>/ with security_game_framework/ (cp -rn semantics, so algorithm-specific files override framework defaults), runs prepare_prompt.py to substitute timeout placeholders, and emits a self-contained tasks_<DATE>/ folder runnable by Harbor.",
-    "Scaled-down variants: per-algorithm generate_variants.sh scripts apply the committed patches under variant_patches/ to reduce rounds, key sizes, or other parameters, producing easy/medium/hard variants. Where established conventions exist (e.g. round-reduced AES and ChaCha) standard reduced versions are used; for the remaining algorithms the parameter choices were proposed with the assistance of an LLM (Claude Opus 4.8) given the scheme specification, targeting roughly 2^30-2^40, 2^40-2^60 and 2^60-2^80 operations.",
-    "Synthetic plaintexts, keys, nonces, and other random values are produced at runtime by each algorithm's CLI from a CSPRNG (/dev/urandom). No human annotation, no crowdsourcing, no scraping of user-generated content."
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q4929239"
+      },
+      "prov:label": "Collection of reference implementations",
+      "sc:description": "The reference implementation of each cryptographic algorithm was collected from public archives: NIST PQC, SHA-3 and Lightweight Cryptography submission packages (csrc.nist.gov, csrc.nist.rip), archived AES-candidate and other historical sources (web.archive.org, schneier.com), the BIKE suite (bikesuite.org), Classic McEliece (classic.mceliece.org), NTRU Prime (ntruprime.cr.yp.to), and a small number of original-author repositories on GitHub. Per-task upstream URLs are recorded in algorithms/<task>/task.toml under [metadata].algorithm_source and surfaced in tasks_manifest.csv (column algorithm_source_url). No human annotation, no crowdsourcing, no scraping of user-generated content.",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:Agent",
+          "@id": "benchmark_authors",
+          "prov:label": "Benchmark authors",
+          "sc:description": "The authors of the CryptanalysisBench paper."
+        }
+      ]
+    },
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q5227332"
+      },
+      "prov:label": "Uniform CLI shim",
+      "sc:description": "Per-task CLI shim (cli.c + cli_stdin.h) authored by the benchmark authors to provide a uniform 'key: value' line-oriented interface on top of each upstream reference implementation's native API (e.g., crypto_aead_encrypt for AEAD, crypto_kem_keypair for KEMs). Full-strength tasks use each upstream source unmodified except for this shim.",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:Agent",
+          "@id": "benchmark_authors",
+          "prov:label": "Benchmark authors",
+          "sc:description": "The authors of the CryptanalysisBench paper."
+        }
+      ]
+    },
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q5227332"
+      },
+      "prov:label": "Security-game framework and build pipeline",
+      "sc:description": "Security-game framework (security_game_framework/) authored from scratch: FastAPI game controller, per-game stage logic under environment/game-controller/security_games/, the agent-facing client CLI, the agent instruction template, and the pytest-based verifier in tests/. Build pipeline: generate_harbor_tasks.sh copy-merges algorithms/<algo>/ with security_game_framework/ (cp -rn semantics, so algorithm-specific files override framework defaults), runs prepare_prompt.py to substitute timeout placeholders, and emits a self-contained tasks_<DATE>/ folder runnable by Harbor. Synthetic plaintexts, keys, nonces, and other random values are produced at runtime by each algorithm's CLI from a CSPRNG (/dev/urandom).",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:Agent",
+          "@id": "benchmark_authors",
+          "prov:label": "Benchmark authors",
+          "sc:description": "The authors of the CryptanalysisBench paper."
+        }
+      ]
+    },
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q5227332"
+      },
+      "prov:label": "Scaled-down variants",
+      "sc:description": "Per-algorithm generate_variants.sh scripts apply the committed patches under variant_patches/ to reduce rounds, key sizes, or other parameters, producing easy/medium/hard variants. Where established conventions exist (e.g. round-reduced AES and ChaCha) standard reduced versions are used; for the remaining algorithms the parameter choices were proposed with the assistance of an LLM (Claude Opus 4.8) given the scheme specification, targeting roughly 2^30-2^40, 2^40-2^60 and 2^60-2^80 operations.",
+      "prov:wasAttributedTo": [
+        {
+          "@type": "prov:Agent",
+          "@id": "benchmark_authors",
+          "prov:label": "Benchmark authors",
+          "sc:description": "The authors of the CryptanalysisBench paper."
+        },
+        {
+          "@type": "prov:SoftwareAgent",
+          "@id": "claude_opus_4.8",
+          "prov:label": "Claude Opus 4.8",
+          "sc:description": "LLM used to propose reduced parameter sets for the scaled-down variants, given each scheme's specification."
+        }
+      ]
+    }
   ],
   "dateModified": "2026-11-06"
 }
