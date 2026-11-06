@@ -33,6 +33,7 @@ the reference's near-reduction behaviour on both the encrypt and decrypt sides).
 Usage: patch_mersenne.py <path/to/Mersenne_kem.c> <Psize> <Hvalue>
 Fails loudly (non-zero exit) if any substitution matches nothing.
 """
+
 import re
 import sys
 
@@ -95,7 +96,9 @@ def main():
     with open(path, "w") as f:
         f.write(src)
 
-    print(f"patched {path}: Psize={psize} (x{n_p}), Hvalue={hvalue} (x{n_h}), R-fold-loop x1")
+    print(
+        f"patched {path}: Psize={psize} (x{n_p}), Hvalue={hvalue} (x{n_h}), R-fold-loop x1"
+    )
 
 
 if __name__ == "__main__":

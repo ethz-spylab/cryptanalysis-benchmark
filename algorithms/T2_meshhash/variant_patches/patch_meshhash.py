@@ -24,6 +24,7 @@ Usage: patch_meshhash.py <path/to/Reference_Implementation> <pipes>
 Fails loudly (non-zero exit) if any expected substitution makes zero changes,
 so a botched patch can never silently yield an unweakened variant.
 """
+
 import os
 import re
 import sys

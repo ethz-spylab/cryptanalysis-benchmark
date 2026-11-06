@@ -48,6 +48,7 @@ Usage:
 not change exactly what is expected, so a mis-applied patch aborts variant
 generation instead of silently shipping an unweakened / undecodable build.
 """
+
 import os
 import re
 import sys
@@ -56,8 +57,15 @@ import sys
 BASE_P = 27779
 # (syndrome-weight breakpoint, threshold) rows of the shipped CAT1/N0=2 table.
 BASE_TABLE = [
-    (0, 62), (4588, 63), (7609, 64), (9152, 65), (10129, 66),
-    (10800, 67), (11261, 68), (11614, 69), (11885, 70),
+    (0, 62),
+    (4588, 63),
+    (7609, 64),
+    (9152, 65),
+    (10129, 66),
+    (10800, 67),
+    (11261, 68),
+    (11614, 69),
+    (11885, 70),
 ]
 
 
@@ -65,11 +73,13 @@ def patch_params(path: str, p_val: str, t_val: str) -> None:
     with open(path) as fh:
         text = fh.read()
     text, n_p = re.subn(
-        r"(#define\s+P\s+\()27779(\))",
-        lambda m: m.group(1) + p_val + m.group(2), text)
+        r"(#define\s+P\s+\()27779(\))", lambda m: m.group(1) + p_val + m.group(2), text
+    )
     text, n_t = re.subn(
         r"(#define\s+NUM_ERRORS_T\s+\()224(\))",
-        lambda m: m.group(1) + t_val + m.group(2), text)
+        lambda m: m.group(1) + t_val + m.group(2),
+        text,
+    )
     if n_p != 1:
         sys.exit(f"FATAL: expected 1 P substitution, made {n_p}")
     if n_t != 1:
@@ -85,7 +95,7 @@ def scaled_table(p_val: int):
     last = -1
     for bp, th in BASE_TABLE:
         s = round(bp * r)
-        if s <= last:          # keep strictly increasing for the binary search
+        if s <= last:  # keep strictly increasing for the binary search
             s = last + 1
         last = s
         rows.append((s, th))
@@ -104,7 +114,8 @@ def patch_threshold(path: str, p_val: int) -> None:
     out, i, replaced = [], 0, 0
     while i < len(lines):
         if lines[i].strip() == "#if (CATEGORY == 1) && (N0 == 2)":
-            out.append(lines[i]); i += 1
+            out.append(lines[i])
+            i += 1
             saw_table = False
             while lines[i].strip() != "#endif":
                 if "SYNDROME_TRESH_LOOKUP_TABLE" in lines[i]:
@@ -113,16 +124,17 @@ def patch_threshold(path: str, p_val: int) -> None:
             if not saw_table:
                 sys.exit("FATAL: CAT1/N0=2 block lacked SYNDROME_TRESH_LOOKUP_TABLE")
             out.extend(new_rows)
-            out.append(lines[i]); i += 1   # the #endif
+            out.append(lines[i])
+            i += 1  # the #endif
             replaced += 1
         else:
-            out.append(lines[i]); i += 1
+            out.append(lines[i])
+            i += 1
     if replaced != 1:
         sys.exit(f"FATAL: expected 1 CAT1/N0=2 threshold block, found {replaced}")
     with open(path, "w") as fh:
         fh.write("\n".join(out))
-    sys.stderr.write(
-        f"rescaled SYNDROME_TRESH_LOOKUP_TABLE (P={p_val}) in {path}\n")
+    sys.stderr.write(f"rescaled SYNDROME_TRESH_LOOKUP_TABLE (P={p_val}) in {path}\n")
 
 
 def patch_sampler(path: str) -> None:
@@ -134,7 +146,9 @@ def patch_sampler(path: str) -> None:
     fixed = "rand_range(N0*NUM_BITS_GF2X_ELEMENT,BITS_TO_REPRESENT(N0*NUM_BITS_GF2X_ELEMENT),"
     n = text.count(anchor)
     if n != 1:
-        sys.exit(f"FATAL: expected 1 blocks_sequence rand_range call, found {n} in {path}")
+        sys.exit(
+            f"FATAL: expected 1 blocks_sequence rand_range call, found {n} in {path}"
+        )
     text = text.replace(anchor, fixed, 1)
     with open(path, "w") as fh:
         fh.write(text)
@@ -146,14 +160,15 @@ def main() -> int:
         sys.stderr.write("usage: patch_ledakem.py <extract_root> <P> <T>\n")
         return 2
     root, p_val, t_val = sys.argv[1], sys.argv[2], sys.argv[3]
-    p_int = int(p_val); int(t_val)
+    p_int = int(p_val)
+    int(t_val)
 
     inc = os.path.join(root, "Reference_Implementation", "KEM", "include")
     params_h = os.path.join(inc, "qc_ldpc_parameters.h")
     bf_h = os.path.join(inc, "bf_decoding.h")
     sampler_c = os.path.join(
-        root, "Reference_Implementation", "KEM", "library",
-        "gf2x_arith_mod_xPplusOne.c")
+        root, "Reference_Implementation", "KEM", "library", "gf2x_arith_mod_xPplusOne.c"
+    )
     for f in (params_h, bf_h, sampler_c):
         if not os.path.isfile(f):
             sys.exit(f"FATAL: expected file not found: {f}")

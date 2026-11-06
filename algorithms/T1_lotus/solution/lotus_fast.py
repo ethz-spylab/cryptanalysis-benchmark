@@ -18,15 +18,16 @@ The per-coordinate update logic is identical to lotus_recover.recover_S; only th
 oracle access is batched, which does not change any recovered value (each
 coordinate's b1/b2 outcome is independent of the others within a bit level).
 """
+
 import hashlib
 
 from lotus_pack import PT, MOD
 from lotus_recover import H_zero_sigma, build_ct_hex
 
-DIM_BITS = 13           # log2(MOD); MOD = 2^13 = 8192
-PT_BYTES = PT // 8      # 16
-Q8 = MOD // 8           # 1024 = q/8
-G = 16                  # coordinates read per probe (2 bytes / group, 2^16 table)
+DIM_BITS = 13  # log2(MOD); MOD = 2^13 = 8192
+PT_BYTES = PT // 8  # 16
+Q8 = MOD // 8  # 1024 = q/8
+G = 16  # coordinates read per probe (2 bytes / group, 2^16 table)
 
 
 def _ss_for_sigma(sigma_bytes):
@@ -47,7 +48,7 @@ def build_group_tables(g_size=G):
             for t in range(gw):
                 if (pat >> t) & 1:
                     c = coords[t]
-                    sig[c >> 3] |= (1 << (c & 7))
+                    sig[c >> 3] |= 1 << (c & 7)
             tab[_ss_for_sigma(sig)] = pat
         tables.append((coords, tab))
     return tables
@@ -62,6 +63,7 @@ def recover_S_fast(oracle, tables=None, progress=None, max_rows=None):
     if tables is None:
         tables = build_group_tables(G)
     from lotus_pack import DIM
+
     Hz = H_zero_sigma()
     nrows = DIM if max_rows is None else max_rows
     guess = [0] * (DIM * PT)
@@ -76,7 +78,10 @@ def recover_S_fast(oracle, tables=None, progress=None, max_rows=None):
             # baseline skip check (global +/- q8): if the whole row decodes to 0
             # under both shifts, this bit level contributes nothing.
             z1 = oracle(build_ct_hex(c1, [(c2[j] + Q8) % MOD for j in range(PT)])) == Hz
-            z2 = oracle(build_ct_hex(c1, [(c2[j] + MOD - Q8) % MOD for j in range(PT)])) == Hz
+            z2 = (
+                oracle(build_ct_hex(c1, [(c2[j] + MOD - Q8) % MOD for j in range(PT)]))
+                == Hz
+            )
             if z1 and z2:
                 continue
             b1 = [0] * PT
@@ -151,8 +156,9 @@ def _extended_coord_search(oracle, c1, j, saturate, B, BMAX, Hz):
     return lo
 
 
-def recover_S_threshold(oracle, tables=None, B=7, BMAX=63, progress=None,
-                        max_rows=None):
+def recover_S_threshold(
+    oracle, tables=None, B=7, BMAX=63, progress=None, max_rows=None
+):
     """Value-based recovery of the LOTUS secret matrix S — far fewer queries than
     the bit-by-bit recover_S / recover_S_fast.
 
@@ -169,6 +175,7 @@ def recover_S_threshold(oracle, tables=None, B=7, BMAX=63, progress=None,
     exactly by _extended_coord_search up to +/-BMAX, so the result is correct for
     any key. Returns (S, n_extended)."""
     from lotus_pack import DIM
+
     if tables is None:
         tables = build_group_tables(20)
     Hz = H_zero_sigma()

@@ -30,6 +30,7 @@ Constraints:
 Usage:
   patch_pqntrusign_medium.py <ReferenceImplementationRoot> <N> <d>
 """
+
 import re
 import sys
 
@@ -193,7 +194,7 @@ NEW_KEYGEN_BODY = r"""    memset(buf, 0, sizeof(int64_t)*param->padded_N*4);
 
 def patch_param_c(path, N, d):
     src = open(path).read()
-    nbits = (N - 1).bit_length()   # ceil(log2 N)
+    nbits = (N - 1).bit_length()  # ceil(log2 N)
 
     src, n = re.subn(r"\b10,(\s*/\* bitlength of N \*/)", f"{nbits},\\1", src)
     assert n >= 1, "N_bits field not found"
@@ -201,17 +202,22 @@ def patch_param_c(path, N, d):
     assert n >= 1, "ring degree field not found"
     src, n = re.subn(
         r"\b1024,(\s*/\* # Polynomial coefficients for Karatsuba \*/)",
-        f"{N},\\1", src,
+        f"{N},\\1",
+        src,
     )
     assert n >= 1, "padded_N field not found"
     src, n = re.subn(
-        r"\b205,(\s*/\* Product form \+1/-1 counts \*/)", f"{d},\\1", src,
+        r"\b205,(\s*/\* Product form \+1/-1 counts \*/)",
+        f"{d},\\1",
+        src,
     )
     assert n >= 1, "product-form d field not found"
 
     open(path, "w").write(src)
-    print(f"[param.c] N={N} N_bits={nbits} padded_N={N} d={d} "
-          f"(NTT tables left as dead code)")
+    print(
+        f"[param.c] N={N} N_bits={nbits} padded_N={N} d={d} "
+        f"(NTT tables left as dead code)"
+    )
 
 
 def patch_keygen_c(path):
@@ -229,14 +235,14 @@ def patch_keygen_c(path):
     e = src.index(end_tok, s)
     assert src.count(start_tok) == 1, "keygen body start anchor not unique"
     assert src.count(end_tok) == 1, "keygen body end anchor not unique"
-    src = src[:s] + NEW_KEYGEN_BODY + src[e + len(end_tok):]
+    src = src[:s] + NEW_KEYGEN_BODY + src[e + len(end_tok) :]
 
     open(path, "w").write(src)
     print("[pqNTRUSign.c] keygen now uses schoolbook negacyclic ring division")
 
 
 def patch_api_h(path, N):
-    pk = 2 * N + 17                                  # 1 + (N+8)*2
+    pk = 2 * N + 17  # 1 + (N+8)*2
     sk = (N // 5) * 2 + 4 + N // 8 + (N + 8) * 2
     src = open(path).read()
     for macro, val in (
@@ -247,8 +253,7 @@ def patch_api_h(path, N):
         src, n = re.subn(rf"(#define {macro}\s+)\d+", rf"\g<1>{val}", src)
         assert n == 1, f"{macro} replaced {n} times (expected 1)"
     open(path, "w").write(src)
-    print(f"[api.h] CRYPTO_PUBLICKEYBYTES=CRYPTO_BYTES={pk} "
-          f"CRYPTO_SECRETKEYBYTES={sk}")
+    print(f"[api.h] CRYPTO_PUBLICKEYBYTES=CRYPTO_BYTES={pk} CRYPTO_SECRETKEYBYTES={sk}")
 
 
 def main():

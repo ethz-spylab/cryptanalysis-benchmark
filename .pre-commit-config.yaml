@@ -13,13 +13,19 @@ repos:
     rev: v6.0.0
     hooks:
       # Removes stray spaces/tabs at EOL (keeps Markdown "two-space linebreaks")
+      # NOTE: *.patch files are excluded from the three whitespace hooks below.
+      # Their trailing whitespace, missing final newlines and CRLF line endings
+      # mirror the upstream sources they apply to; "fixing" them breaks `patch`.
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        exclude: \.patch$
       # Ensures exactly one newline at EOF
       - id: end-of-file-fixer
+        exclude: \.patch$
       # Normalizes mixed CRLF/LF; pick what your repo uses (LF below)
       - id: mixed-line-ending
         args: [--fix=lf]
+        exclude: \.patch$
       # Nice safety net
       - id: check-merge-conflict
 

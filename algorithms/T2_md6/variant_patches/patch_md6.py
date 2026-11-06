@@ -11,6 +11,7 @@ Operates on raw bytes so the file's CRLF line endings are preserved. Fails
 loudly (non-zero exit) if no substitution was made, so a botched patch can never
 silently yield an unweakened variant.
 """
+
 import re
 import sys
 

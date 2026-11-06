@@ -33,6 +33,7 @@ unchanged for any e <= 48 (the unused high bits simply stay zero).
 Usage:  patch_dme.py <Reference_Implementation_dir> <e> <min_poly_hex>
 e.g.    patch_dme.py /tmp/x/DME/Reference_Implementation 21 0x200005
 """
+
 import sys
 
 
@@ -86,45 +87,58 @@ def main():
         "  }\n"
         "  if (parse_pkey(&pkey, pk) || fq_encrypt(ct_q, pt_q, &pkey)) return -1;"
     ) % (e, e)
-    patch_file(ref + "/dme.c", [
-        ("for (i=0; i<48; i++)", f"for (i=0; i<{e}; i++)", 1),
-        ("(UINT64_C(1) << 48)", f"(UINT64_C(1) << {e})", 3),
-        ("% 48)", f"% {e})", 16),
-        # Reduce every parsed field element (notably the random secret-key
-        # matrix entries) into F_{2^e}.  parse_fq_elem is the only "return a;".
-        ("  return a;\n}", f"  return a & ((UINT64_C(1) << {e}) - 1);\n}}", 1),
-        (enc_old, enc_new, 1),
-    ])
+    patch_file(
+        ref + "/dme.c",
+        [
+            ("for (i=0; i<48; i++)", f"for (i=0; i<{e}; i++)", 1),
+            ("(UINT64_C(1) << 48)", f"(UINT64_C(1) << {e})", 3),
+            ("% 48)", f"% {e})", 16),
+            # Reduce every parsed field element (notably the random secret-key
+            # matrix entries) into F_{2^e}.  parse_fq_elem is the only "return a;".
+            ("  return a;\n}", f"  return a & ((UINT64_C(1) << {e}) - 1);\n}}", 1),
+            (enc_old, enc_new, 1),
+        ],
+    )
 
     # ---- setup/find_min_poly.c ------------------------------------------
-    patch_file(ref + "/setup/find_min_poly.c", [
-        ("UINT64_C(0x1000018000003)", f"UINT64_C({min_poly})", 1),
-        ("for (i=0; i<48; i++)", f"for (i=0; i<{e}; i++)", 3),
-        ("(UINT64_C(1) << 48)", f"(UINT64_C(1) << {e})", 3),
-        ("  return a;\n}", f"  return a & ((UINT64_C(1) << {e}) - 1);\n}}", 1),
-    ])
+    patch_file(
+        ref + "/setup/find_min_poly.c",
+        [
+            ("UINT64_C(0x1000018000003)", f"UINT64_C({min_poly})", 1),
+            ("for (i=0; i<48; i++)", f"for (i=0; i<{e}; i++)", 3),
+            ("(UINT64_C(1) << 48)", f"(UINT64_C(1) << {e})", 3),
+            ("  return a;\n}", f"  return a & ((UINT64_C(1) << {e}) - 1);\n}}", 1),
+        ],
+    )
 
     # ---- setup/find_best_exps.c -----------------------------------------
-    patch_file(ref + "/setup/find_best_exps.c", [
-        ("% 96)", f"% {e2})", 6),
-        ("rand() % 96", f"rand() % {e2}", 6),
-        ("bigint_powi(q2m1, 2, 96)", f"bigint_powi(q2m1, 2, {e2})", 1),
-        ("% 144)", f"% {e3})", 4),
-        ("rand() % 144", f"rand() % {e3}", 4),
-        ("bigint_powi(q3m1, 2, 144)", f"bigint_powi(q3m1, 2, {e3})", 1),
-        ("bigint_powi(q1m1, 2, 48)", f"bigint_powi(q1m1, 2, {e})", 1),
-    ])
+    patch_file(
+        ref + "/setup/find_best_exps.c",
+        [
+            ("% 96)", f"% {e2})", 6),
+            ("rand() % 96", f"rand() % {e2}", 6),
+            ("bigint_powi(q2m1, 2, 96)", f"bigint_powi(q2m1, 2, {e2})", 1),
+            ("% 144)", f"% {e3})", 4),
+            ("rand() % 144", f"rand() % {e3}", 4),
+            ("bigint_powi(q3m1, 2, 144)", f"bigint_powi(q3m1, 2, {e3})", 1),
+            ("bigint_powi(q1m1, 2, 48)", f"bigint_powi(q1m1, 2, {e})", 1),
+        ],
+    )
 
     # ---- setup/find_m1_m2.c ---------------------------------------------
-    patch_file(ref + "/setup/find_m1_m2.c", [
-        ("for (i=0; i<48; i++)", f"for (i=0; i<{e}; i++)", 1),
-        ("(UINT64_C(1) << 48)", f"(UINT64_C(1) << {e})", 3),
-        ("% 48)", f"% {e})", 16),
-        ("  return a;\n}", f"  return a & ((UINT64_C(1) << {e}) - 1);\n}}", 1),
-    ])
+    patch_file(
+        ref + "/setup/find_m1_m2.c",
+        [
+            ("for (i=0; i<48; i++)", f"for (i=0; i<{e}; i++)", 1),
+            ("(UINT64_C(1) << 48)", f"(UINT64_C(1) << {e})", 3),
+            ("% 48)", f"% {e})", 16),
+            ("  return a;\n}", f"  return a & ((UINT64_C(1) << {e}) - 1);\n}}", 1),
+        ],
+    )
 
-    print(f"patch_dme.py: set field degree e={e}, min_poly={min_poly} "
-          f"(2e={e2}, 3e={e3})")
+    print(
+        f"patch_dme.py: set field degree e={e}, min_poly={min_poly} (2e={e2}, 3e={e3})"
+    )
 
 
 if __name__ == "__main__":

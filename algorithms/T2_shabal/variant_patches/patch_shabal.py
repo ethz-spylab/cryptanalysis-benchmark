@@ -49,9 +49,7 @@ assert "SHABAL_ROUNDS_PER_BLOCK" not in src, "patch already applied"
 #    (replacing the spec default of 3), so the value travels with the
 #    repacked source instead of via a `-D` compiler flag.
 PARAM_P_ANCHOR = "#ifndef SHABAL_PARAM_P\n#define SHABAL_PARAM_P   3\n#endif\n"
-PARAM_P_REPLACE = (
-    "#ifndef SHABAL_PARAM_P\n#define SHABAL_PARAM_P   %d\n#endif\n" % P
-)
+PARAM_P_REPLACE = "#ifndef SHABAL_PARAM_P\n#define SHABAL_PARAM_P   %d\n#endif\n" % P
 assert PARAM_P_ANCHOR in src, "SHABAL_PARAM_P default block not found"
 src = src.replace(PARAM_P_ANCHOR, PARAM_P_REPLACE, 1)
 

@@ -27,6 +27,7 @@ Usage: patch_ding.py <path/to/Reference_Implementation> <N>
 Fails loudly (non-zero exit) if any expected substitution makes zero changes,
 so a botched patch can never silently yield an unweakened variant.
 """
+
 import os
 import re
 import sys
@@ -53,9 +54,7 @@ def patch_file(path, pattern, replacement, label, expected=None):
 
 def main() -> int:
     if len(sys.argv) != 3:
-        sys.stderr.write(
-            "usage: patch_ding.py <Reference_Implementation dir> <N>\n"
-        )
+        sys.stderr.write("usage: patch_ding.py <Reference_Implementation dir> <N>\n")
         return 2
 
     ref_dir = sys.argv[1]

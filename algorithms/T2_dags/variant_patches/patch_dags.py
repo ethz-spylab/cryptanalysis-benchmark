@@ -33,6 +33,7 @@ normalises to LF only after extraction).
 Usage:
     patch_dags.py <path/to/param.h> <n0_w>
 """
+
 import sys
 
 BASE_N0_W = 176  # shipped DAG 96 full-strength error weight
@@ -53,8 +54,10 @@ def main():
     if w <= 0:
         sys.exit(f"ERROR: n0_w={w} must be positive")
     if w >= BASE_N0_W:
-        sys.exit(f"ERROR: n0_w={w} must be < {BASE_N0_W} (the shipped "
-                 "full-strength base); refusing to emit an unweakened variant")
+        sys.exit(
+            f"ERROR: n0_w={w} must be < {BASE_N0_W} (the shipped "
+            "full-strength base); refusing to emit an unweakened variant"
+        )
 
     with open(path, "r", newline="") as f:
         text = f.read()
@@ -63,16 +66,20 @@ def main():
     new = f"#define n0_w {w}"
     count = text.count(old)
     if count != 1:
-        sys.exit(f"ERROR: expected exactly 1 occurrence of {old!r}, found "
-                 f"{count} in {path}; param.h layout changed -- refusing to "
-                 "continue")
+        sys.exit(
+            f"ERROR: expected exactly 1 occurrence of {old!r}, found "
+            f"{count} in {path}; param.h layout changed -- refusing to "
+            "continue"
+        )
 
     text = text.replace(old, new)
     with open(path, "w", newline="") as f:
         f.write(text)
 
-    print(f"patched {path}: n0_w {BASE_N0_W} -> {w} "
-          f"([1216,512] GF(2^6) GS code; ISD error weight lowered)")
+    print(
+        f"patched {path}: n0_w {BASE_N0_W} -> {w} "
+        f"([1216,512] GF(2^6) GS code; ISD error weight lowered)"
+    )
 
 
 if __name__ == "__main__":

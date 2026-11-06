@@ -26,6 +26,7 @@ Usage:  patch_lima.py <ExtractRoot=.../Lima> <band: easy|medium|hard>
 Fails loudly (non-zero exit) if any expected substitution count is wrong, so a
 broken patch aborts generation instead of silently shipping an unweakened set.
 """
+
 import os
 import sys
 
@@ -34,19 +35,40 @@ import sys
 #   PK = 1 + 2*t*N ; SK = 1 + 3*t*N ; CT = 3 + t*ell + t*N
 BANDS = {
     "easy": dict(  # N=262 p=263(safe) q=9695233~2^23.21  -> core-SVP ~2^34
-        N=262, e=10, q=9695233,
-        a0=993268, a1=2270620, b0=7087084, b1=9199113,
-        sk=2359, pk=1573, ct=1557,
+        N=262,
+        e=10,
+        q=9695233,
+        a0=993268,
+        a1=2270620,
+        b0=7087084,
+        b1=9199113,
+        sk=2359,
+        pk=1573,
+        ct=1557,
     ),
     "medium": dict(  # N=382 p=383(safe) q=12942337~2^23.63 -> core-SVP ~2^50
-        N=382, e=10, q=12942337,
-        a0=7727168, a1=6417516, b0=4595133, b1=8963099,
-        sk=3439, pk=2293, ct=1917,
+        N=382,
+        e=10,
+        q=12942337,
+        a0=7727168,
+        a1=6417516,
+        b0=4595133,
+        b1=8963099,
+        sk=3439,
+        pk=2293,
+        ct=1917,
     ),
     "hard": dict(  # N=502 p=503(safe) q=10816513~2^23.37 -> core-SVP ~2^66
-        N=502, e=10, q=10816513,
-        a0=4695314, a1=887989, b0=3871837, b1=8702360,
-        sk=4519, pk=3013, ct=2277,
+        N=502,
+        e=10,
+        q=10816513,
+        a0=4695314,
+        a1=887989,
+        b0=3871837,
+        b1=8702360,
+        sk=4519,
+        pk=3013,
+        ct=2277,
     ),
 }
 
@@ -88,38 +110,52 @@ def main():
         f"{p['N']}, {p['e']}, {p['a0']}, {p['a1']}, {p['b0']}, {p['b1']}, "
         f"&lima_fft_sp_1018 }};"
     )
-    patch_file(os.path.join(lib, "lima.c"), [
-        (
-            "lima_params_t lima_sp_1018 = { LIMA_SP, &mod12521473, 1018, 11,  "
-            "1561269,   8501297, 9597006, 10910567, &lima_fft_sp_1018 };",
-            new_struct, 1,
-        ),
-        ("case 1018: B[0]=2; break;", f"case {p['N']}: B[0]=2; break;", 2),
-    ])
+    patch_file(
+        os.path.join(lib, "lima.c"),
+        [
+            (
+                "lima_params_t lima_sp_1018 = { LIMA_SP, &mod12521473, 1018, 11,  "
+                "1561269,   8501297, 9597006, 10910567, &lima_fft_sp_1018 };",
+                new_struct,
+                1,
+            ),
+            ("case 1018: B[0]=2; break;", f"case {p['N']}: B[0]=2; break;", 2),
+        ],
+    )
 
     # 2) modp.c — repoint the modulus value (keep the variable name).
-    patch_file(os.path.join(lib, "modp.c"), [
-        ("mod12521473 = { 12521473, 3 }",
-         f"mod12521473 = {{ {p['q']}, 3 }}", 1),
-    ])
+    patch_file(
+        os.path.join(lib, "modp.c"),
+        [
+            ("mod12521473 = { 12521473, 3 }", f"mod12521473 = {{ {p['q']}, 3 }}", 1),
+        ],
+    )
 
     # 3) api.h — new serialized sizes for the LIMASZ==1018 arm.
-    patch_file(os.path.join(kem, "api.h"), [
-        ("CRYPTO_SECRETKEYBYTES 9163", f"CRYPTO_SECRETKEYBYTES {p['sk']}", 1),
-        ("CRYPTO_PUBLICKEYBYTES 6109", f"CRYPTO_PUBLICKEYBYTES {p['pk']}", 1),
-        ("CRYPTO_CIPHERTEXTBYTES 4209", f"CRYPTO_CIPHERTEXTBYTES {p['ct']}", 1),
-    ])
+    patch_file(
+        os.path.join(kem, "api.h"),
+        [
+            ("CRYPTO_SECRETKEYBYTES 9163", f"CRYPTO_SECRETKEYBYTES {p['sk']}", 1),
+            ("CRYPTO_PUBLICKEYBYTES 6109", f"CRYPTO_PUBLICKEYBYTES {p['pk']}", 1),
+            ("CRYPTO_CIPHERTEXTBYTES 4209", f"CRYPTO_CIPHERTEXTBYTES {p['ct']}", 1),
+        ],
+    )
 
     # 4) LimaAPI.c — byte-length-based dispatch pair must match new sizes.
-    patch_file(os.path.join(lib, "LimaAPI.c"), [
-        ("sklen==9163 && pklen==6109",
-         f"sklen=={p['sk']} && pklen=={p['pk']}", 1),
-    ])
+    patch_file(
+        os.path.join(lib, "LimaAPI.c"),
+        [
+            ("sklen==9163 && pklen==6109", f"sklen=={p['sk']} && pklen=={p['pk']}", 1),
+        ],
+    )
 
     # 5) kem.c — shrink the CCA encap seed (ell) to 256 bits so ell <= N.
-    patch_file(os.path.join(kem, "kem.c"), [
-        ("CRYPTO_BYTES,seed,48,pk", "CRYPTO_BYTES,seed,32,pk", 1),
-    ])
+    patch_file(
+        os.path.join(kem, "kem.c"),
+        [
+            ("CRYPTO_BYTES,seed,48,pk", "CRYPTO_BYTES,seed,32,pk", 1),
+        ],
+    )
 
     print(f"patched LIMA -> band={band} N={p['N']} q={p['q']}")
 

@@ -7,6 +7,7 @@ Rewrites the single `#define ESSENCE_COMPRESS_NUM_STEPS <N>` line to the given
 value. Fails loudly (non-zero exit) if it does not change exactly one line, so a
 silent unweakened variant can never be produced.
 """
+
 import re
 import sys
 
@@ -24,18 +25,17 @@ def main() -> int:
         src = f.read()
 
     # Match only the active macro definition, not the surrounding comments.
-    pattern = re.compile(r"^(#define\s+ESSENCE_COMPRESS_NUM_STEPS\s+)\d+",
-                         re.MULTILINE)
+    pattern = re.compile(r"^(#define\s+ESSENCE_COMPRESS_NUM_STEPS\s+)\d+", re.MULTILINE)
     new_src, n = pattern.subn(r"\g<1>" + value, src)
     if n != 1:
         sys.stderr.write(
-            f"error: expected exactly 1 substitution, made {n} in {path}\n")
+            f"error: expected exactly 1 substitution, made {n} in {path}\n"
+        )
         return 1
 
     with open(path, "w") as f:
         f.write(new_src)
-    sys.stderr.write(
-        f"patched ESSENCE_COMPRESS_NUM_STEPS -> {value} in {path}\n")
+    sys.stderr.write(f"patched ESSENCE_COMPRESS_NUM_STEPS -> {value} in {path}\n")
     return 0
 
 

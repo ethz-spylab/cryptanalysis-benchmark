@@ -8,6 +8,7 @@ Parameters (lotus128):  DIM=576, PT=128, MOD=8192 (q=2^13), LOG2_MOD=13.
 ct has DIM+PT = 704 elements = 5*128 + 64.
 sk (S only) has DIM*PT = 73728 elements -> pack_128dg, 6 bits each.
 """
+
 import struct
 
 DIM = 576
@@ -41,11 +42,15 @@ def pack_128elems(op):
     for i in range(n):
         ptr[3 * n + i] = op[3 * n + i] | ((op[6 * n + i] << 12) & MS3B)
     for i in range(n):
-        ptr[4 * n + i] = op[4 * n + i] | (((op[6 * n + i] << 15) | (op[7 * n + i] << 2)) & MS3B)
+        ptr[4 * n + i] = op[4 * n + i] | (
+            ((op[6 * n + i] << 15) | (op[7 * n + i] << 2)) & MS3B
+        )
     for i in range(n):
         ptr[5 * n + i] = op[5 * n + i] | ((op[7 * n + i] << 5) & MS3B)
     for i in range(n // 2):
-        ptr[6 * n + i] = (op[7 * n + i] & LOWER8) | ((op[7 * n + n // 2 + i] & LOWER8) << 8)
+        ptr[6 * n + i] = (op[7 * n + i] & LOWER8) | (
+            (op[7 * n + n // 2 + i] & LOWER8) << 8
+        )
     return _u16le(ptr)
 
 
@@ -62,11 +67,15 @@ def pack_64elems(op):
     for i in range(n):
         ptr[3 * n + i] = op[3 * n + i] | ((op[6 * n + i] << 12) & MS3B)
     for i in range(n):
-        ptr[4 * n + i] = op[4 * n + i] | (((op[6 * n + i] << 15) | (op[7 * n + i] << 2)) & MS3B)
+        ptr[4 * n + i] = op[4 * n + i] | (
+            ((op[6 * n + i] << 15) | (op[7 * n + i] << 2)) & MS3B
+        )
     for i in range(n):
         ptr[5 * n + i] = op[5 * n + i] | ((op[7 * n + i] << 5) & MS3B)
     for i in range(n // 2):
-        ptr[6 * n + i] = (op[7 * n + i] & LOWER8) | ((op[7 * n + n // 2 + i] & LOWER8) << 8)
+        ptr[6 * n + i] = (op[7 * n + i] & LOWER8) | (
+            (op[7 * n + n // 2 + i] & LOWER8) << 8
+        )
     return _u16le(ptr)
 
 
@@ -76,9 +85,9 @@ def pack_ct(ct):
     idx = 0
     full = (DIM + PT) // 128  # 5
     for _ in range(full):
-        out += pack_128elems(ct[idx:idx + 128])
+        out += pack_128elems(ct[idx : idx + 128])
         idx += 128
-    out += pack_64elems(ct[idx:idx + 64])  # remaining 64
+    out += pack_64elems(ct[idx : idx + 64])  # remaining 64
     return bytes(out)
 
 
@@ -87,18 +96,24 @@ def pack_128dg(op):
     n = 16
     ptr = [0] * 48
     for i in range(n):
-        ptr[0 * n + i] = ((op[0 * n + i] & 0x3F)
-                          | ((op[1 * n + i] & 0x3F) << 6)
-                          | ((op[2 * n + i] & 0x3F) << 12)) & 0xFFFF
+        ptr[0 * n + i] = (
+            (op[0 * n + i] & 0x3F)
+            | ((op[1 * n + i] & 0x3F) << 6)
+            | ((op[2 * n + i] & 0x3F) << 12)
+        ) & 0xFFFF
     for i in range(n):
-        ptr[1 * n + i] = (((op[2 * n + i] & 0x3F) >> 4)
-                          | ((op[3 * n + i] & 0x3F) << 2)
-                          | ((op[4 * n + i] & 0x3F) << 8)
-                          | ((op[5 * n + i] & 0x3F) << 14)) & 0xFFFF
+        ptr[1 * n + i] = (
+            ((op[2 * n + i] & 0x3F) >> 4)
+            | ((op[3 * n + i] & 0x3F) << 2)
+            | ((op[4 * n + i] & 0x3F) << 8)
+            | ((op[5 * n + i] & 0x3F) << 14)
+        ) & 0xFFFF
     for i in range(n):
-        ptr[2 * n + i] = (((op[5 * n + i] & 0x3F) >> 2)
-                          | ((op[6 * n + i] & 0x3F) << 4)
-                          | ((op[7 * n + i] & 0x3F) << 10)) & 0xFFFF
+        ptr[2 * n + i] = (
+            ((op[5 * n + i] & 0x3F) >> 2)
+            | ((op[6 * n + i] & 0x3F) << 4)
+            | ((op[7 * n + i] & 0x3F) << 10)
+        ) & 0xFFFF
     return _u16le(ptr)
 
 
@@ -108,6 +123,6 @@ def pack_sk(S):
     idx = 0
     n = (DIM * PT) // 128
     for _ in range(n):
-        out += pack_128dg(S[idx:idx + 128])
+        out += pack_128dg(S[idx : idx + 128])
         idx += 128
     return bytes(out)

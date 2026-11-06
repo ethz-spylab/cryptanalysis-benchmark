@@ -28,6 +28,7 @@ Usage:  patch_dynamicsha2.py <file> <rounds>
 Asserts EXACTLY 2 outer loops were rewritten; fails loudly otherwise so a
 silent unweakened variant can never be produced.
 """
+
 import re
 import sys
 
@@ -50,9 +51,7 @@ def main() -> int:
     path = sys.argv[1]
     rounds = int(sys.argv[2])
     if not (1 <= rounds < 8):
-        sys.stderr.write(
-            "error: rounds must satisfy 1 <= rounds < 8 (full strength)\n"
-        )
+        sys.stderr.write("error: rounds must satisfy 1 <= rounds < 8 (full strength)\n")
         return 2
 
     with open(path, "r") as fh:

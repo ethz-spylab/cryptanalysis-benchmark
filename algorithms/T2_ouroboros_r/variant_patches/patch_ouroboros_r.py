@@ -13,6 +13,7 @@ Fails loudly (non-zero exit) if it does not change exactly one definition, so a
 mis-applied patch aborts generation rather than silently shipping an unweakened
 variant.
 """
+
 import re
 import sys
 
@@ -39,8 +40,7 @@ def main() -> int:
 
     if n != 1:
         sys.stderr.write(
-            f"ERROR: expected exactly 1 definition of {macro} in {path}, "
-            f"found {n}\n"
+            f"ERROR: expected exactly 1 definition of {macro} in {path}, found {n}\n"
         )
         return 1
 

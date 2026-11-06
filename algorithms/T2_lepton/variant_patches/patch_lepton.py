@@ -16,6 +16,7 @@ so no other edit is needed. Lowering PARAM_K reduces the Ring-LPN secret/error
 weight -> the syndrome-decoding (DOOM-Prange) target weight drops from 2*16=32 to
 2*K, making the ISD break reliably in-budget. Fails loudly if 0 occurrences change.
 """
+
 import os
 import re
 import sys
@@ -45,7 +46,9 @@ def main():
     # MODER_* use 19/24/28/37, PARAN_* use 35/40). PARAM_3K uses `3*PARAM_K`.
     new, n = re.subn(r"(#define\s+PARAM_K\s+)16\b", r"\g<1>%d" % K, text)
     if n < 1:
-        die("no substitution for PARAM_K (expected `#define PARAM_K 16` in LIGHT_I block)")
+        die(
+            "no substitution for PARAM_K (expected `#define PARAM_K 16` in LIGHT_I block)"
+        )
     if n > 1:
         die("expected exactly 1 PARAM_K substitution, got %d" % n)
     open(params, "w", encoding="latin-1").write(new)

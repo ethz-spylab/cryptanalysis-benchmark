@@ -49,17 +49,89 @@
   },
   "@type": "sc:Dataset",
   "name": "CryptanalysisBench",
-  "description": "CryptanalysisBench is a benchmark of formal cryptanalytic security games for evaluating the ability of LLM-based agents to find and exploit weaknesses in real-world cryptographic algorithms. Each task wraps a reference C implementation of a cryptographic algorithm in a uniform CLI shim and exposes one or more security games (e.g., key recovery, indistinguishability, AEAD tag forgery, KEM private-key recovery, hash collision/preimage, signature forgery) via a FastAPI game controller. An agent must produce a self-contained attack script that wins the chosen game; a verifier grades the attack against an automated test harness. The benchmark covers 113 algorithms spanning efficiently-broken legacy schemes (T1), schemes with only slow or no known attacks (T2), and frontier modern primitives exposed at full strength (Cbase) or in round-reduced challenge variants (C), across symmetric ciphers, AEAD, hash functions, KEMs, public-key encryption, and digital signatures.",
+  "description": "CryptanalysisBench is a benchmark of formal cryptanalytic security games for evaluating the ability of LLM-based agents to find and exploit weaknesses in real-world cryptographic algorithms. Each task wraps a reference C implementation of a cryptographic algorithm in a uniform CLI shim and exposes one or more security games (e.g., key recovery, indistinguishability, AEAD tag forgery, KEM private-key recovery, hash collision/preimage, signature forgery) via a FastAPI game controller. An agent must produce a self-contained attack script that wins the chosen game; a verifier grades the attack against an automated test harness. The benchmark covers 191 algorithms (49 T1, 135 T2, 7 Cbase), drawn primarily from four NIST standardization processes (AES, SHA-3, Lightweight Cryptography, Post-Quantum Cryptography), spanning efficiently-broken schemes (T1), schemes with only slow or no known attacks (T2), and frontier modern primitives exposed at full strength (Cbase) or in round-reduced challenge variants (C), across symmetric ciphers, AEAD, hash functions, KEMs, public-key encryption, and digital signatures. For T2 and Cbase algorithms, generate_harbor_tasks.sh additionally emits scaled-down difficulty variants (easy/medium/hard) from the patches under variant_patches/.",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
-  "url": "https://anonymous.4open.science/r/cryptanalysis_benchmark-53FF/",
+  "url": "https://github.com/ethz-spylab/cryptanalysis-benchmark",
   "version": "1.0.0",
-  "datePublished": "2026-05-06",
+  "datePublished": "2026-07-21",
   "license": "https://spdx.org/licenses/MIT.html",
-  "citeAs": "@inproceedings{cryptobench2026, title={CryptanalysisBench: Evaluating LLM Agents on Cryptanalytic Security Games}, author={Anonymous}, booktitle={NeurIPS 2026 Evaluations and Datasets Track}, year={2026} }",
+  "citeAs": "@inproceedings{fluri2026cryptanalysisbench, title={CryptanalysisBench: Can LLMs do cryptanalysis?}, author={Fluri, Lukas and Shafran, Avital and Carlini, Nicholas and Jagielski, Matthew and Nasr, Milad and Dunkelman, Orr and Ronen, Eyal and Tram{\\`e}r, Florian}, booktitle={Advances in Neural Information Processing Systems (NeurIPS), Evaluations and Datasets Track}, year={2026} }",
   "creator": [
     {
-      "@type": "sc:Organization",
-      "name": "Anonymous (double-blind submission to NeurIPS 2026 E&D Track)"
+      "@type": "sc:Person",
+      "name": "Lukas Fluri",
+      "affiliation": [
+        {
+          "@type": "sc:Organization",
+          "name": "ETH Zurich"
+        },
+        {
+          "@type": "sc:Organization",
+          "name": "Solaris Research"
+        }
+      ]
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Avital Shafran",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "ETH Zurich"
+      }
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Nicholas Carlini",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "Anthropic"
+      }
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Matthew Jagielski",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "Anthropic"
+      }
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Milad Nasr",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "Anthropic"
+      }
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Orr Dunkelman",
+      "affiliation": [
+        {
+          "@type": "sc:Organization",
+          "name": "University of Haifa"
+        },
+        {
+          "@type": "sc:Organization",
+          "name": "Technische Universit\u00e4t Berlin"
+        }
+      ]
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Eyal Ronen",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "Tel Aviv University"
+      }
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Florian Tram\u00e8r",
+      "affiliation": {
+        "@type": "sc:Organization",
+        "name": "ETH Zurich"
+      }
     }
   ],
   "keywords": [
@@ -72,32 +144,29 @@
   "distribution": [
     {
       "@type": "cr:FileObject",
-      "@id": "release-tarball",
-      "name": "release-tarball",
-      "description": "Tagged source release of CryptanalysisBench, containing algorithms/, security_game_framework/, generate_harbor_tasks.sh, and tasks_manifest.csv.",
-      "contentUrl": "https://osf.io/download/69fa88b20848b983dbb651f9",
-      "encodingFormat": "application/zip",
-      "sha256": "55ca31475e8fcac678c9079541de16f479f6761f3c8195f30cf7041ab212c82e"
+      "@id": "repository",
+      "name": "repository",
+      "description": "Public git repository of CryptanalysisBench, containing algorithms/, security_game_framework/, generate_harbor_tasks.sh, and tasks_manifest.csv.",
+      "contentUrl": "https://github.com/ethz-spylab/cryptanalysis-benchmark",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
     },
     {
       "@type": "cr:FileObject",
       "@id": "tasks-manifest",
       "name": "tasks_manifest.csv",
       "description": "One row per cryptanalysis task in the benchmark, with the security class, scheme type, upstream algorithm source URL, allowed security games, presence of a reference solution, and per-task agent/verifier timeouts.",
-      "containedIn": {
-        "@id": "release-tarball"
-      },
-      "contentUrl": "tasks_manifest.csv",
+      "contentUrl": "https://raw.githubusercontent.com/ethz-spylab/cryptanalysis-benchmark/main/tasks_manifest.csv",
       "encodingFormat": "text/csv",
-      "sha256": "6d964c034bffe45d107eab6aa161250ddac44b045a551bea3759c82e243a582c"
+      "sha256": "ff088fa2d1495c6fba0b7d5838cebc5054cc42c5dc13bbbf3bacd07ccd18b21c"
     },
     {
       "@type": "cr:FileSet",
       "@id": "algorithm-tasks",
       "name": "algorithm-tasks",
-      "description": "Per-algorithm task folders. Each folder contains task.toml (Harbor task metadata), environment/algorithm_src/ (upstream C reference implementation plus build_cli.sh, cli.c, cli_stdin.h), environment/possible_security_games.yml (allowlist of compatible security games), and optionally solution/solve.sh (reference attack used by the oracle agent).",
+      "description": "Per-algorithm task folders. Each folder contains task.toml (Harbor task metadata), environment/algorithm_src/ (upstream C reference implementation plus build_cli.sh, cli.c, cli_stdin.h), environment/possible_security_games.yml (allowlist of compatible security games), optionally solution/solve.sh (reference attack used by the oracle agent), and, for algorithms with scaled-down variants, generate_variants.sh plus variant_patches/ (parameter-reduction patches applied at build time).",
       "containedIn": {
-        "@id": "release-tarball"
+        "@id": "repository"
       },
       "encodingFormat": "text/x-c",
       "includes": "algorithms/*/**"
@@ -108,7 +177,7 @@
       "name": "security-game-framework",
       "description": "Shared framework merged into every task: FastAPI game controller, the security-game implementations under environment/game-controller/security_games/, the agent-facing CLI client, the agent instruction template, and the verifier test harness.",
       "containedIn": {
-        "@id": "release-tarball"
+        "@id": "repository"
       },
       "encodingFormat": "text/x-python",
       "includes": "security_game_framework/**"
@@ -119,7 +188,7 @@
       "name": "generate_harbor_tasks.sh",
       "description": "Build script that combines algorithms/<algo>/ with security_game_framework/ into a runnable Harbor task folder tasks_<DATE>/<algo>/.",
       "containedIn": {
-        "@id": "release-tarball"
+        "@id": "repository"
       },
       "contentUrl": "generate_harbor_tasks.sh",
       "encodingFormat": "application/x-sh"
@@ -259,13 +328,16 @@
     }
   ],
   "rai:dataLimitations": [
-    "Coverage is curated, not exhaustive: the benchmark contains 113 algorithms, biased towards NIST submission packages (PQC, Lightweight Cryptography, SHA-3) plus a handful of classical and modern ciphers. It is not representative of all deployed cryptography.",
+    "Coverage is curated, not exhaustive: the benchmark contains 191 algorithms, biased towards NIST submission packages (AES, SHA-3, Lightweight Cryptography, PQC) plus a handful of classical and modern ciphers. It is not representative of all deployed cryptography.",
     "Each task targets a specific formal security game; a 'broken' result on one game does not transfer to other adversarial models or to the algorithm's overall security.",
     "Tasks in the Cbase / C (frontier) tiers are expected to remain unbroken by current LLM agents and produce saturated 0-reward signals; they serve as upper-bound stressors rather than discriminative items.",
-    "The verifier grades attack-script success against an automated test harness with finite attack rounds, not a formal cryptographic proof of insecurity."
+    "The verifier grades attack-script success against an automated test harness with finite attack rounds, not a formal cryptographic proof of insecurity.",
+    "Scaled-down variants are approximate: the parameter reductions (partly proposed with LLM assistance) can introduce weaknesses unrelated to the original design (scaling artifacts), and a break of a variant does not imply a break of the full-strength primitive.",
+    "Reference implementations are kept as originally published, including their bugs; some tasks can be solved by exploiting an implementation defect rather than a weakness of the underlying design.",
+    "Most T1 attacks are old and publicly documented, so success on T1 may reflect recall of published cryptanalysis rather than independent rediscovery."
   ],
   "rai:dataBiases": [
-    "Algorithm selection is biased towards NIST-submission candidates (PQC, lightweight cryptography, SHA-3). Algorithms with publicly available reference implementations and accompanying cryptanalysis literature are over-represented relative to proprietary or unpublished schemes.",
+    "Algorithm selection is biased towards NIST-submission candidates (AES, SHA-3, lightweight cryptography, PQC). Algorithms with publicly available reference implementations and accompanying cryptanalysis literature are over-represented relative to proprietary or unpublished schemes.",
     "Within the T1 (efficiently breakable) tier, algorithms are over-represented relative to their real-world deployment, by design: the goal is to test agent capability against weaknesses that are recoverable in principle, so the tier intentionally collects schemes that have well-documented attacks.",
     "Difficulty tiers (T1/T2/Cbase/C) are assigned by the authors based on published cryptanalysis at the time of curation; this judgement may drift as new attacks are discovered.",
     "The benchmark surfaces only English-language documentation and attack literature; cryptanalysis published only in other languages is under-represented."
@@ -278,15 +350,17 @@
     "Stress-testing the security of cryptographic algorithms against LLM-based agents.",
     "Out-of-scope use cases: training data for general-purpose code LLMs and production cryptographic guidance."
   ],
-  "rai:dataSocialImpact": "Positive impact: improves the rigour with which AI agents are measured on a scientifically grounded class of security tasks, and lowers the bar to running such evaluations by packaging 113 reference implementations in a uniform CLI contract. Risk: the benchmark publishes attack scripts (under solution/solve.sh) for already-broken cryptographic algorithms. Mitigations: (1) T1 inclusion is restricted to algorithms publicly known to be insecure (NIST-rejected candidates and historical schemes with published cryptanalysis), so no novel attacks on currently-deployed cryptography are released; (2) the security games are formal academic models, not exfiltration tooling.",
+  "rai:dataSocialImpact": "Positive impact: improves the rigour with which AI agents are measured on a scientifically grounded class of security tasks, lowers the bar to running such evaluations by packaging 191 reference implementations in a uniform CLI contract, and supports stress-testing of candidate schemes before standardization or deployment. Risk: the benchmark is dual-use and publishes reference attack scripts (solution/solve.sh) for 51 tasks: all 49 T1 algorithms and two T2 algorithms (RankSign and SpoC). Mitigations: (1) T1 is restricted to algorithms with publicly known practical attacks, and the RankSign script follows a published attack; (2) the SpoC script implements a key-recovery attack found by LLM agents during this work that was, to the authors' knowledge, previously unpublished; SpoC is a NIST Lightweight Cryptography candidate that was not selected for standardization; (3) no previously unpublished attacks on standardized or widely deployed cryptography are released; (4) the security games are formal academic models, not exfiltration tooling.",
   "rai:hasSyntheticData": true,
   "prov:wasDerivedFrom": [
-    "Reference implementations of each cryptographic algorithm. Per-task upstream URLs are recorded in algorithms/<task>/task.toml under [metadata].algorithm_source and surfaced in tasks_manifest.csv (column algorithm_source_url). Sources include NIST PQC submissions (csrc.nist.gov), NIST SHA-3 candidate archive (csrc.nist.rip), NIST Lightweight Cryptography submissions, the BIKE suite (bikesuite.org), Classic McEliece (classic.mceliece.org), NTRU Prime (ntruprime.cr.yp.to), and a small number of original-author repositories on GitHub. Each source is used unmodified except for a thin uniform CLI shim (cli.c + cli_stdin.h) added by the authors."
+    "Reference implementations of each cryptographic algorithm. Per-task upstream URLs are recorded in algorithms/<task>/task.toml under [metadata].algorithm_source and surfaced in tasks_manifest.csv (column algorithm_source_url). Sources include NIST PQC, SHA-3 and Lightweight Cryptography submission packages (csrc.nist.gov, csrc.nist.rip), archived AES-candidate and other historical sources (web.archive.org, schneier.com), the BIKE suite (bikesuite.org), Classic McEliece (classic.mceliece.org), NTRU Prime (ntruprime.cr.yp.to), and a small number of original-author repositories on GitHub. Full-strength tasks use each source unmodified except for a thin uniform CLI shim (cli.c + cli_stdin.h) added by the authors; scaled-down variants additionally apply the parameter patches under variant_patches/."
   ],
   "prov:wasGeneratedBy": [
     "Per-task CLI shim (cli.c + cli_stdin.h) authored by the benchmark authors to provide a uniform 'key: value' line-oriented interface on top of each upstream reference implementation's native API (e.g., crypto_aead_encrypt for AEAD, crypto_kem_keypair for KEMs).",
     "Security-game framework (security_game_framework/) authored from scratch: FastAPI game controller, per-game stage logic under environment/game-controller/security_games/, the agent-facing client CLI, the agent instruction template, and the pytest-based verifier in tests/.",
     "Build pipeline: generate_harbor_tasks.sh copy-merges algorithms/<algo>/ with security_game_framework/ (cp -rn semantics, so algorithm-specific files override framework defaults), runs prepare_prompt.py to substitute timeout placeholders, and emits a self-contained tasks_<DATE>/ folder runnable by Harbor.",
+    "Scaled-down variants: per-algorithm generate_variants.sh scripts apply the committed patches under variant_patches/ to reduce rounds, key sizes, or other parameters, producing easy/medium/hard variants. Where established conventions exist (e.g. round-reduced AES and ChaCha) standard reduced versions are used; for the remaining algorithms the parameter choices were proposed with the assistance of an LLM (Claude Opus 4.8) given the scheme specification, targeting roughly 2^30-2^40, 2^40-2^60 and 2^60-2^80 operations.",
     "Synthetic plaintexts, keys, nonces, and other random values are produced at runtime by each algorithm's CLI from a CSPRNG (/dev/urandom). No human annotation, no crowdsourcing, no scraping of user-generated content."
-  ]
+  ],
+  "dateModified": "2026-11-06"
 }

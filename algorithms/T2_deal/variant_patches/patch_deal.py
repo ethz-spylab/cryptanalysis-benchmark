@@ -28,6 +28,7 @@ Usage: patch_deal.py <path/to/deal.c> <rounds>
 Asserts exactly 2*(6-R) call lines were removed; fails loudly otherwise so a
 mis-apply can never silently ship an unweakened variant.
 """
+
 import re
 import sys
 

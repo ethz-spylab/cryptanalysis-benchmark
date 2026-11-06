@@ -432,4 +432,3 @@ Power of the Attack
        the compiler).
 
                                        [crypto-feal10.JPG]
-

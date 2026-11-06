@@ -1,5 +1,7 @@
 # CryptanalysisBench
 
+> **Accepted at NeurIPS 2026 (Evaluations and Datasets Track).** This repository accompanies the paper [CryptanalysisBench: Can LLMs do cryptanalysis?](https://cryptanalysis-bench.com)
+
 This is a benchmark to test LLM agents' capability to find and exploit weaknesses in *real-world* cryptographic algorithms.
 
 ## Setup

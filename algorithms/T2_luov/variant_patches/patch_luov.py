@@ -35,6 +35,7 @@ other sets sit inside /* ... */ comment blocks), and each replacement must chang
 exactly one occurrence. Fails loudly otherwise so generation cannot silently ship
 an unweakened variant.
 """
+
 import sys
 
 # Shipped active values of the selected luov-8-63-256 parameter set.
@@ -50,13 +51,21 @@ def main():
     v = int(sys.argv[3])
 
     if not (0 < m < BASE_M):
-        sys.exit(f"ERROR: m={m} must satisfy 0 < m < {BASE_M} (strictly weaker than base)")
+        sys.exit(
+            f"ERROR: m={m} must satisfy 0 < m < {BASE_M} (strictly weaker than base)"
+        )
     if not (0 < v < BASE_V):
-        sys.exit(f"ERROR: v={v} must satisfy 0 < v < {BASE_V} (strictly weaker than base)")
+        sys.exit(
+            f"ERROR: v={v} must satisfy 0 < v < {BASE_V} (strictly weaker than base)"
+        )
     if v <= m:
-        sys.exit(f"ERROR: v={v} must exceed m={m} to keep the unbalanced UOV structure valid")
+        sys.exit(
+            f"ERROR: v={v} must exceed m={m} to keep the unbalanced UOV structure valid"
+        )
     if m > 64:
-        sys.exit(f"ERROR: m={m} > 64 would change the Bitcontainer code path; keep m <= 64")
+        sys.exit(
+            f"ERROR: m={m} > 64 would change the Bitcontainer code path; keep m <= 64"
+        )
 
     with open(path, "r") as f:
         text = f.read()
@@ -69,9 +78,13 @@ def main():
     n_oil = text.count(old_oil)
     n_vin = text.count(old_vin)
     if n_oil != 1:
-        sys.exit(f"ERROR: expected exactly 1 occurrence of '{old_oil}' in {path}, found {n_oil}")
+        sys.exit(
+            f"ERROR: expected exactly 1 occurrence of '{old_oil}' in {path}, found {n_oil}"
+        )
     if n_vin != 1:
-        sys.exit(f"ERROR: expected exactly 1 occurrence of '{old_vin}' in {path}, found {n_vin}")
+        sys.exit(
+            f"ERROR: expected exactly 1 occurrence of '{old_vin}' in {path}, found {n_vin}"
+        )
 
     text = text.replace(old_oil, new_oil, 1)
     text = text.replace(old_vin, new_vin, 1)
@@ -87,9 +100,11 @@ def main():
     stored_cols = m * (m + 1) // 2
     pk = 32 + ((stored_cols * m) + 7) // 8
     sig = n * (8 // 8)
-    print(f"patched {path}: m/OIL_VARS={m} v/VINEGAR_VARS={v} "
-          f"n={n} | CRYPTO_PUBLICKEYBYTES={pk} CRYPTO_BYTES(sig)={sig} "
-          f"CRYPTO_SECRETKEYBYTES=32")
+    print(
+        f"patched {path}: m/OIL_VARS={m} v/VINEGAR_VARS={v} "
+        f"n={n} | CRYPTO_PUBLICKEYBYTES={pk} CRYPTO_BYTES(sig)={sig} "
+        f"CRYPTO_SECRETKEYBYTES=32"
+    )
 
 
 if __name__ == "__main__":

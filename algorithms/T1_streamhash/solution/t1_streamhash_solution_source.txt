@@ -36,6 +36,6 @@ Cheers,
 
 Tor E. Bjørstad
 
--- 
+--
 Tor E. Bjørstad - PhD student, Dept. of Informatics, UiB, Norway
 Mail: tor.bjorstad@ii.uib.no - Web: http://www.ii.uib.no/~tor/

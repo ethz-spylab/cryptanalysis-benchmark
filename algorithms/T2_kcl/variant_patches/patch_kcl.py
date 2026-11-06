@@ -18,6 +18,7 @@ called with n=256 (validated against the upstream source), so the same formulas
 yield correct, self-consistent negacyclic-NTT tables for any admissible degree
 (q=7681 admits a negacyclic NTT for every power-of-two n with 2n | q-1).
 """
+
 import re
 import sys
 
@@ -81,7 +82,9 @@ def gen_tables(n, log2n, phi=None):
     if phi is None:
         phi = find_root(2 * n, Q)
     if not is_primitive(phi, 2 * n, Q):
-        raise RuntimeError("phi=%d is not a primitive %d-th root mod %d" % (phi, 2 * n, Q))
+        raise RuntimeError(
+            "phi=%d is not a primitive %d-th root mod %d" % (phi, 2 * n, Q)
+        )
     omega = (phi * phi) % Q
     phiinv = inv(phi, Q)
     ninv = inv(n, Q)
@@ -106,7 +109,7 @@ def gen_tables(n, log2n, phi=None):
 
 
 def replace_define(text, name, value):
-    pat = re.compile(r'(#define\s+' + re.escape(name) + r'\s+)\S+')
+    pat = re.compile(r"(#define\s+" + re.escape(name) + r"\s+)\S+")
     new, count = pat.subn(lambda m: m.group(1) + str(value), text, count=1)
     if count != 1:
         raise RuntimeError("failed to replace #define %s (matched %d)" % (name, count))
@@ -115,7 +118,9 @@ def replace_define(text, name, value):
 
 def replace_table(text, name, values):
     # Replace only the brace-enclosed initializer of `const uint16_t NAME[...] = { ... };`
-    pat = re.compile(r'(const\s+uint16_t\s+' + re.escape(name) + r'\s*\[[^\]]*\]\s*=\s*)\{[^}]*\}')
+    pat = re.compile(
+        r"(const\s+uint16_t\s+" + re.escape(name) + r"\s*\[[^\]]*\]\s*=\s*)\{[^}]*\}"
+    )
     body = "{" + ", ".join(str(v) for v in values) + "}"
     new, count = pat.subn(lambda m: m.group(1) + body, text, count=1)
     if count != 1:

@@ -20,6 +20,7 @@ Usage: patch_ntru_hrss_kem.py <path/to/Reference_Implementation/.../ntruhrss701>
 Fails loudly (non-zero exit) if the expected substitution makes zero changes, so
 a botched patch can never silently yield an unweakened variant.
 """
+
 import os
 import re
 import sys
@@ -38,16 +39,16 @@ def is_prime(n: int) -> bool:
 
 def main() -> int:
     if len(sys.argv) != 3:
-        sys.stderr.write(
-            "usage: patch_ntru_hrss_kem.py <ntruhrss701 source dir> <N>\n"
-        )
+        sys.stderr.write("usage: patch_ntru_hrss_kem.py <ntruhrss701 source dir> <N>\n")
         return 2
 
     src_dir = sys.argv[1]
     n_val = int(sys.argv[2])
 
     if not is_prime(n_val):
-        sys.stderr.write(f"FATAL: NTRU_N={n_val} is not prime (HRSS requires N prime)\n")
+        sys.stderr.write(
+            f"FATAL: NTRU_N={n_val} is not prime (HRSS requires N prime)\n"
+        )
         return 2
     # poly arrays are stack-allocated as coeffs[NTRU_N]; keep within sane bounds.
     if not (101 <= n_val <= 701):

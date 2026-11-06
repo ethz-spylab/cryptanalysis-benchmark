@@ -14,6 +14,7 @@ Fails loudly (non-zero exit) if it does not change exactly one occurrence,
 so a failed weakening aborts variant generation rather than silently
 shipping a full-strength variant.
 """
+
 import re
 import sys
 
@@ -27,7 +28,9 @@ def main() -> int:
     new_t = sys.argv[2]
 
     if not re.fullmatch(r"\d+", new_t):
-        sys.stderr.write(f"error: new_t must be a non-negative integer, got {new_t!r}\n")
+        sys.stderr.write(
+            f"error: new_t must be a non-negative integer, got {new_t!r}\n"
+        )
         return 2
 
     with open(target, "r", encoding="utf-8") as fh:

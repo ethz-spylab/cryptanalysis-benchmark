@@ -103,7 +103,10 @@ def main() -> int:
         rows.append(load_task(task_dir))
 
     with MANIFEST_PATH.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=COLUMNS)
+        # LF line endings: the csv default (CRLF) gets rewritten to LF by the
+        # mixed-line-ending pre-commit hook, which would invalidate the sha256
+        # recorded in croissant.json.
+        writer = csv.DictWriter(f, fieldnames=COLUMNS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

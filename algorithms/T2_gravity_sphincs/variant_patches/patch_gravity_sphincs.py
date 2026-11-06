@@ -30,6 +30,7 @@ edits required to keep sign/verify a correct round-trip for HASH_SIZE < 32:
 Every substitution asserts it changed something; the script fails loudly if an
 anchor is missing (e.g. run against an already-patched or unexpected tree).
 """
+
 import os
 import re
 import sys
@@ -72,15 +73,21 @@ def main():
 
     # 1) common.h: HASH_SIZE + WOTS_ell1
     def fix_common(s):
-        s = sub_once(s, r"^#define HASH_SIZE 32$",
-                     f"#define HASH_SIZE {hs}", "common.h HASH_SIZE",
-                     flags=re.M)
+        s = sub_once(
+            s,
+            r"^#define HASH_SIZE 32$",
+            f"#define HASH_SIZE {hs}",
+            "common.h HASH_SIZE",
+            flags=re.M,
+        )
         s = sub_once(
             s,
             r"^#define WOTS_ell1 \(1 << \(WOTS_LOG_ell1\)\)$",
             "#define WOTS_ell1 (2 * (HASH_SIZE))  "
             "/* 2 base-16 WOTS digits per digest byte */",
-            "common.h WOTS_ell1", flags=re.M)
+            "common.h WOTS_ell1",
+            flags=re.M,
+        )
         return s
 
     patch_file(common_h, fix_common, "common.h")
@@ -90,12 +97,14 @@ def main():
         return sub_once(
             s,
             r"\} __attribute__ \(\(aligned \(16\)\)\);",
-            "};", "hash.h drop aligned(16)")
+            "};",
+            "hash.h drop aligned(16)",
+        )
 
     patch_file(hash_h, fix_hash_h, "hash.h")
 
     # 3) primitives/hash.c: rewrite the four wrappers
-    new_wrappers = '''void hash_N_to_N(struct hash *dst, const struct hash *src)
+    new_wrappers = """void hash_N_to_N(struct hash *dst, const struct hash *src)
 {
     uint8_t in[32] = {0};
     uint8_t out[32];
@@ -137,14 +146,16 @@ void hash_to_N(struct hash *dst, const uint8_t *src, uint64_t srclen)
     SHA256(src, srclen, out);
     memcpy(dst->h, out, HASH_SIZE);
 }
-'''
+"""
 
     def fix_hash_c(s):
         return sub_once(
             s,
             r"void hash_N_to_N\(struct hash \*dst.*?\nvoid hash_to_N\(.*?\n\}\n",
             lambda _m: new_wrappers,
-            "hash.c wrappers", flags=re.S)
+            "hash.c wrappers",
+            flags=re.S,
+        )
 
     patch_file(hash_c, fix_hash_c, "primitives/hash.c")
 
@@ -154,10 +165,11 @@ void hash_to_N(struct hash *dst, const uint8_t *src, uint64_t srclen)
             s,
             r'#include "\.\./aes\.h"\n',
             '#include "../aes.h"\n#include "../common.h"\n',
-            "aes.c include common.h")
+            "aes.c include common.h",
+        )
         anchor = (
-            "    if (bytes == 0) return 0;\n\n"
-            "    if (!(ctx = EVP_CIPHER_CTX_new ())) {")
+            "    if (bytes == 0) return 0;\n\n    if (!(ctx = EVP_CIPHER_CTX_new ())) {"
+        )
         if anchor not in s:
             raise SystemExit("FATAL: aes.c body anchor not found")
         s = s.replace(
@@ -166,13 +178,15 @@ void hash_to_N(struct hash *dst, const uint8_t *src, uint64_t srclen)
             "       it to the 32-byte AES-256 key so reduced HASH_SIZE builds do\n"
             "       not over-read. */\n"
             "    uint8_t key32[32] = {0};\n"
-            "    memcpy (key32, sk, HASH_SIZE < 32 ? HASH_SIZE : 32);\n\n"
-            + anchor, 1)
+            "    memcpy (key32, sk, HASH_SIZE < 32 ? HASH_SIZE : 32);\n\n" + anchor,
+            1,
+        )
         s = sub_once(
             s,
             r"EVP_EncryptInit_ex \(ctx, EVP_aes_256_ctr \(\), NULL, sk, counter\)",
             "EVP_EncryptInit_ex (ctx, EVP_aes_256_ctr (), NULL, key32, counter)",
-            "aes.c use key32")
+            "aes.c use key32",
+        )
         return s
 
     patch_file(aes_c, fix_aes_c, "primitives/aes.c")
@@ -182,22 +196,27 @@ void hash_to_N(struct hash *dst, const uint8_t *src, uint64_t srclen)
         repl = (
             "#ifndef CRYPTO_BYTES\n"
             "/* Sizes derived from the actual structs so they track HASH_SIZE. */\n"
-            "#include \"gravity.h\"\n"
-            "#define CRYPTO_ALGNAME \"Gravity-SPHINCS S\"\n"
+            '#include "gravity.h"\n'
+            '#define CRYPTO_ALGNAME "Gravity-SPHINCS S"\n'
             "#define CRYPTO_SECRETKEYBYTES ((int) sizeof (struct gravity_sk))\n"
             "#define CRYPTO_PUBLICKEYBYTES ((int) (HASH_SIZE))\n"
             "#define CRYPTO_BYTES ((int) sizeof (struct gravity_sign))\n"
-            "#endif\n")
+            "#endif\n"
+        )
         return sub_once(
             s,
             r"#ifndef CRYPTO_BYTES\n.*\n#endif\n",
             lambda _m: repl,
-            "api.h size macros", flags=re.S)
+            "api.h size macros",
+            flags=re.S,
+        )
 
     patch_file(api_h, fix_api_h, "api.h")
 
-    print(f"OK: Gravity-SPHINCS scaled to HASH_SIZE={hs} "
-          f"(n={8 * hs} bits, ~2^{8 * hs} generic forgery)")
+    print(
+        f"OK: Gravity-SPHINCS scaled to HASH_SIZE={hs} "
+        f"(n={8 * hs} bits, ~2^{8 * hs} generic forgery)"
+    )
 
 
 if __name__ == "__main__":

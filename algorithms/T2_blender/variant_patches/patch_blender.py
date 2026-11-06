@@ -15,6 +15,7 @@ patch can never silently yield an unweakened variant.
 
 Usage: patch_blender.py <path/to/cli.c> <hashbitlen>
 """
+
 import re
 import sys
 
@@ -31,7 +32,9 @@ def main() -> int:
     # word-size path. Guard the obviously-invalid range; the generator chooses
     # concrete values that land on valid Init paths.
     if value <= 0 or value % 8 != 0:
-        sys.stderr.write(f"FATAL: hashbitlen={value} must be a positive multiple of 8\n")
+        sys.stderr.write(
+            f"FATAL: hashbitlen={value} must be a positive multiple of 8\n"
+        )
         return 2
 
     with open(path, "rb") as f:
@@ -48,7 +51,9 @@ def main() -> int:
     data, n2 = pat_help.subn(rb"\g<1>%d\g<2>" % value, data)
 
     if n1 == 0:
-        sys.stderr.write(f"FATAL: 'args.hashbitlen = <num>;' default not found in {path}\n")
+        sys.stderr.write(
+            f"FATAL: 'args.hashbitlen = <num>;' default not found in {path}\n"
+        )
         return 1
     if n2 == 0:
         sys.stderr.write(f"FATAL: help-string '(default: <num>)' not found in {path}\n")

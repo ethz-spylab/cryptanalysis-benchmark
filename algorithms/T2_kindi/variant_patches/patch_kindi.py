@@ -27,6 +27,7 @@ Usage:
 KINDI/Reference_Implementation/...).  <N> is the new ring degree (128 or 64).
 Fails loudly (non-zero exit) if any expected edit changes 0 occurrences.
 """
+
 import math
 import os
 import sys
@@ -123,10 +124,15 @@ def main():
     # 1) params.h: ring degree N and embedded-seed length S1SIZE = N/8.
     ph = os.path.join(paramdir, "params.h")
     t = open(ph).read()
-    t = replace_once(t, "#define KINDI_KEM_N 256",
-                     "#define KINDI_KEM_N %d" % N, "KINDI_KEM_N define")
-    t = replace_once(t, "#define KINDI_KEM_S1SIZE (256/8)",
-                     "#define KINDI_KEM_S1SIZE (%d/8)" % N, "KINDI_KEM_S1SIZE define")
+    t = replace_once(
+        t, "#define KINDI_KEM_N 256", "#define KINDI_KEM_N %d" % N, "KINDI_KEM_N define"
+    )
+    t = replace_once(
+        t,
+        "#define KINDI_KEM_S1SIZE (256/8)",
+        "#define KINDI_KEM_S1SIZE (%d/8)" % N,
+        "KINDI_KEM_S1SIZE define",
+    )
     open(ph, "w").write(t)
 
     # 2) FFT twiddle tables + bitrev permutation for the new N.
@@ -136,27 +142,43 @@ def main():
     plh = os.path.join(paramdir, "poly.h")
     t = open(plh).read()
     incs = []
-    for name in ("psis_real", "psis_img", "inverse_psi_n_real", "inverse_psi_n_img",
-                 "omegas_real", "omegas_img", "inverse_omegas_real", "inverse_omegas_img"):
+    for name in (
+        "psis_real",
+        "psis_img",
+        "inverse_psi_n_real",
+        "inverse_psi_n_img",
+        "omegas_real",
+        "omegas_img",
+        "inverse_omegas_real",
+        "inverse_omegas_img",
+    ):
         var = name
         if name == "psis_img":
             var = "psis_img"
-        incs.append('static const poly_f %s = {\n#include "data_fft/%d/%s.data"\n};'
-                    % (var, N, name))
+        incs.append(
+            'static const poly_f %s = {\n#include "data_fft/%d/%s.data"\n};'
+            % (var, N, name)
+        )
     # variable names in poly.h: psis_real, psis_img, inverse_psi_n_real,
     # inverse_psi_n_img, omegas_real, omegas_img, inverse_omegas_real,
     # inverse_omegas_img -- identical to the .data basenames above.
     branch = "#elif KINDI_KEM_N == %d\n%s\n#elif KINDI_KEM_N == 512" % (
-        N, "\n".join(incs))
+        N,
+        "\n".join(incs),
+    )
     t = replace_once(t, "#elif KINDI_KEM_N == 512", branch, "poly.h 512 branch")
     open(plh, "w").write(t)
 
     # 4) fft_transform.c: add a bitrev include guard for the new N.
     ftc = os.path.join(paramdir, "fft_transform.c")
     t = open(ftc).read()
-    new_guard = ('#if KINDI_KEM_N == %d\n#include "data_fft/bitrev%d.code"\n#endif\n'
-                 '#if KINDI_KEM_N == 512' % (N, N))
-    t = replace_once(t, "#if KINDI_KEM_N == 512", new_guard, "fft_transform.c 512 guard")
+    new_guard = (
+        '#if KINDI_KEM_N == %d\n#include "data_fft/bitrev%d.code"\n#endif\n'
+        "#if KINDI_KEM_N == 512" % (N, N)
+    )
+    t = replace_once(
+        t, "#if KINDI_KEM_N == 512", new_guard, "fft_transform.c 512 guard"
+    )
     open(ftc, "w").write(t)
 
 

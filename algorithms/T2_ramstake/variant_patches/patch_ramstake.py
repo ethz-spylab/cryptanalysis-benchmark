@@ -14,6 +14,7 @@ Usage: patch_ramstake.py <path/to/ramstake.h> <w>
 Fails loudly (nonzero exit) if it does not change exactly the two expected
 defines.
 """
+
 import re
 import sys
 
@@ -40,9 +41,7 @@ def main() -> int:
         )
         text, n = pat.subn(r"\g<1>" + str(w), text)
         if n != 1:
-            sys.stderr.write(
-                f"FATAL: expected exactly 1 match for {macro}, got {n}\n"
-            )
+            sys.stderr.write(f"FATAL: expected exactly 1 match for {macro}, got {n}\n")
             return 1
         total += n
 

@@ -105,17 +105,17 @@ def gen_tables(n, q):
 def fmt_array(name, vals):
     lines = []
     for i in range(0, len(vals), 16):
-        lines.append(", ".join(str(v) for v in vals[i:i + 16]) + ", ")
+        lines.append(", ".join(str(v) for v in vals[i : i + 16]) + ", ")
     body = "\n".join(lines)
     return f"poly {name} = {{\n\n{body}\n}};"
 
 
 def subst_once(text, key, val, count=1):
-    new, n = re.subn(rf"#define\s+{re.escape(key)}\s+\S+",
-                     f"#define {key} {val}", text)
+    new, n = re.subn(rf"#define\s+{re.escape(key)}\s+\S+", f"#define {key} {val}", text)
     if n != count:
-        raise SystemExit(f"params.h: expected {count} substitution(s) of "
-                         f"{key}, made {n}")
+        raise SystemExit(
+            f"params.h: expected {count} substitution(s) of {key}, made {n}"
+        )
     return new
 
 
@@ -177,7 +177,7 @@ def main():
     q = int(sys.argv[3])
     widen = len(sys.argv) == 5 and sys.argv[4] not in ("", "0")
     logn = n.bit_length() - 1
-    q_log = q.bit_length()           # q < 2^q_log, so coeffs fit in q_log bits
+    q_log = q.bit_length()  # q < 2^q_log, so coeffs fit in q_log bits
     if q >= (1 << q_log):
         raise SystemExit("internal error computing PARAM_Q_LOG")
     R = (1 << 32) % q
@@ -204,20 +204,29 @@ def main():
     consts_path = ref / "consts.c"
     c = consts_path.read_text()
     zeta, zetainv = gen_tables(n, q)
-    c, nz = re.subn(r"poly\s+zeta\s*=\s*\{.*?\};",
-                    fmt_array("zeta", zeta), c, count=1, flags=re.S)
-    c, ni = re.subn(r"poly\s+zetainv\s*=\s*\{.*?\};",
-                    fmt_array("zetainv", zetainv), c, count=1, flags=re.S)
+    c, nz = re.subn(
+        r"poly\s+zeta\s*=\s*\{.*?\};", fmt_array("zeta", zeta), c, count=1, flags=re.S
+    )
+    c, ni = re.subn(
+        r"poly\s+zetainv\s*=\s*\{.*?\};",
+        fmt_array("zetainv", zetainv),
+        c,
+        count=1,
+        flags=re.S,
+    )
     if nz != 1 or ni != 1:
-        raise SystemExit(f"consts.c: expected to rewrite zeta/zetainv once "
-                         f"each, got zeta={nz} zetainv={ni}")
+        raise SystemExit(
+            f"consts.c: expected to rewrite zeta/zetainv once "
+            f"each, got zeta={nz} zetainv={ni}"
+        )
     consts_path.write_text(c)
 
     # --- gauss.h : shrink CHUNK_SIZE so kmxGauss does not overflow z -----
     gauss_path = ref / "gauss.h"
     g = gauss_path.read_text()
-    g, ng = re.subn(r"#define\s+CHUNK_SIZE\s+\d+",
-                    f"#define CHUNK_SIZE {n}", g, count=1)
+    g, ng = re.subn(
+        r"#define\s+CHUNK_SIZE\s+\d+", f"#define CHUNK_SIZE {n}", g, count=1
+    )
     if ng != 1:
         raise SystemExit(f"gauss.h: expected 1 CHUNK_SIZE substitution, got {ng}")
     gauss_path.write_text(g)
@@ -226,10 +235,12 @@ def main():
     if widen:
         widen_poly_c(ref)
 
-    print(f"patched qTesla_I -> n={n} (N_LOG={logn}) q={q} (Q_LOG={q_log}) "
-          f"R={R} QINV={qinv} R2_INVN={r2_invn} BARR_MULT={barr_mult} "
-          f"CHUNK_SIZE={n}; regenerated zeta/zetainv ({len(zeta)} entries each)"
-          f"{'; widened poly.c NTT (Barrett per-stage)' if widen else ''}")
+    print(
+        f"patched qTesla_I -> n={n} (N_LOG={logn}) q={q} (Q_LOG={q_log}) "
+        f"R={R} QINV={qinv} R2_INVN={r2_invn} BARR_MULT={barr_mult} "
+        f"CHUNK_SIZE={n}; regenerated zeta/zetainv ({len(zeta)} entries each)"
+        f"{'; widened poly.c NTT (Barrett per-stage)' if widen else ''}"
+    )
 
 
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ Fails loudly (exit 1) unless exactly one substitution is made inside the
 LAC128 block, so a missing/renamed block can never yield a silent unweakened
 variant.
 """
+
 import sys
 
 
@@ -38,8 +39,9 @@ def main():
         elif line.startswith(b"#endif"):
             in_lac128 = False
         if in_lac128 and line.startswith(b"#define NUM_ONE "):
-            out.append(b"#define NUM_ONE " + num_one
-                       + b" //number of 1 or -1 in noise vector")
+            out.append(
+                b"#define NUM_ONE " + num_one + b" //number of 1 or -1 in noise vector"
+            )
             count += 1
             continue
         out.append(line)
@@ -47,7 +49,8 @@ def main():
     if count != 1:
         sys.stderr.write(
             "patch_lac.py: expected exactly 1 NUM_ONE substitution in the "
-            "LAC128 block, made %d\n" % count)
+            "LAC128 block, made %d\n" % count
+        )
         sys.exit(1)
 
     with open(path, "wb") as f:

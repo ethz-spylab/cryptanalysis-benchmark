@@ -17,6 +17,7 @@ Constraints:
 Usage:
   patch_pqntrusign.py <ReferenceImplementationRoot> <N> [<d>]
 """
+
 import re
 import sys
 
@@ -45,13 +46,13 @@ def gen_tables(N):
         )
     order = 2 * N
     if (Q - 1) % order != 0:
-        raise ValueError(f"2N={order} does not divide q-1={Q-1}")
+        raise ValueError(f"2N={order} does not divide q-1={Q - 1}")
     # 3 is a primitive root mod 65537; w is a primitive 2N-th root of unity.
     w = pow(3, (Q - 1) // order, Q)
     assert pow(w, order, Q) == 1 and pow(w, order // 2, Q) != 1
     roots = [0] * N
     for i in range(N // 2):
-        r = pow(w, 2 * i + 1, Q)        # an odd power of w -> a root of x^N+1
+        r = pow(w, 2 * i + 1, Q)  # an odd power of w -> a root of x^N+1
         roots[i] = r
         roots[N - 1 - i] = (Q - r) % Q  # the C NTT requires roots[N-1-i] = -roots[i]
     assert len(set(roots)) == N, "roots not distinct"
@@ -121,12 +122,14 @@ def patch_param_c(path, N, d):
     assert n >= 1, "inv_N field not found"
 
     open(path, "w").write(src)
-    print(f"[param.c] N={N} N_bits={nbits} padded_N={N} inv_N={inv_N}"
-          + (f" d={d}" if d is not None else ""))
+    print(
+        f"[param.c] N={N} N_bits={nbits} padded_N={N} inv_N={inv_N}"
+        + (f" d={d}" if d is not None else "")
+    )
 
 
 def patch_api_h(path, N):
-    pk = 2 * N + 17                                  # 1 + (N+8)*2
+    pk = 2 * N + 17  # 1 + (N+8)*2
     sk = (N // 5) * 2 + 4 + N // 8 + (N + 8) * 2
     src = open(path).read()
     for macro, val in (
@@ -141,8 +144,7 @@ def patch_api_h(path, N):
         )
         assert n == 1, f"{macro} replaced {n} times (expected 1)"
     open(path, "w").write(src)
-    print(f"[api.h] CRYPTO_PUBLICKEYBYTES=CRYPTO_BYTES={pk} "
-          f"CRYPTO_SECRETKEYBYTES={sk}")
+    print(f"[api.h] CRYPTO_PUBLICKEYBYTES=CRYPTO_BYTES={pk} CRYPTO_SECRETKEYBYTES={sk}")
 
 
 def main():

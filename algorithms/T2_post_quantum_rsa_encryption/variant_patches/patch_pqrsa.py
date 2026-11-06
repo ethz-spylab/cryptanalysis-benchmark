@@ -20,6 +20,7 @@ Usage:
 
 Fails loudly (non-zero substitution assert) if any expected edit did not apply.
 """
+
 import re
 import sys
 
@@ -37,16 +38,17 @@ def main():
     src = sys.argv[1].rstrip("/")
     pbytes = int(sys.argv[2])
     K = 2
-    pub = ct = K * pbytes          # PUBLICKEYBYTES == CIPHERTEXTBYTES == K*PBYTES
-    sk = 3 * K * pbytes            # SECRETKEYBYTES == 3*K*PBYTES
+    pub = ct = K * pbytes  # PUBLICKEYBYTES == CIPHERTEXTBYTES == K*PBYTES
+    sk = 3 * K * pbytes  # SECRETKEYBYTES == 3*K*PBYTES
 
     # internal.h
     p = f"{src}/internal.h"
     with open(p) as f:
         t = f.read()
     t = sub_assert(r"#define\s+K\s+\d+", f"#define K {K}", t, "internal.h K")
-    t = sub_assert(r"#define\s+PBYTES\s+\d+", f"#define PBYTES {pbytes}", t,
-                   "internal.h PBYTES")
+    t = sub_assert(
+        r"#define\s+PBYTES\s+\d+", f"#define PBYTES {pbytes}", t, "internal.h PBYTES"
+    )
     with open(p, "w") as f:
         f.write(t)
 
@@ -54,12 +56,24 @@ def main():
     p = f"{src}/crypto_kem_pqrsa15.h"
     with open(p) as f:
         t = f.read()
-    t = sub_assert(r"(#define\s+crypto_kem_pqrsa15_ref_SECRETKEYBYTES\s+)\d+",
-                   rf"\g<1>{sk}", t, "kem.h SECRETKEYBYTES")
-    t = sub_assert(r"(#define\s+crypto_kem_pqrsa15_ref_PUBLICKEYBYTES\s+)\d+",
-                   rf"\g<1>{pub}", t, "kem.h PUBLICKEYBYTES")
-    t = sub_assert(r"(#define\s+crypto_kem_pqrsa15_ref_CIPHERTEXTBYTES\s+)\d+",
-                   rf"\g<1>{ct}", t, "kem.h CIPHERTEXTBYTES")
+    t = sub_assert(
+        r"(#define\s+crypto_kem_pqrsa15_ref_SECRETKEYBYTES\s+)\d+",
+        rf"\g<1>{sk}",
+        t,
+        "kem.h SECRETKEYBYTES",
+    )
+    t = sub_assert(
+        r"(#define\s+crypto_kem_pqrsa15_ref_PUBLICKEYBYTES\s+)\d+",
+        rf"\g<1>{pub}",
+        t,
+        "kem.h PUBLICKEYBYTES",
+    )
+    t = sub_assert(
+        r"(#define\s+crypto_kem_pqrsa15_ref_CIPHERTEXTBYTES\s+)\d+",
+        rf"\g<1>{ct}",
+        t,
+        "kem.h CIPHERTEXTBYTES",
+    )
     with open(p, "w") as f:
         f.write(t)
 
@@ -75,7 +89,9 @@ def main():
         r"long long tree = K / 8;",
         "long long tree = K / 8;\n    if (tree < 1) tree = K; "
         "/* K<8: K/8 rounds to 0; process whole batch at once */",
-        t, "dec.c remainders K/8 guard")
+        t,
+        "dec.c remainders K/8 guard",
+    )
     with open(p, "w") as f:
         f.write(t)
 
@@ -83,17 +99,30 @@ def main():
     p = f"{src}/api.h"
     with open(p) as f:
         t = f.read()
-    t = sub_assert(r"(#define\s+CRYPTO_SECRETKEYBYTES\s+)\d+", rf"\g<1>{sk}", t,
-                   "api.h SECRETKEYBYTES")
-    t = sub_assert(r"(#define\s+CRYPTO_PUBLICKEYBYTES\s+)\d+", rf"\g<1>{pub}", t,
-                   "api.h PUBLICKEYBYTES")
-    t = sub_assert(r"(#define\s+CRYPTO_CIPHERTEXTBYTES\s+)\d+", rf"\g<1>{ct}", t,
-                   "api.h CIPHERTEXTBYTES")
+    t = sub_assert(
+        r"(#define\s+CRYPTO_SECRETKEYBYTES\s+)\d+",
+        rf"\g<1>{sk}",
+        t,
+        "api.h SECRETKEYBYTES",
+    )
+    t = sub_assert(
+        r"(#define\s+CRYPTO_PUBLICKEYBYTES\s+)\d+",
+        rf"\g<1>{pub}",
+        t,
+        "api.h PUBLICKEYBYTES",
+    )
+    t = sub_assert(
+        r"(#define\s+CRYPTO_CIPHERTEXTBYTES\s+)\d+",
+        rf"\g<1>{ct}",
+        t,
+        "api.h CIPHERTEXTBYTES",
+    )
     with open(p, "w") as f:
         f.write(t)
 
-    print(f"patched: K={K} PBYTES={pbytes} -> N={16*pbytes}-bit "
-          f"(PUB=CT={pub}, SK={sk})")
+    print(
+        f"patched: K={K} PBYTES={pbytes} -> N={16 * pbytes}-bit (PUB=CT={pub}, SK={sk})"
+    )
 
 
 if __name__ == "__main__":

@@ -35,6 +35,7 @@ It rewrites the three #define lines under the _RAINBOW16_32_32_32 block and
 asserts it changed exactly three lines (fails loudly otherwise), so a stale or
 already-patched header can never silently produce an unweakened variant.
 """
+
 import re
 import sys
 
@@ -50,14 +51,20 @@ def main():
         if val <= 0:
             sys.exit(f"ERROR: {name}={val} must be positive")
         if val % 2 != 0:
-            sys.exit(f"ERROR: {name}={val} must be EVEN (GF(16) packs 2 "
-                     "nibbles/byte; _*_BYTE = _*/2 must be exact)")
+            sys.exit(
+                f"ERROR: {name}={val} must be EVEN (GF(16) packs 2 "
+                "nibbles/byte; _*_BYTE = _*/2 must be exact)"
+            )
     if v1 < o1:
-        sys.exit(f"ERROR: v1={v1} must be >= o1={o1} (layer-1 vinegar count "
-                 "must cover the oil layer for the OV back-substitution)")
+        sys.exit(
+            f"ERROR: v1={v1} must be >= o1={o1} (layer-1 vinegar count "
+            "must cover the oil layer for the OV back-substitution)"
+        )
     if (v1, o1, o2) == (32, 32, 32):
-        sys.exit("ERROR: (32,32,32) is the shipped full-strength base; refusing "
-                 "to emit an unweakened variant")
+        sys.exit(
+            "ERROR: (32,32,32) is the shipped full-strength base; refusing "
+            "to emit an unweakened variant"
+        )
 
     with open(path, "r") as f:
         text = f.read()
@@ -87,16 +94,20 @@ def main():
     text = re.sub(r"^#define _O2 32$", repl_o2, text, flags=re.M)
 
     if subs != 3:
-        sys.exit(f"ERROR: expected 3 substitutions (_V1/_O1/_O2), made {subs} "
-                 f"in {path}; header layout changed -- refusing to continue")
+        sys.exit(
+            f"ERROR: expected 3 substitutions (_V1/_O1/_O2), made {subs} "
+            f"in {path}; header layout changed -- refusing to continue"
+        )
 
     with open(path, "w") as f:
         f.write(text)
 
     n = v1 + o1 + o2
     m = o1 + o2
-    print(f"patched {path}: v1={v1} o1={o1} o2={o2} "
-          f"(n={n} variables, m={m} equations, GF(16))")
+    print(
+        f"patched {path}: v1={v1} o1={o1} o2={o2} "
+        f"(n={n} variables, m={m} equations, GF(16))"
+    )
 
 
 if __name__ == "__main__":

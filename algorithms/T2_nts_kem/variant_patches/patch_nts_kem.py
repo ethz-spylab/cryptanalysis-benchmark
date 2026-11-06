@@ -23,6 +23,7 @@ A self-check guarantees T=64 reproduces the exact shipped values before any file
 is written; mismatch aborts (non-zero exit) so generation never ships a wrong
 instance.
 """
+
 import os
 import re
 import sys
@@ -35,20 +36,22 @@ def ceil_div(a, b):
 def compute_params(T):
     """Return (params_defines, api_defines) dicts for a given T, with M=12 fixed."""
     M = 12
-    N = 4096                       # 2**M
+    N = 4096  # 2**M
     R = M * T
-    K = N - R                      # = 4096 - 12*T
+    K = N - R  # = 4096 - 12*T
     A = K - 256
     B = 256
-    C = R                          # = 12*T
-    BC = B + R                     # = 256 + 12*T
-    R_DIV_64 = ceil_div(R, 64)     # ceil! e.g. T=64 -> 12
-    CEIL_N_BYTE = ceil_div(N, 8)   # = 512
+    C = R  # = 12*T
+    BC = B + R  # = 256 + 12*T
+    R_DIV_64 = ceil_div(R, 64)  # ceil! e.g. T=64 -> 12
+    CEIL_N_BYTE = ceil_div(N, 8)  # = 512
     CEIL_K_BYTE = ceil_div(K, 8)
     CEIL_R_BYTE = ceil_div(R, 8)
     PUBLIC_KEY_SIZE = K * CEIL_R_BYTE
     CIPHERTEXT_SIZE = 32 + CEIL_R_BYTE
-    PRIVATE_KEY_SIZE = (2 * BC + N) * 3 // 2   # integer for all valid T (M=12 pack stride)
+    PRIVATE_KEY_SIZE = (
+        (2 * BC + N) * 3 // 2
+    )  # integer for all valid T (M=12 pack stride)
     KEY_SIZE = 32
 
     params = {
@@ -102,8 +105,11 @@ SHIPPED_T64 = {
 def self_check():
     params, _ = compute_params(64)
     if params != SHIPPED_T64:
-        diffs = {k: (params.get(k), SHIPPED_T64.get(k))
-                 for k in SHIPPED_T64 if params.get(k) != SHIPPED_T64.get(k)}
+        diffs = {
+            k: (params.get(k), SHIPPED_T64.get(k))
+            for k in SHIPPED_T64
+            if params.get(k) != SHIPPED_T64.get(k)
+        }
         sys.exit("FATAL self-check: T=64 does not reproduce shipped values: %r" % diffs)
 
 
@@ -117,8 +123,9 @@ def patch_defines(path, mapping):
         text = fh.read()
 
     for name, value in mapping.items():
-        pattern = re.compile(r"(^[ \t]*#define[ \t]+" + re.escape(name) + r"[ \t]+)\S+",
-                             re.MULTILINE)
+        pattern = re.compile(
+            r"(^[ \t]*#define[ \t]+" + re.escape(name) + r"[ \t]+)\S+", re.MULTILINE
+        )
         new_text, n = pattern.subn(lambda m: m.group(1) + str(value), text)
         if n == 0:
             sys.exit("FATAL: #define %s not found in %s" % (name, path))
@@ -155,13 +162,23 @@ def main():
         body = fh.read()
     expect_k = re.search(r"#define[ \t]+NTS_KEM_PARAM_K[ \t]+(\d+)", body)
     if not expect_k or int(expect_k.group(1)) != params["NTS_KEM_PARAM_K"]:
-        sys.exit("FATAL: post-patch K mismatch in %s (expected %d)"
-                 % (params_path, params["NTS_KEM_PARAM_K"]))
+        sys.exit(
+            "FATAL: post-patch K mismatch in %s (expected %d)"
+            % (params_path, params["NTS_KEM_PARAM_K"])
+        )
 
-    print("patched T=%d : N=%d K=%d d=%d  PK=%d SK=%d CT=%d"
-          % (T, params["NTS_KEM_PARAM_N"], params["NTS_KEM_PARAM_K"],
-             2 * T + 1, params["NTS_KEM_PUBLIC_KEY_SIZE"],
-             params["NTS_KEM_PRIVATE_KEY_SIZE"], params["NTS_KEM_CIPHERTEXT_SIZE"]))
+    print(
+        "patched T=%d : N=%d K=%d d=%d  PK=%d SK=%d CT=%d"
+        % (
+            T,
+            params["NTS_KEM_PARAM_N"],
+            params["NTS_KEM_PARAM_K"],
+            2 * T + 1,
+            params["NTS_KEM_PUBLIC_KEY_SIZE"],
+            params["NTS_KEM_PRIVATE_KEY_SIZE"],
+            params["NTS_KEM_CIPHERTEXT_SIZE"],
+        )
+    )
 
 
 if __name__ == "__main__":

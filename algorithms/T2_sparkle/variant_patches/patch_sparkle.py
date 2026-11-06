@@ -15,6 +15,7 @@ compiled, but replacing all three is harmless. The SCHWAEMM256_256 branch uses
 Usage:  patch_sparkle.py <path/to/schwaemm_cfg.h> <new_steps_slim_value>
 Fails loudly (exit 1) if it does not change at least one occurrence.
 """
+
 import re
 import sys
 

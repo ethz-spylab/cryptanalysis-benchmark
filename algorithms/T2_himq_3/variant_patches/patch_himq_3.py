@@ -12,12 +12,13 @@ Usage:
 
 The field q is left at P=256 (hardwired in gf256.c) and CRYPTO_ALGNAME is kept.
 """
+
 import sys
 
 
 def derive(V, O1, O2, O3):
-    N = V + O1 + O2 + O3          # total variables n = V + O1 + O2 + O3
-    M = O1 + O2 + O3              # equations m = O1 + O2 + O3
+    N = V + O1 + O2 + O3  # total variables n = V + O1 + O2 + O3
+    M = O1 + O2 + O3  # equations m = O1 + O2 + O3
     V1 = V + O1
     V2 = V1 + O2
     # Secret central-map block layout (cumulative offsets), matching sign.c:
@@ -33,10 +34,29 @@ def derive(V, O1, O2, O3):
     PKSIZE = N * N * M
     PKWID = N * N
     SKSIZE = N * N * M + M * M + N * N
-    return dict(P=256, V=V, O1=O1, O2=O2, O3=O3, N=N, M=M, V1=V1, V2=V2,
-                MM=M * M, NN=N * N, PKSIZE=PKSIZE, PKWID=PKWID, SKSIZE=SKSIZE,
-                alp=alp, bet=bet, gam=gam, gam1=gam1, eps=eps,
-                epswid=epswid, sksize=sksize)
+    return dict(
+        P=256,
+        V=V,
+        O1=O1,
+        O2=O2,
+        O3=O3,
+        N=N,
+        M=M,
+        V1=V1,
+        V2=V2,
+        MM=M * M,
+        NN=N * N,
+        PKSIZE=PKSIZE,
+        PKWID=PKWID,
+        SKSIZE=SKSIZE,
+        alp=alp,
+        bet=bet,
+        gam=gam,
+        gam1=gam1,
+        eps=eps,
+        epswid=epswid,
+        sksize=sksize,
+    )
 
 
 def render(c):
@@ -48,38 +68,38 @@ def render(c):
 //  Parameters scaled down for the CryptanalysisBench variant generator.
 //
 
-#define P {c['P']}
-#define V {c['V']}
-#define O1 {c['O1']}
-#define O2 {c['O2']}
-#define O3 {c['O3']}
-#define N {c['N']}
-#define M {c['M']}
-#define V1 {c['V1']}
-#define V2 {c['V2']}
+#define P {c["P"]}
+#define V {c["V"]}
+#define O1 {c["O1"]}
+#define O2 {c["O2"]}
+#define O3 {c["O3"]}
+#define N {c["N"]}
+#define M {c["M"]}
+#define V1 {c["V1"]}
+#define V2 {c["V2"]}
 #define L_MSG M
 #define L_SIGN N
-#define MM {c['MM']}
-#define NN {c['NN']}
+#define MM {c["MM"]}
+#define NN {c["NN"]}
 
-#define CRYPTO_SECRETKEYBYTES {c['SKSIZE']}
-#define CRYPTO_PUBLICKEYBYTES {c['PKSIZE']}
+#define CRYPTO_SECRETKEYBYTES {c["SKSIZE"]}
+#define CRYPTO_PUBLICKEYBYTES {c["PKSIZE"]}
 #define CRYPTO_BYTES N
 #define CRYPTO_RANDOMBYTES M
 #define CRYPTO_ALGNAME "HiMQ3"
 
-#define PKSIZE {c['PKSIZE']}
-#define PKWID {c['PKWID']}
-#define SKSIZE {c['SKSIZE']}
+#define PKSIZE {c["PKSIZE"]}
+#define PKWID {c["PKWID"]}
+#define SKSIZE {c["SKSIZE"]}
 
 
-#define alp ({c['alp']})
-#define bet {c['bet']}
-#define gam {c['gam']}
-#define gam1 {c['gam1']}
-#define eps {c['eps']}
-#define sksize {c['sksize']}
-#define epswid {c['epswid']}
+#define alp ({c["alp"]})
+#define bet {c["bet"]}
+#define gam {c["gam"]}
+#define gam1 {c["gam1"]}
+#define eps {c["eps"]}
+#define sksize {c["sksize"]}
+#define epswid {c["epswid"]}
 """
 
 
@@ -92,12 +112,16 @@ def main():
         old = f.read()
     new = render(derive(V, O1, O2, O3))
     if new == old:
-        sys.exit(f"ERROR: regenerated api.h identical to original ({path}); "
-                 "patch had no effect")
+        sys.exit(
+            f"ERROR: regenerated api.h identical to original ({path}); "
+            "patch had no effect"
+        )
     with open(path, "w") as f:
         f.write(new)
-    print(f"patched {path}: V={V} O1={O1} O2={O2} O3={O3} "
-          f"N={V+O1+O2+O3} M={O1+O2+O3}")
+    print(
+        f"patched {path}: V={V} O1={O1} O2={O2} O3={O3} "
+        f"N={V + O1 + O2 + O3} M={O1 + O2 + O3}"
+    )
 
 
 if __name__ == "__main__":

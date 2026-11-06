@@ -19,23 +19,21 @@ Usage:
 Asserts that EXACTLY two occurrences were rewritten; fails loudly otherwise so
 generation aborts rather than silently shipping an unweakened variant.
 """
+
 import re
 import sys
 
 
 def main() -> int:
     if len(sys.argv) != 3:
-        sys.stderr.write(
-            "usage: patch_dynamic_sha.py <dsha_ref.h> <rounds>\n"
-        )
+        sys.stderr.write("usage: patch_dynamic_sha.py <dsha_ref.h> <rounds>\n")
         return 2
 
     path = sys.argv[1]
     rounds = int(sys.argv[2])
     if not (1 <= rounds <= 48):
         sys.stderr.write(
-            "error: rounds must be in 1..48 (full strength is 48), got "
-            f"{rounds}\n"
+            f"error: rounds must be in 1..48 (full strength is 48), got {rounds}\n"
         )
         return 2
 
@@ -61,9 +59,7 @@ def main() -> int:
     with open(path, "w", encoding="latin-1") as fh:
         fh.write(new_src)
 
-    sys.stderr.write(
-        f"patched 2 round loops to {rounds} rounds in {path}\n"
-    )
+    sys.stderr.write(f"patched 2 round loops to {rounds} rounds in {path}\n")
     return 0
 
 

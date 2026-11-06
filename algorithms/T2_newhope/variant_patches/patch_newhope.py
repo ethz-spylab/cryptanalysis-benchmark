@@ -20,6 +20,7 @@ as the original injection did (`sed -i 's/\\r$//' params.h poly.c`). The script
 fails loudly if any edit matched zero occurrences, so a silently-unweakened
 variant can never be produced.
 """
+
 import os
 import re
 import sys
@@ -76,7 +77,9 @@ def main() -> int:
             continue
         out.append(line)
     if deleted < 1 or deleting:
-        sys.stderr.write("error: `#if NEWHOPE_K != 8` guard not found/closed in poly.c\n")
+        sys.stderr.write(
+            "error: `#if NEWHOPE_K != 8` guard not found/closed in poly.c\n"
+        )
         return 1
     poly = b"\n".join(out)
 

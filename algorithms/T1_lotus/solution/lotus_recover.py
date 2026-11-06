@@ -11,6 +11,7 @@ recover the secret matrix S exactly, row by row.
 secret as `bytes` (or None on a hard failure). This module is transport-agnostic
 so it can be driven by a real game controller or a local mock.
 """
+
 import hashlib
 
 from lotus_pack import DIM, PT, MOD, pack_ct, pack_sk
@@ -50,19 +51,19 @@ def recover_S(oracle, progress=None):
                 c2[j] = 2 * c2[j]
             ct = [(c2[j] + q8) % MOD for j in range(PT)]
             ss1 = oracle(build_ct_hex(c1, ct))
-            z1 = (ss1 == Hz)
+            z1 = ss1 == Hz
             ct = [(c2[j] + MOD - q8) % MOD for j in range(PT)]
             ss2 = oracle(build_ct_hex(c1, ct))
-            z2 = (ss2 == Hz)
+            z2 = ss2 == Hz
             if z1 and z2:
                 continue
             # coordinate by coordinate
             for j in range(PT):
                 ct = [c2[w] % MOD for w in range(PT)]
                 ct[j] = (c2[j] + q8) % MOD
-                b1 = (oracle(build_ct_hex(c1, ct)) != Hz)
+                b1 = oracle(build_ct_hex(c1, ct)) != Hz
                 ct[j] = (c2[j] + MOD - q8) % MOD
-                b2 = (oracle(build_ct_hex(c1, ct)) != Hz)
+                b2 = oracle(build_ct_hex(c1, ct)) != Hz
                 idx = i * PT + j
                 if b1 and not b2:
                     guess[idx] = guess[idx] * 2 + 1

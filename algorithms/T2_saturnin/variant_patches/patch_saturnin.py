@@ -22,6 +22,7 @@ S_box_inv + MDS_inv + S_box_inv on its first iteration (which corresponds to
 encrypt's last super-round). Recipe:
 variant_workfolder/final_fixes_recommendation.md (Saturnin entry).
 """
+
 import os
 import re
 import sys
@@ -90,8 +91,10 @@ def main():
     patch_cascade_r(ref_dir, cascade_r)
     if halflast == "1":
         patch_halflast(ref_dir)
-    print("patch_saturnin: applied (R=%d halflast=%s)" % (cascade_r, halflast),
-          file=sys.stderr)
+    print(
+        "patch_saturnin: applied (R=%d halflast=%s)" % (cascade_r, halflast),
+        file=sys.stderr,
+    )
 
 
 if __name__ == "__main__":

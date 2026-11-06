@@ -34,6 +34,7 @@ Usage: patch_mcnie.py <path/to/3Q_128_1 dir> <m>
 Fails loudly (non-zero exit) if either expected substitution makes zero changes,
 so a botched patch can never silently yield an unweakened variant.
 """
+
 import os
 import re
 import sys
@@ -58,10 +59,14 @@ def patch_one(path, pattern, replacement, label):
         data = f.read()
     new_data, n = pattern.subn(replacement, data)
     if n == 0:
-        sys.stderr.write(f"FATAL: pattern for {label} not found in {path}; nothing patched\n")
+        sys.stderr.write(
+            f"FATAL: pattern for {label} not found in {path}; nothing patched\n"
+        )
         sys.exit(1)
     if n != 1:
-        sys.stderr.write(f"FATAL: pattern for {label} matched {n} times, expected exactly 1\n")
+        sys.stderr.write(
+            f"FATAL: pattern for {label} matched {n} times, expected exactly 1\n"
+        )
         sys.exit(1)
     with open(path, "wb") as f:
         f.write(new_data)

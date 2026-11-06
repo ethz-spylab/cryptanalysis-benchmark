@@ -18,6 +18,7 @@ Usage:
 
 Fails loudly (non-zero exit) if any expected #define is not found / not changed.
 """
+
 import re
 import sys
 
@@ -29,9 +30,7 @@ def replace_define(text, name, value):
     numeric form `#define CRYPTO_PUBLICKEYBYTES 5094433` used in api.h.128.
     Asserts exactly one substitution happened.
     """
-    pattern = re.compile(
-        r"(#define\s+" + re.escape(name) + r"\s+)(\([^)\n]*\)|-?\d+)"
-    )
+    pattern = re.compile(r"(#define\s+" + re.escape(name) + r"\s+)(\([^)\n]*\)|-?\d+)")
     new_text, n = pattern.subn(r"\g<1>(" + str(value) + ")", text)
     if n != 1:
         sys.stderr.write(

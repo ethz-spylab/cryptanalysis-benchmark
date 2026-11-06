@@ -29,6 +29,7 @@ Usage:  patch_shamata.py <file> <rounds>
 Asserts EXACTLY 1 finalization loop was rewritten; fails loudly otherwise so a
 silent unweakened variant can never be produced.
 """
+
 import re
 import sys
 

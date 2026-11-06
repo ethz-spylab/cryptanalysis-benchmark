@@ -22,6 +22,7 @@ Usage:
 Asserts that EXACTLY one occurrence was rewritten; fails loudly otherwise so
 generation aborts rather than silently shipping an unweakened variant.
 """
+
 import re
 import sys
 
@@ -35,8 +36,7 @@ def main() -> int:
     num_iter = int(sys.argv[2])
     if not (1 <= num_iter < 8):
         sys.stderr.write(
-            "error: numIter must be in 1..7 (full strength is 8), got "
-            f"{num_iter}\n"
+            f"error: numIter must be in 1..7 (full strength is 8), got {num_iter}\n"
         )
         return 2
 

@@ -9,15 +9,14 @@ Usage: patch_clx.py <path/to/encrypt.c> <NROUND1> <NROUND2>
 
 Fails loudly (non-zero exit) if either #define is not found / not changed.
 """
+
 import re
 import sys
 
 
 def main() -> int:
     if len(sys.argv) != 4:
-        sys.stderr.write(
-            "usage: patch_clx.py <encrypt.c> <NROUND1> <NROUND2>\n"
-        )
+        sys.stderr.write("usage: patch_clx.py <encrypt.c> <NROUND1> <NROUND2>\n")
         return 2
 
     path, n1, n2 = sys.argv[1], sys.argv[2], sys.argv[3]

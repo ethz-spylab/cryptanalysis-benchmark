@@ -21,14 +21,15 @@ K and D are held fixed (only N and Q' move per band).
 
 Usage: patch_titanium.py <CCA_std_src_dir> <N> <Q>
 """
+
 import re
 import sys
 
 K = 511
 D = 256
-Q_BITS = 17                 # unchanged: requires 2^16 < Q' < 2^17
+Q_BITS = 17  # unchanged: requires 2^16 < Q' < 2^17
 C2_COMPRESSION_BYTE = 1
-HASH_LENGTH = 32            # KEM confirmation tag appended to the ciphertext
+HASH_LENGTH = 32  # KEM confirmation tag appended to the ciphertext
 
 
 def factor(n):
@@ -54,7 +55,7 @@ def smallest_primitive_root(q):
 
 def gen_table(L, Q, gamma0):
     """omega (g^i) and omega_inv (g^-i) for a primitive L-th root g."""
-    assert (Q - 1) % L == 0, f"L={L} does not divide Q-1={Q-1}"
+    assert (Q - 1) % L == 0, f"L={L} does not divide Q-1={Q - 1}"
     g = pow(gamma0, (Q - 1) // L, Q)
     # sanity: g must be a *primitive* L-th root of unity
     assert pow(g, L, Q) == 1
@@ -140,20 +141,22 @@ static void intt_core(uint32_t *a, uint32_t N1, uint32_t N2, uint32_t DIM, const
 def build_ntt_c(N, Q, gamma0):
     Lndk = N + D + K + 1
     Lnk = N + K + 1
-    Ldk = D + K + 1            # 768, fixed
+    Ldk = D + K + 1  # 768, fixed
     assert Ldk == 768
 
     # Lndk is always strictly the largest. Lnk and Ldk collide iff N == D
     # (e.g. the N=256 easy band): they then share an identical omega table of
     # length 768, so every table/#define is emitted once per DISTINCT length.
-    fwd_lengths = sorted({Ldk, Lnk, Lndk})   # forward table needed for all three
-    inv_lengths = sorted({Ldk, Lnk})         # inverse table needed for NK and DK
+    fwd_lengths = sorted({Ldk, Lnk, Lndk})  # forward table needed for all three
+    inv_lengths = sorted({Ldk, Lnk})  # inverse table needed for NK and DK
 
     out = []
-    out.append("/* ****************************** *\n"
-               " * Titanium_CCA_std (scaled)      *\n"
-               " * NTT functions (regenerated)    *\n"
-               " * ****************************** */\n\n")
+    out.append(
+        "/* ****************************** *\n"
+        " * Titanium_CCA_std (scaled)      *\n"
+        " * NTT functions (regenerated)    *\n"
+        " * ****************************** */\n\n"
+    )
     out.append('#include "param.h"\n#include "ntt.h"\n#include <stdint.h>\n\n')
 
     # mixed-radix factors: N1=1, N2=L => identity permutation, pure DFT/IDFT.
@@ -174,16 +177,26 @@ def build_ntt_c(N, Q, gamma0):
     out.append(NTT_CORE)
     out.append("\n")
 
-    out.append(f"void intt_{Lndk}_{Lndk}(uint32_t *a)\n{{\n"
-               f"\tintt_core(a, N1_{Lndk}, N2_{Lndk}, {Lndk}, omega_{Lndk}, INV_{Lndk});\n}}\n\n")
-    out.append(f"void intt_{Ldk}_{Ldk}(uint32_t *a)\n{{\n"
-               f"\tintt_core(a, N1_{Ldk}, N2_{Ldk}, {Ldk}, omega_{Ldk}, INV_{Ldk});\n}}\n\n")
-    out.append(f"void ntt_{Lnk}_{Lnk}(uint32_t *a)\n{{\n"
-               f"\tntt_core(a, N1_{Lnk}, N2_{Lnk}, {Lnk}, omega_{Lnk});\n}}\n\n")
-    out.append(f"void intt_{Lnk}_{Lnk}_inv(uint32_t *a)\n{{\n"
-               f"\tintt_core(a, N1_{Lnk}, N2_{Lnk}, {Lnk}, omega_{Lnk}_inv, INV_{Lnk});\n}}\n\n")
-    out.append(f"void ntt_{Ldk}_{Ldk}_inv(uint32_t *a)\n{{\n"
-               f"\tntt_core(a, N1_{Ldk}, N2_{Ldk}, {Ldk}, omega_{Ldk}_inv);\n}}\n")
+    out.append(
+        f"void intt_{Lndk}_{Lndk}(uint32_t *a)\n{{\n"
+        f"\tintt_core(a, N1_{Lndk}, N2_{Lndk}, {Lndk}, omega_{Lndk}, INV_{Lndk});\n}}\n\n"
+    )
+    out.append(
+        f"void intt_{Ldk}_{Ldk}(uint32_t *a)\n{{\n"
+        f"\tintt_core(a, N1_{Ldk}, N2_{Ldk}, {Ldk}, omega_{Ldk}, INV_{Ldk});\n}}\n\n"
+    )
+    out.append(
+        f"void ntt_{Lnk}_{Lnk}(uint32_t *a)\n{{\n"
+        f"\tntt_core(a, N1_{Lnk}, N2_{Lnk}, {Lnk}, omega_{Lnk});\n}}\n\n"
+    )
+    out.append(
+        f"void intt_{Lnk}_{Lnk}_inv(uint32_t *a)\n{{\n"
+        f"\tintt_core(a, N1_{Lnk}, N2_{Lnk}, {Lnk}, omega_{Lnk}_inv, INV_{Lnk});\n}}\n\n"
+    )
+    out.append(
+        f"void ntt_{Ldk}_{Ldk}_inv(uint32_t *a)\n{{\n"
+        f"\tntt_core(a, N1_{Ldk}, N2_{Ldk}, {Ldk}, omega_{Ldk}_inv);\n}}\n"
+    )
     return "".join(out)
 
 
@@ -191,12 +204,14 @@ def build_ntt_h(N):
     Lndk = N + D + K + 1
     Lnk = N + K + 1
     Ldk = D + K + 1
-    return ("#ifndef NTT_H\n#define NTT_H\n\n#include <stdint.h>\n\n"
-            f"void intt_{Lndk}_{Lndk}(uint32_t *a);\n"
-            f"void intt_{Ldk}_{Ldk}(uint32_t *a);\n"
-            f"void ntt_{Lnk}_{Lnk}(uint32_t *a);\n"
-            f"void intt_{Lnk}_{Lnk}_inv(uint32_t *a);\n"
-            f"void ntt_{Ldk}_{Ldk}_inv(uint32_t *a);\n\n#endif\n")
+    return (
+        "#ifndef NTT_H\n#define NTT_H\n\n#include <stdint.h>\n\n"
+        f"void intt_{Lndk}_{Lndk}(uint32_t *a);\n"
+        f"void intt_{Ldk}_{Ldk}(uint32_t *a);\n"
+        f"void ntt_{Lnk}_{Lnk}(uint32_t *a);\n"
+        f"void intt_{Lnk}_{Lnk}_inv(uint32_t *a);\n"
+        f"void ntt_{Ldk}_{Ldk}_inv(uint32_t *a);\n\n#endif\n"
+    )
 
 
 def patch_param_h(text, N, Q):
@@ -212,27 +227,45 @@ def patch_param_h(text, N, Q):
         n_sub += c
         return t2
 
-    text = sub(r'#define\s+Q\s+118273\b', f'#define Q {Q}', text)
-    text = sub(r'#define\s+N\s+1024\b', f'#define N {N}', text)
-    text = sub(r'#define\s+INTT_NDK_NDK\s+intt_1792_1792\b',
-               f'#define INTT_NDK_NDK intt_{Lndk}_{Lndk}', text)
-    text = sub(r'#define\s+INTT_DK_DK\s+intt_768_768\b',
-               f'#define INTT_DK_DK intt_{Ldk}_{Ldk}', text)
-    text = sub(r'#define\s+NTT_NK_NK\s+ntt_1536_1536\b',
-               f'#define NTT_NK_NK ntt_{Lnk}_{Lnk}', text)
-    text = sub(r'#define\s+INTT_NK_NK_INV\s+intt_1536_1536_inv\b',
-               f'#define INTT_NK_NK_INV intt_{Lnk}_{Lnk}_inv', text)
-    text = sub(r'#define\s+NTT_DK_DK_INV\s+ntt_768_768_inv\b',
-               f'#define NTT_DK_DK_INV ntt_{Ldk}_{Ldk}_inv', text)
+    text = sub(r"#define\s+Q\s+118273\b", f"#define Q {Q}", text)
+    text = sub(r"#define\s+N\s+1024\b", f"#define N {N}", text)
+    text = sub(
+        r"#define\s+INTT_NDK_NDK\s+intt_1792_1792\b",
+        f"#define INTT_NDK_NDK intt_{Lndk}_{Lndk}",
+        text,
+    )
+    text = sub(
+        r"#define\s+INTT_DK_DK\s+intt_768_768\b",
+        f"#define INTT_DK_DK intt_{Ldk}_{Ldk}",
+        text,
+    )
+    text = sub(
+        r"#define\s+NTT_NK_NK\s+ntt_1536_1536\b",
+        f"#define NTT_NK_NK ntt_{Lnk}_{Lnk}",
+        text,
+    )
+    text = sub(
+        r"#define\s+INTT_NK_NK_INV\s+intt_1536_1536_inv\b",
+        f"#define INTT_NK_NK_INV intt_{Lnk}_{Lnk}_inv",
+        text,
+    )
+    text = sub(
+        r"#define\s+NTT_DK_DK_INV\s+ntt_768_768_inv\b",
+        f"#define NTT_DK_DK_INV ntt_{Ldk}_{Ldk}_inv",
+        text,
+    )
     # Q_BITS must stay 17.
-    assert re.search(r'#define\s+Q_BITS\s+17\b', text), "Q_BITS != 17 unexpected"
+    assert re.search(r"#define\s+Q_BITS\s+17\b", text), "Q_BITS != 17 unexpected"
     return text
 
 
 def patch_api_h(text, N):
     ct = (N + K + 1) // 8 * Q_BITS + D * C2_COMPRESSION_BYTE + HASH_LENGTH
-    text, c = re.subn(r'#define\s+CRYPTO_CIPHERTEXTBYTES\s+\d+',
-                      f'#define CRYPTO_CIPHERTEXTBYTES {ct}', text)
+    text, c = re.subn(
+        r"#define\s+CRYPTO_CIPHERTEXTBYTES\s+\d+",
+        f"#define CRYPTO_CIPHERTEXTBYTES {ct}",
+        text,
+    )
     assert c == 1, "api.h CRYPTO_CIPHERTEXTBYTES not patched"
     return text
 
@@ -269,9 +302,11 @@ def main():
     with open(f"{src}/ntt.c", "w") as f:
         f.write(build_ntt_c(N, Q, gamma0))
 
-    print(f"[patch_titanium] N={N} Q={Q} gamma0={gamma0} "
-          f"L_NK={N + K + 1} L_NDK={N + D + K + 1} "
-          f"CIPHERTEXTBYTES={(N + K + 1) // 8 * Q_BITS + D + HASH_LENGTH}")
+    print(
+        f"[patch_titanium] N={N} Q={Q} gamma0={gamma0} "
+        f"L_NK={N + K + 1} L_NDK={N + D + K + 1} "
+        f"CIPHERTEXTBYTES={(N + K + 1) // 8 * Q_BITS + D + HASH_LENGTH}"
+    )
 
 
 if __name__ == "__main__":

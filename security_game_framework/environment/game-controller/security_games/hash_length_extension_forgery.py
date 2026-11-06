@@ -102,8 +102,8 @@ class LengthExtensionForgeryStage(SecurityGameStage):
             "MAC_K(m) = H(K || m) and the byte length of K was revealed in stage 1.\n"
             "\n"
             "MAC oracle (call any number of times):\n"
-            '   python game_controller_client.py --action oracle_query --json '
-            "'{\"oracle_type\": \"mac\", \"arguments\": {\"message\": \"0xabc123...\"}}'\n"
+            "   python game_controller_client.py --action oracle_query --json "
+            '\'{"oracle_type": "mac", "arguments": {"message": "0xabc123..."}}\'\n'
             "   Returns the tag MAC_K(message) under the field `tag` (a hex string).\n"
             "\n"
             "Submit your forgery with the `execute_current_stage` action and payload\n"

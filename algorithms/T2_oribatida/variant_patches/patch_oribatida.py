@@ -13,6 +13,7 @@ deliberately LEFT UNCHANGED (it still selects distinct constants mod 62).
 Usage: patch_oribatida.py <path/to/SimP_192.h> <R>
 Fails loudly (non-zero exit) if it does not make exactly one substitution.
 """
+
 import re
 import sys
 

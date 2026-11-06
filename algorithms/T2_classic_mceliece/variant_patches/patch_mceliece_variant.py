@@ -40,7 +40,9 @@ def kem_byte_sizes(gfbits, sys_n, sys_t):
 
 
 def subst_once(text, key, val):
-    text, n = re.subn(rf"#define\s+{re.escape(key)}\s+\d+", f"#define {key} {val}", text)
+    text, n = re.subn(
+        rf"#define\s+{re.escape(key)}\s+\d+", f"#define {key} {val}", text
+    )
     if n != 1:
         raise SystemExit(
             f"patch_mceliece_variant.py: expected exactly 1 substitution for "
@@ -58,7 +60,9 @@ def main():
     sys_t = int(sys.argv[3])
 
     if sys_n % 8 != 0:
-        raise SystemExit(f"patch_mceliece_variant.py: SYS_N={sys_n} must be a multiple of 8")
+        raise SystemExit(
+            f"patch_mceliece_variant.py: SYS_N={sys_n} must be a multiple of 8"
+        )
     if sys_n > (1 << GFBITS):
         raise SystemExit(
             f"patch_mceliece_variant.py: SYS_N={sys_n} cannot exceed 2^GFBITS={1 << GFBITS}"
